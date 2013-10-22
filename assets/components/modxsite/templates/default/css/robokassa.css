@@ -1,0 +1,118 @@
+#robokassa{}
+
+#robokassa .sprite{
+	background-image: url(../img/payments_sprite.png);
+}
+#robokassa .submit{
+	background-repeat: no-repeat;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	margin: 5px 10px;
+}
+
+#robokassa .submit.mastercard{
+	background-position: 0 -25px;
+	height: 65px;
+	width: 96px;
+}
+#robokassa .submit.mastercard:hover{
+	background-position: -239px -25px;
+}
+
+#robokassa .submit.visa{
+	background-position: 0 -89px;
+	height: 62px;
+	width: 95px;
+}
+#robokassa .submit.visa:hover{
+	background-position: -239px -89px;
+}
+
+#robokassa .submit.qiwi{
+	background-position: 0 -272px;
+	height: 103px;
+	width: 106px;
+}
+#robokassa .submit.qiwi:hover{
+	background-position: -239px -272px;
+}
+
+#robokassa .submit.yandex{
+	background-position: 0 -150px;
+	height: 62px;
+	width: 142px;
+}
+#robokassa .submit.yandex:hover{
+	background-position: -239px -150px;
+}
+
+#robokassa .submit.rbk{
+	background-position: 0 -221px;
+	height: 49px;
+	width: 113px;
+}
+#robokassa .submit.rbk:hover{
+	background-position: -239px -221px;
+}
+
+#robokassa .submit.euroset{
+	background-position: 0 -378px;
+	height: 94px;
+	width: 79px;
+}
+#robokassa .submit.euroset:hover{
+	background-position: -239px -378px;
+}
+
+#robokassa .submit.mts{
+	background-position: 0 -479px;
+	height: 84px;
+	width: 180px;
+}
+
+#robokassa .submit.mts:hover{
+	background-position: -239px -479px;
+}
+
+#robokassa .submit.megafon{
+	background-position: 0 -572px;
+	height: 87px;
+	width: 101px;
+}
+#robokassa .submit.megafon:hover{
+	background-position: -239px -572px;
+}
+
+#robokassa .submit.svyaznoy{
+	background-position: 0 -666px;
+	height: 45px;
+	width: 209px;
+}
+#robokassa .submit.svyaznoy:hover{
+	background-position: -239px -666px;
+}
+
+#robokassa .submit.webmoney{
+	background-position: 0 -719px;
+	height: 63px;
+	width: 239px;
+}
+#robokassa .submit.webmoney:hover{
+	background-position: -239px -719px;
+}
+
+#robokassa .submit.robokassa{
+	background-position: 0 -785px;
+	height: 28px;
+	width: 239px;
+}
+#robokassa .submit.robokassa:hover{
+	background-position: -240px -785px;
+}
+	
+	
+	
+	
+	
+	

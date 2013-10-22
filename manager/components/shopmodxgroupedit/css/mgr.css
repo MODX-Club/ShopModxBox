@@ -1,0 +1,13 @@
+
+.color-icn {background-image: url(../img/color-swatch.png) !important;}
+.add-icn {background-image: url(../img/plus-circle.png) !important;}
+.del-icn {background-image: url(../img/minus-circle.png) !important;}
+
+.group_edit_category {padding: 2px 0 2px 22px; background: url(../img/folder.png) no-repeat 0 0;}
+.group_edit_resource {color:#000; text-decoration:none;}
+.group_edit_toplevel {background: url(../img/arrow-top.png) no-repeat 0 0;}
+.group_edit_trash {background: url(../img/trash.png) no-repeat 0 0;}
+.group_edit_deleted {text-decoration: line-through; color:red;}
+.group_edit_unpublished {font-style: italic; color:#929293;}
+.group_edit_newres {background: url(../img/folder_page_add.png) no-repeat 0 0;}
+

@@ -1,0 +1,16 @@
+modxSite-1.0.0-rc
+=============================================================
+1.  Removed operator GOTO in package resolver for support php lower than 5.3
+2.  Minor bugfix in package resolver
+
+modxSite-0.0.2-beta
+=============================================================
+1.  Added MediaSource Controllers for site controllers (modTemplate`s)
+2.  Added MediaSource Templates for site templates (site skins)
+3.  Added system setting modxSite.template_url
+
+
+modxSite-0.0.1-beta
+=============================================================
+1.  Created core
+2.  Created packages installation resolver

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="Billing" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+	<object class="InvoiceProducts" table="invoice_products" extends="xPDOObject">
+		<field key="invoice_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" />
+		<field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" />
+		<field key="quantity" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+		<field key="price" dbtype="double" attributes="unsigned" phptype="float" null="false" default="0" />
+		<field key="currency_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+
+		<index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE" >
+			<column key="invoice_id" length="" collation="A" null="false" />
+			<column key="product_id" length="" collation="A" null="false" />
+		</index>
+	</object>
+	<object class="InvoiceStatuses" table="invoice_statuses" extends="xPDOSimpleObject">
+		<field key="status" dbtype="varchar" precision="100" phptype="string" null="false" index="unique" />
+
+		<index alias="status" name="status" primary="false" unique="true" type="BTREE" >
+			<column key="status" length="" collation="A" null="false" />
+		</index>
+	</object>
+	<object class="Invoices" table="invoices" extends="xPDOSimpleObject">
+		<field key="number_history" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="1" />
+		<field key="status_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="1" index="index" />
+		<field key="contractor_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
+		<field key="sum" dbtype="double" attributes="unsigned" phptype="float" null="false" default="0" />
+		<field key="currency_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
+		<field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" index="index" />
+		<field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" index="index" />
+
+		<index alias="contractor_id" name="contractor_id" primary="false" unique="false" type="BTREE" >
+			<column key="contractor_id" length="" collation="A" null="false" />
+		</index>
+		<index alias="currency_id" name="currency_id" primary="false" unique="false" type="BTREE" >
+			<column key="currency_id" length="" collation="A" null="false" />
+		</index>
+		<index alias="editedon" name="editedon" primary="false" unique="false" type="BTREE" >
+			<column key="editedon" length="" collation="A" null="true" />
+		</index>
+		<index alias="createdon" name="createdon" primary="false" unique="false" type="BTREE" >
+			<column key="createdon" length="" collation="A" null="false" />
+		</index>
+		<index alias="status_id" name="status_id" primary="false" unique="false" type="BTREE" >
+			<column key="status_id" length="" collation="A" null="false" />
+		</index>
+	</object>
+	<object class="Payments" table="payments" extends="xPDOSimpleObject">
+		<field key="invoice_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" index="index" />
+		<field key="sum" dbtype="double" attributes="unsigned" phptype="float" null="false" default="0" />
+		<field key="currency_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
+		<field key="paysystem_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
+		<field key="paysys_invoice_id" dbtype="varchar" precision="64" phptype="string" null="true" />
+		<field key="date" dbtype="datetime" phptype="datetime" null="false" index="index" />
+		<field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
+
+		<index alias="invoice_id" name="invoice_id" primary="false" unique="false" type="BTREE" >
+			<column key="invoice_id" length="" collation="A" null="true" />
+		</index>
+		<index alias="currency_id" name="currency_id" primary="false" unique="false" type="BTREE" >
+			<column key="currency_id" length="" collation="A" null="false" />
+		</index>
+		<index alias="paysystem_id" name="paysystem_id" primary="false" unique="false" type="BTREE" >
+			<column key="paysystem_id" length="" collation="A" null="false" />
+		</index>
+		<index alias="date" name="date" primary="false" unique="false" type="BTREE" >
+			<column key="date" length="" collation="A" null="false" />
+		</index>
+		<index alias="createdby" name="createdby" primary="false" unique="false" type="BTREE" >
+			<column key="createdby" length="" collation="A" null="false" />
+		</index>
+	</object>
+	<object class="Paysystems" table="paysystems" extends="xPDOSimpleObject">
+		<field key="name" dbtype="varchar" precision="100" phptype="string" null="false" />
+		<field key="comment" dbtype="mediumtext" phptype="string" null="false" />
+	</object>
+</model>

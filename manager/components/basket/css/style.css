@@ -1,0 +1,15 @@
+.icon-shopmodxwarehouse .x-tree-node-icon {
+	background-image: url(../img/storehouse16x16.png) !important;
+}
+
+.icon-shopmodxproducer .x-tree-node-icon {
+	background-image: url(../img/partner16x16.png) !important;
+}
+
+.icon-shopmodxproduct .x-tree-node-icon {
+	background-image: url(../img/door.png) !important;
+}
+
+.orders-grid .x-grid3-row-expanded .x-grid3-row-body {
+    color: #333333;
+}
