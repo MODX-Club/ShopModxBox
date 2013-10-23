@@ -65,7 +65,6 @@ class modBasketWebPublicActionProcessor extends modProcessor{
         
         if(self::$actualClassName){
             $className = self::$actualClassName;
-            return $className::getInstance($modx,$className,$properties);
         }
 
         return parent::getInstance($modx,$className,$properties);
