@@ -17,6 +17,12 @@
     {if $result.success && $result.object}
         {assign var=order value=$result.object[0]} 
         
+        {$modx->smarty->addTemplateDir("{$modx->getOption('core_path')}components/edinayakassa/templates/web/default/")}
+        {snippet name="edinayakassa.getButton" params="&WMI_PAYMENT_AMOUNT=`1`&order_id=`{$smarty.get.order_id}`"}
+        
+        <br /><br />
+        
+        <h2>Робокасса</h2>
         {snippet name="robokassa.getButton" params="shp_order=`{$smarty.get.order_id}`&out_sum=`{$order.sum}`"}
         
     {else}

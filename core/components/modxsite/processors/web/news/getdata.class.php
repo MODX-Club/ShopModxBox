@@ -15,7 +15,6 @@ class modWebNewsGetdataProcessor extends modWebGetdataProcessor{
             "parent"    => 5,
             "getPage"  => true,
             "limit"    => 3,
-            "cache"    => true,
             "cache_prefix" => "news/",
             "summary"  => true,
             "truncLen" => 500,

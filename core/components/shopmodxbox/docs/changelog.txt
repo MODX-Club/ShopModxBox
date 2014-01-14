@@ -1,0 +1,7 @@
+modxSite-2.1.1-beta
+=============================================================
+
+1. Added namespace shopmodxbox
+2. Updated Ace to 1.4.2-pl
+3. Updated pThumb to 2.2.2-pl2
+4. Added extra EdinayaKassa (paysystem)

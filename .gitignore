@@ -1,0 +1,39 @@
+#игнорим все корне
+/*
+!/.gitignore
+
+#отменяем игнор для нужных папок
+!/assets/
+!/core/
+!/manager/
+ 
+#игнорим все в assets 
+/assets/*
+#отменяем игнор для нужных папок
+!/assets/components/
+ 
+# Все тоже самое
+/assets/components/*
+!/assets/components/basket/
+!/assets/components/modxsite/
+/assets/components/modxsite/templates/*
+!/assets/components/modxsite/templates/default/
+ 
+/core/*
+!/core/components/
+ 
+/core/components/*
+!/core/components/basket/
+!/core/components/billing/
+!/core/components/modxsite/
+/core/components/modxsite/templates/*
+!/core/components/modxsite/templates/default/
+!/core/components/shopmodxbox/
+!/core/components/shopmodxgroupedit/
+!/core/components/edinayakassa/
+
+/manager/*
+!/manager/components/
+/manager/components/*
+!/manager/components/basket/
+!/manager/components/shopmodxgroupedit/
