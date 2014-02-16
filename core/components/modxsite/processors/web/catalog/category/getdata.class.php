@@ -4,10 +4,10 @@
     По умолчанию поиск выполняется во всем каталоге
 */ 
 
-require_once dirname(dirname(dirname(__FILE__))).'/getdata.class.php';
+require_once dirname(dirname(dirname(__FILE__))).'/resources/getdata.class.php';
 
 
-class modWebCatalogCategoryGetdataProcessor extends modWebGetdataProcessor{
+class modWebCatalogCategoryGetdataProcessor extends modWebResourcesGetdataProcessor{
     
     public function initialize(){
         

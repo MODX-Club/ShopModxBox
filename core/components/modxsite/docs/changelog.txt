@@ -1,7 +1,38 @@
+modxSite-1.2.0
+=============================================================
+1.  Added form processor
+
+
+modxSite-1.1.1
+=============================================================
+1.  Added auto-installing packages:
+        - Console
+        - Ace
+
+
+modxSite-1.1.0
+=============================================================
+1.  Added method modxsite::loadProcessor()
+2.  Create mediaSources:
+        - Controllers
+        - Smarty templates
+        - Public templates
+        - Images
+        - Files
+3.  Install packages:
+        - phpTemplates
+        - modxSmarty
+4.  Added getlist/getdata processors from shopModx
+5.  Added plugin Debug
+6.  Added plugin memory_get_usage
+7.  Added modxclub.ru transport provider
+        
+
 modxSite-1.0.0-rc
 =============================================================
 1.  Removed operator GOTO in package resolver for support php lower than 5.3
 2.  Minor bugfix in package resolver
+
 
 modxSite-0.0.2-beta
 =============================================================

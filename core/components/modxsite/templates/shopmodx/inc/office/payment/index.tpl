@@ -12,10 +12,10 @@
         "order_id"  => $smarty.get.order_id
     ]}
     
-    {processor action="web/orders/getlist" ns="basket" params=$params assign=result}
+    {processor action="basket/mgr/orders/products/getdata" ns="basket" params=$params assign=result}
     
     {if $result.success && $result.object}
-        {assign var=order value=$result.object[0]} 
+        {assign var=order value=$result} 
         
         {$modx->smarty->addTemplateDir("{$modx->getOption('core_path')}components/edinayakassa/templates/web/default/")}
         {snippet name="edinayakassa.getButton" params="&WMI_PAYMENT_AMOUNT=`1`&order_id=`{$smarty.get.order_id}`"}

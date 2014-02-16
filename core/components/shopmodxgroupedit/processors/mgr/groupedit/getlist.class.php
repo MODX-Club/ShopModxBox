@@ -10,7 +10,7 @@
 
 
 
-require_once MODX_CORE_PATH . 'components/shopmodx/processors/web/getlist.class.php';
+require_once MODX_CORE_PATH . 'components/modxsite/processors/site/web/getdata.class.php';
 
 /*
     Инициализация. Определяем, какой процессор использовать.
@@ -51,7 +51,7 @@ class ShopmodxGroupeditGetlistInitializerProcessor extends modProcessor{
 /*
     Получаем документы
 */
-class ShopmodxGroupeditDocumentsGetdataProcessor extends ShopmodxWebGetlistProcessor{
+class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProcessor{
  
     public function initialize(){
         /*$this->modx->setLogLevel(3);

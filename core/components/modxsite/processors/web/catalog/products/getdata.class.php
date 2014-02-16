@@ -3,9 +3,9 @@
     Класс выборки товаров
 */ 
 
-require_once dirname(dirname(dirname(__FILE__))).'/getdata.class.php';
+require_once dirname(dirname(dirname(__FILE__))).'/resources/getdata.class.php';
 
-class modWebCatalogProductsGetdataProcessor extends modWebGetdataProcessor{
+class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProcessor{
     
     public function initialize(){
         

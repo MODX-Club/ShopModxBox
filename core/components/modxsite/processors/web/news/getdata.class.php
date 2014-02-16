@@ -3,9 +3,9 @@
     Новости
 */
 
-require_once dirname(dirname(__FILE__)) . '/getdata.class.php';
+require_once dirname(dirname(__FILE__)) . '/resources/getdata.class.php';
 
-class modWebNewsGetdataProcessor extends modWebGetdataProcessor{
+class modWebNewsGetdataProcessor extends modWebResourcesGetdataProcessor{
     
     public function initialize(){
         

@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(dirname(__FILE__))  .'/getdata.class.php';
+require_once dirname(dirname(__FILE__))  .'/resources/getdata.class.php';
 
-class modWebCurrenciesGetdataProcessor extends modWebGetdataProcessor{
+class modWebCurrenciesGetdataProcessor extends modWebResourcesGetdataProcessor{
     public function initialize(){
         
         $this->setDefaultProperties(array(

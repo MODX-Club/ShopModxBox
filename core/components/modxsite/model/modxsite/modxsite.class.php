@@ -1,5 +1,6 @@
 <?php
 
+
      
 class modxsite{
     public $modx = null;
