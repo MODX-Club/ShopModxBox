@@ -57,7 +57,9 @@ class modBasketWebOrdersRecalculateProcessor extends modBasketWebOrdersProductsG
         
         $products = (array)$this->getProperty('quantity');
         
-        foreach($list as $order_product_id => & $l){
+        foreach($list as & $l){
+            
+            $order_product_id = $l['id'];
             
             if(isset($products[$order_product_id])){
                 
