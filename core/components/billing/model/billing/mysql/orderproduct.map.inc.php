@@ -2,7 +2,7 @@
 $xpdo_meta_map['OrderProduct']= array (
   'package' => 'billing',
   'version' => '1.1',
-  'table' => 'order_products',
+  'table' => 'billing_order_products',
   'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (

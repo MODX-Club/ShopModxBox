@@ -2,7 +2,7 @@
 $xpdo_meta_map['Paysystem']= array (
   'package' => 'billing',
   'version' => '1.1',
-  'table' => 'paysystems',
+  'table' => 'billing_paysystems',
   'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
