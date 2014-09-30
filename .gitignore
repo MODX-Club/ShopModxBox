@@ -35,6 +35,7 @@
 !/core/components/edinayakassa/
 !/core/components/modcaptcha/
 !/core/components/modhybridauth/
+!/core/components/unitpay/
 
 /manager/*
 !/manager/components/

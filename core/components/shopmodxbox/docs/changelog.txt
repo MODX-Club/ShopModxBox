@@ -1,3 +1,11 @@
+ShopModxBox-2.2.3-beta
+=============================================================
+- Added ShopModxUnitPay extra
+- Added SEO extra
+- Added modRedirect extra
+- Minor bugfix
+
+
 ShopModxBox-2.2.2-beta
 =============================================================
 - custom MODX core directory and tables prefix supporting

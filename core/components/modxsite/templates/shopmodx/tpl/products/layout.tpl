@@ -22,5 +22,5 @@
         {assign var=object value=$result.object}
     {/if}
      
-    {include file="shop/products/list/layout.tpl"}
+    {include file="shop/products/page/layout.tpl"}
 {/block}

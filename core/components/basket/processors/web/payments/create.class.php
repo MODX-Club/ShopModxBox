@@ -12,20 +12,28 @@ abstract class modWebPaymentsCreateProcessor extends modObjectCreateProcessor{
     
     protected $BillingProcessorsPath;
     
-    public function checkPermissions() {
-        
-        // Проверяем подпись платежной системы
-        $ok = $this->checkSignature();
-        if($ok !== true){
-            $this->error($ok);
-            return false;
-        }
-        
-        return parent::checkPermissions();
-    }
+    # public function checkPermissions() {
+    #     
+    #     // Проверяем подпись платежной системы
+    #     $ok = $this->checkSignature();
+    #     if($ok !== true){
+    #         $this->error($ok);
+    #         return false;
+    #     }
+    #     
+    #     return parent::checkPermissions();
+    # }
+    
+    
+    /*
+        Обязательно надо прописывать метод, в котором будет выполняться проверка 
+        подписи с сервера платежной системы
+    */
+    abstract protected function checkSignature();
+    
     
     public function initialize(){
-        
+         
         $this->BillingProcessorsPath = MODX_CORE_PATH . 'components/billing/processors/';
         
         $this->setDefaultProperties(array(
@@ -33,11 +41,111 @@ abstract class modWebPaymentsCreateProcessor extends modObjectCreateProcessor{
         ));
         
         if(!$this->getProperty('paysystem_id')){
-            return $this->error("Не был получен ID платежной системы");
+            $error = "Не был получен ID платежной системы";
+            $this->error($error);
+            return $this->getResponseError($error);
         }
+        
+        $this->setProperties(array(
+            "allow_partial_payment"    => $this->modx->getOption('shop.allow_partial_payment', null, false),    // Разрешить частичную оплату
+        ));
         
         return parent::initialize();
     }
+    
+    public function process(){
+        
+        // Проверяем подпись платежной системы
+        $ok = $this->checkSignature();
+        if($ok !== true){
+            $this->error($ok);
+            return $this->failure($this->getResponseError($ok));
+        }
+        
+        // else
+        if(
+            !$currency_id = (int)$this->getProperty('currency_id')
+            OR !$currency = $this->modx->getObject('modResource', $currency_id)
+            OR ! $currency instanceof ShopmodxResourceCurrency
+        ){
+            $error = "Не был получен объект валюты";
+            $this->error($error);
+            return $this->failure($this->getResponseError($error));
+        }
+        
+        if(
+            !$paysystem_id = (int)$this->getProperty('paysystem_id')
+            OR !$paysystem = $this->modx->getObject('Paysystem', $paysystem_id)
+            OR ! $paysystem instanceof Paysystem
+        ){
+            $error = "Не был получен объект платежной системы";
+            $this->error($error);
+            return $this->failure($this->getResponseError($error));
+        }
+        
+        // Проверяем, если указан счет платежной системы, то надо убедиться, что 
+        // он еще не числится в биллинге
+        if($paysys_invoice_id = $this->object->get('paysys_invoice_id')){
+            if($this->modx->getCount($this->classKey, array(
+                'paysys_invoice_id' => $paysys_invoice_id,
+                'paysystem_id'      => $paysystem_id,
+            ))){
+                $error = "Данный счет уже создан в системе.";
+                $this->error($error);
+                return $this->failure($this->getResponseError($error));
+            }
+        }
+        
+        // Проверяем счет
+        if(
+            $order_id = (int)$this->getProperty('order_id')
+        ){
+            $namespace = 'basket';
+            $response = $this->modx->runProcessor('basket/mgr/orders/products/getdata',
+            array(
+                "order_id"  => $order_id,
+            ), array(
+                'processors_path' => $this->modx->getObject('modNamespace', $namespace)->getCorePath().'processors/',
+            ));
+            
+            if($response->isError()){
+                $error = $response->getMessage();
+                $this->error($error);
+                return $this->failure($this->getResponseError($error));
+            }
+            
+            // else
+            $r = $response->getResponse();
+            
+            if(!$r['object']){
+                $error = 'Order not exists';
+                $this->error($error);
+                return $this->failure($this->getResponseError($error));
+            } 
+            
+            // Проверяем сумму
+            if(
+                !empty($r['sum'])
+                AND !$this->getProperty('allow_partial_payment')
+                AND ((float)$this->getProperty('sum') < (float)$r['sum'])
+            ){
+                $error = 'Incorrect sum';
+                $this->error($error);
+                return $this->failure($this->getResponseError($error));
+            } 
+        }
+        
+        $this->object->addOne($currency);
+        $this->object->addOne($paysystem);
+        
+        return $this->__process();
+    }
+    
+    
+    protected function __process(){
+        return parent::process();
+    } 
+    
     
     public function beforeSet(){
         
@@ -49,45 +157,16 @@ abstract class modWebPaymentsCreateProcessor extends modObjectCreateProcessor{
         return parent::beforeSet();
     }
     
-    public function beforeSave(){
-        if(
-            !$currency_id = (int)$this->getProperty('currency_id')
-            OR !$currency = $this->modx->getObject('modResource', $currency_id)
-            OR ! $currency instanceof ShopmodxResourceCurrency
-        ){
-            return $this->error("Не был получен объект валюты");
-        }
-        
-        if(
-            !$paysystem_id = (int)$this->getProperty('paysystem_id')
-            OR !$paysystem = $this->modx->getObject('Paysystem', $paysystem_id)
-            OR ! $paysystem instanceof Paysystem
-        ){
-            return $this->error("Не был получен объект платежной системы");
-        }
-        
-        // Проверяем, если указан счет платежной системы, то надо убедиться, что 
-        // он еще не числится в биллинге
-        if($paysys_invoice_id = $this->object->get('paysys_invoice_id')){
-            if($this->modx->getCount($this->classKey, array(
-                'paysys_invoice_id' => $paysys_invoice_id,
-                'paysystem_id'      => $paysystem_id,
-            ))){
-                return $this->error("Данный счет уже создан в системе.");
-            }
-        }
-        
-        $this->object->addOne($currency);
-        $this->object->addOne($paysystem);
-        
-        return parent::beforeSave();
+    
+    protected function getResponseSuccess($message)
+    {
+        return $message;
     }
     
-    /*
-        Обязательно надо прописывать метод, в котором будет выполняться проверка 
-        подписи с сервера платежной системы
-    */
-    abstract protected function checkSignature();
+    protected function getResponseError($message)
+    {
+        return $message;
+    }
     
     protected function log($msg, $level = null){
         if($level === null){
@@ -99,7 +178,8 @@ abstract class modWebPaymentsCreateProcessor extends modObjectCreateProcessor{
     }
     
     protected function error($msg){
-        return $this->log($msg, xPDO::LOG_LEVEL_ERROR);
+        $this->log(xPDO::LOG_LEVEL_ERROR, $msg);
+        return $msg;
     }
     
     /*

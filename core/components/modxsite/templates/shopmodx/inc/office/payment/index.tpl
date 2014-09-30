@@ -8,15 +8,24 @@
 {else}
     
     {* Пытаемся получить заказ *}
-    {assign var=params value=[
-        "order_id"  => $smarty.get.order_id
+    {$order_id = $smarty.get.order_id}
+    {$params = [
+        "order_id"  => $order_id
     ]}
-    
     {processor action="basket/mgr/orders/products/getdata" ns="basket" params=$params assign=result}
     
     {if $result.success && $result.object}
-        {assign var=order value=$result} 
+        {$order = $result}
         
+        {*
+            UnitPay
+        *} 
+        {include file="{$modx->getOption('core_path')}components/shopmodxunitpay/templates/web/default/shopmodxunitpay/button.tpl" desc="Оплата заказа №{$order_id}" sum=$order.sum editable=false}
+         
+        
+        {*
+            Единая Касса
+        *}
         {$modx->smarty->addTemplateDir("{$modx->getOption('core_path')}components/edinayakassa/templates/web/default/")}
         {snippet name="edinayakassa.getButton" params="&WMI_PAYMENT_AMOUNT=`1`&order_id=`{$smarty.get.order_id}`"}
         
