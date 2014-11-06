@@ -8,6 +8,14 @@ require_once dirname(dirname(dirname(dirname(__FILE__)))). '/mgr/orders/products
 
 class modWebOrdersProductsAddProcessor extends modMgrOrdersProductsAddProcessor{
     
+    public function initialize(){
+        
+        $this->unsetProperty('price');
+        $this->unsetProperty('currency_id');
+        
+        return parent::initialize();
+    }
+    
 }
 
 return 'modWebOrdersProductsAddProcessor';
