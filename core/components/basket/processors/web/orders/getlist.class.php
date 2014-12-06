@@ -46,7 +46,7 @@ class modBasketWebOrdersGetlistProcessor extends modMgrOrdersGetlistProcessor{
         $c->select(array(
             "count(*) as positions",
             "sum(OrderProducts.quantity) as total",
-            "sum(OrderProducts.price) as sum",
+            "sum(OrderProducts.price*OrderProducts.quantity) as sum",
         ));
                  
         $c->where(array(
