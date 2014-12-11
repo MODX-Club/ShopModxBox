@@ -63,12 +63,17 @@ class modMgrOrdersProductsCreateProcessor extends modObjectCreateProcessor{
         
         // Устанавливаем значение цены и валюты
         // В дальнейшем в этом месте можно будет вклиниться с переопределением цен
-        $this->object->fromArray(array(
-            'price' => $product->get('sm_price'),    
-            'currency_id' => $product->get('sm_currency'),    
-        ));
+        $this->object->fromArray($this->getCurrency($product));
         
         return parent::beforeSet();
+    }
+
+    //переопределив эту функцию, можно изменить алгоритм определения цены (например, для товаров с опциями)
+    protected function getPrice(&product){
+        return array(
+            'price' => $product->get('sm_price'),    
+            'currency_id' => $product->get('sm_currency'),    
+        );
     }
     
     public function cleanup() {
