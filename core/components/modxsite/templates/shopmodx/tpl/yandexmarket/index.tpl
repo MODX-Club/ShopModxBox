@@ -56,7 +56,7 @@
                 <offer id="{$object.object_id}" available="true">
                     <url>{$object.url}</url>
                     <price>{$object.sm_price}</price>
-                    <currencyId>{$object.currencyId}</currencyId>
+                    <currencyId>{$object.currency_code}</currencyId>
                     <categoryId>{$object.parent}</categoryId>
                     <picture>{$object.image}</picture>
                     {*

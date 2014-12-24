@@ -17,19 +17,19 @@ class modWebYandexmarketProductsGetdataProcessor extends modWebCatalogProductsGe
         return parent::initialize();
     }
     
-    public function prepareQueryBeforeCount(xPDOQuery $c) {
-        $c = parent::prepareQueryBeforeCount($c);
-        $c->innerJoin('modResource', 'Currency', "Product.sm_currency=Currency.id");
-        return $c;
-    }
-    
-    protected function setSelection(xPDOQuery $c) {
-        $c = parent::setSelection($c);
-        $c->select(array(
-            "Currency.pagetitle as currencyId",
-        ));
-        return $c;
-    }
+    # public function prepareQueryBeforeCount(xPDOQuery $c) {
+    #     $c = parent::prepareQueryBeforeCount($c);
+    #     $c->innerJoin('modResource', 'Currency', "Product.sm_currency=Currency.id");
+    #     return $c;
+    # }
+    # 
+    # protected function setSelection(xPDOQuery $c) {
+    #     $c = parent::setSelection($c);
+    #     $c->select(array(
+    #         "Currency.pagetitle as currencyId",
+    #     ));
+    #     return $c;
+    # }
     
     // 
     public function afterIteration(array $list){
