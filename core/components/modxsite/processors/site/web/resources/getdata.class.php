@@ -7,35 +7,30 @@
 require_once dirname(dirname(__FILE__)).'/getdata.class.php';
 
 class modSiteWebResourcesGetdataProcessor extends modSiteWebGetdataProcessor{
-
-    
-   
-    protected $sources = array();
+ 
     
     public function initialize(){
         
         $this->setDefaultProperties(array(
-            'includeTVs'  => true,  
+            'includeTVs'        => true,  
             'sort'              => "{$this->classKey}.menuindex",
             'dir'               => 'ASC',
             'showhidden'        => false,
             'showunpublished'   => false,
-            'getPage'           => false,
-            'getPageParamsSet'  => "getPage",   // Имя набора параметров для getPage
             'limit'             => 15,
-            'page'              => !empty($_REQUEST['page']) ? (int)$_REQUEST['page'] : 0,
             'summary'           => false,
             "makeLinks"         => false,   // Создает ссылки. Надо только для modWebLink
-            'current'           => false,   // get and return only first element 
+            
+            
+            /*
+                Схема ссылки на картинку.  
+                - false : Отсутствуе. Будет выдано значение TV-параметра как есть
+                - base  : Будет сформировано с учетом УРЛ-а на медиасурс от корня сайта
+                - full  : Будет сформирован полный путь, включая http://
+                
+            */
+            'image_url_schema'      => 'base',     
         ));
-        
-        if($this->getProperty('current')){
-            $this->setProperty('limit', 1);
-        }
-        
-        if($page = $this->getProperty('page') AND $page > 1 AND $limit = $this->getProperty('limit', 0)){
-            $this->setProperty('start', ($page-1) * $limit);
-        }
         
         return parent::initialize();
     }  
@@ -100,7 +95,30 @@ class modSiteWebResourcesGetdataProcessor extends modSiteWebGetdataProcessor{
             $properties = $this->getProperties();
         }
         
+        switch($this->getProperty('image_url_schema')){
+            case 'base':
+                $images_base_url = $this->getSourcePath();
+                break;
+                
+            case 'full':
+                $images_base_url = $this->modx->getOption('site_url');
+                $images_base_url .= preg_replace("/^\/*/", "", $this->getSourcePath());
+                break;
+                
+            default: $images_base_url = '';
+        }
+        
         foreach($list as & $l){  
+            
+            // Картинка
+            $l['image'] = '';
+            if(!empty($l['tvs']['image']['value'])){
+                $l['image'] = $images_base_url . $l['tvs']['image']['value'];
+            }
+            else{
+                $l['imageDefault'] = $images_base_url . 'products/No-Photo.jpg';
+            }
+            
             // Ссылки
             if($makeLinks){
                 if($l['class_key'] == "modWebLink"){
@@ -142,65 +160,6 @@ class modSiteWebResourcesGetdataProcessor extends modSiteWebGetdataProcessor{
         return $url;
     }    
     
-    
-    protected function getSourcePath($id = null, $callback = 'getBaseUrl', $params = array()){
-        
-        if(!$id){
-            $id = $this->modx->getOption('default_media_source', null, 1);
-        }
-        
-        if(empty($this->sources[$id])){
-            // Получаем объект
-            if(
-                !$source = $this->modx->getObject('sources.modMediaSource', $id)
-                OR !$source->initialize()
-            ){
-                return '';
-            }
-            $this->sources[$id] = & $source;
-        }
-        
-        $result = $this->sources[$id]->$callback($params);
-        
-        return $result;
-    }
-    
-    
-    public function outputArray(array $array, $count = false) {
-        
-        if($this->getProperty('current')){
-            $array = current($array);
-        }
-        
-        $response = parent::outputArray($array, $count);
-        
-        return $this->prepareResponse($response);
-    }
-    
-    /*
-        В этот прописываем вызов всего того, что должно быть отработано даже тогда,
-        когда результат процессора взят из кеша (к примеру, вызов сниппета getPage,
-        а то если его не вызывать каждый раз, то не будет отображаться постраничность)
-    */
-    protected function prepareResponse($response){
-        $response = parent::prepareResponse($response);
-        
-        if($this->getProperty('getPage') AND $limit = $this->getProperty('limit') AND !empty($response['total'])){
-            
-            $this->modx->setPlaceholder('total', $response['total']);
-            
-            $snippet = "getPage";
-            if($getPageParamsSet = $this->getProperty('getPageParamsSet')){
-                $snippet .= "@{$getPageParamsSet}";
-            }
-            
-            $this->modx->runSnippet($snippet, array(
-                'limit' => $limit,
-            ));
-        }
-        
-        return $response;
-    }
 }
 
 

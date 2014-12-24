@@ -37,16 +37,16 @@ class ShopOrderdataGetlistProcessor extends modBasketMgrOrdersProductsGetdataPro
     }    
     
     
-    public function setSelection(xPDOQuery $c){
-        $c = parent::setSelection($c);
-        
-        $c->select(array(
-            "{$this->classKey}.price as order_price",
-            "{$this->classKey}.quantity as order_quantity",
-        ));
-        
-        return $c;
-    }
+    # public function setSelection(xPDOQuery $c){
+    #     $c = parent::setSelection($c);
+    #     
+    #     $c->select(array(
+    #         "{$this->classKey}.price as order_price",
+    #         "{$this->classKey}.quantity as order_quantity",
+    #     ));
+    #     
+    #     return $c;
+    # }
     
     
     public function outputArray(array $array, $count = false){

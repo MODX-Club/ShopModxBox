@@ -63,17 +63,45 @@ class modMgrOrdersProductsCreateProcessor extends modObjectCreateProcessor{
         
         // Устанавливаем значение цены и валюты
         // В дальнейшем в этом месте можно будет вклиниться с переопределением цен
-        $this->object->fromArray($this->getCurrency($product));
+        $this->setPrices($product);
         
         return parent::beforeSet();
     }
 
     //переопределив эту функцию, можно изменить алгоритм определения цены (например, для товаров с опциями)
-    protected function getPrice(&product){
-        return array(
+    protected function setPrices(ShopmodxProduct & $product){
+        
+        $data = array(
             'price' => $product->get('sm_price'),    
             'currency_id' => $product->get('sm_currency'),    
         );
+        
+        // Получаем данные товара с учетом курсов валют
+        if(
+            $response = $this->modx->runProcessor('web/catalog/products/getdata',
+            array(
+                "where" => [
+                    "id"    => $product->get('resource_id'),    
+                ],
+                "current"       => 1,
+                "showhidden"    => 1,
+                "showunpublished"    => 1,
+            ), array(
+            'processors_path' => MODX_CORE_PATH . 'components/modxsite/processors/',
+            ))
+            AND !$response->isError()
+            AND $object = $response->getObject()
+        ){
+            $data = array(
+                'price' => $object['sm_price'],    
+                'currency_id' => $object['sm_currency'],    
+            );
+        }
+        $this->modx->error->reset(); 
+        
+        $this->object->fromArray($data);
+        
+        return true;
     }
     
     public function cleanup() {

@@ -354,6 +354,9 @@ Shop.grid.OrderDataGrid = function(config){
             //,'design'
             ,'order_quantity'
             ,'order_price'
+            ,"order_currency"
+            ,"order_currency_code"
+            ,'quantity'
             ,'uri'
             ,'model_url'
             ,'image'
@@ -397,6 +400,20 @@ Ext.extend(Shop.grid.OrderDataGrid, MODx.grid.Grid,{
                 //,{header: 'Исполнение', dataIndex: 'design'}
                 ,{header: 'Количество', dataIndex: 'order_quantity'}
                 ,{header: 'Цена', dataIndex: 'order_price'}
+                ,{
+                    header: 'Сумма'
+                    ,dataIndex: 'sum'
+                    ,renderer: function(value, column, record){
+                        return record.get('order_price') * record.get('order_quantity');
+                    }
+                }
+                ,{
+                    header: 'Валюта'
+                    ,dataIndex: 'order_currency'
+                    ,renderer: function(value, column, record){
+                        return record.get('order_currency_code');
+                    }
+                }
             ],
         });
         return;

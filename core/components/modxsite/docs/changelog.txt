@@ -1,3 +1,9 @@
+modxSite-1.2.2
+=============================================================
+1. Code refactoring
+2. Added default connector
+
+
 modxSite-1.2.1
 =============================================================
 1.  Custom MODX core directory and tables prefix supporting

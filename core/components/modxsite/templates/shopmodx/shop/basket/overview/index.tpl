@@ -22,7 +22,7 @@
                                     <td class="title">Изображение</td>
                                     <td class="title" width="30%">Наименование</td>
                                     <td class="title" width="20%">Количество</td>
-                                    <td class="title" width="18%">Цена, руб</td>
+                                    <td class="title" width="18%">Цена</td>
                                     {*<td class="title" width="18%">Сумма, руб</td>*}
                                     <td class="title" width="7%">Удалить</td>
                                 </tr>
@@ -48,7 +48,7 @@
                                             <td class="button">
                                                 <input type="text" data-smodx-behav="goodNum" value="{$object.quantity}" class="field2 input-mini" name="quantity[{$key}]">
                                             </td>
-                                            <td class="cost">{$object.price|number_format:0:"":" "}</td>
+                                            <td class="cost">{$object.price|number_format:0:"":" "} {$object.currency_code}</td>
                                             {* <td class="cost">{$object.price*$object.quantity|number_format:0:"":" "}</td> *}
                                             <td><a class="btn btn-danger" data-smodx-behav="goodDel" href="{$current_uri}?basket_action=remove_product&product_key={$key}">удалить</a></td>
                                         </tr>

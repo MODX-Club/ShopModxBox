@@ -37,9 +37,14 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetlistProces
         $c = parent::setSelection($c);
         
         $c->innerJoin('ShopmodxProduct', 'Product');
+        $c->leftJoin('modResource', "currency_doc", "currency_doc.id = {$this->classKey}.currency_id");
         
         $c->select(array(
-            "Product.resource_id",    
+            "Product.resource_id",  
+            "{$this->classKey}.price as order_price",
+            "{$this->classKey}.quantity as order_quantity", 
+            "{$this->classKey}.currency_id as order_currency", 
+            "currency_doc.pagetitle as order_currency_code", 
         ));
         
         return $c;

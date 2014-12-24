@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td>Цена: </td>
-                                    <td>{$object.sm_price|number_format:2:".":" "} руб.</td>
+                                    <td>{$object.sm_price|number_format:2:".":" "} {$object.currency_code}</td>
                                 </tr>
                                 <tr>
                                     <td>Количество: </td>

@@ -5,6 +5,8 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
     public $defaultSortField = '';
     public $flushWhere = true;   // Flush query condition and search only by objects IDs
     protected $total = 0;
+   
+    protected $sources = array();
 
 
     public function initialize(){
@@ -13,9 +15,30 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             'cache'             => false,           // Use cache
             'cache_lifetime'    => 0,               // seconds
             'cache_prefix'      => 'getdata/',      
+            'current'           => false,   // get and return only first element 
+            'page'              => 0,   // !empty($_REQUEST['page']) ? (int)$_REQUEST['page'] : 0,
+            'getPage'           => false,
+            'getPageParamsSet'  => "getPage",   // Имя набора параметров для getPage
         ));
         
-        return parent::initialize();
+        $initialized = parent::initialize();
+        
+        /*
+            Need limits and etc.
+        */
+        if($initialized !== true){
+            return $initialized;
+        }
+        
+        if($this->getProperty('current')){
+            $this->setProperty('limit', 1);
+        }
+        
+        if($page = $this->getProperty('page') AND $page > 1 AND $limit = $this->getProperty('limit', 0)){
+            $this->setProperty('start', ($page-1) * $limit);
+        }
+        
+        return true;
     }
 
 
@@ -147,18 +170,78 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
     /*
         Here you may add callback when caching anabled
     */
+    
+    /*
+        В этот прописываем вызов всего того, что должно быть отработано даже тогда,
+        когда результат процессора взят из кеша (к примеру, вызов сниппета getPage,
+        а то если его не вызывать каждый раз, то не будет отображаться постраничность)
+    */
     protected function prepareResponse($response){
+        
+        if($this->getProperty('getPage') AND $limit = $this->getProperty('limit') AND !empty($response['total'])){
+            
+            $this->modx->setPlaceholder('total', $response['total']);
+            
+            $snippet = "getPage";
+            if($getPageParamsSet = $this->getProperty('getPageParamsSet')){
+                $snippet .= "@{$getPageParamsSet}";
+            }
+            
+            $this->modx->runSnippet($snippet, array(
+                'limit' => $limit,
+            ));
+        }
+        
         return $response;
     }
 
     public function outputArray(array $array, $count = false){
+        
+        if($this->getProperty('current')){
+            if($array){
+                $array = current($array);
+                $_count = 1;
+            }
+            else{
+                $_count = 0;
+            }
+        }
+        else{
+            $_count = count($array);
+        }
+        
         return array(
             'success' => true,
             'message' => $this->getMessage(),
-            'count'   => count($array),
+            'count'   => $_count,
             'total'   => $count,
+            'limit'   => (int)$this->getProperty('limit', 0),
+            'page'    => (int)$this->getProperty('page', 0),
             'object'  => $array,
         );
+    }
+    
+    
+    protected function getSourcePath($id = null, $callback = 'getBaseUrl', $params = array()){
+        
+        if(!$id){
+            $id = $this->modx->getOption('default_media_source', null, 1);
+        }
+        
+        if(empty($this->sources[$id])){
+            // Получаем объект
+            if(
+                !$source = $this->modx->getObject('sources.modMediaSource', $id)
+                OR !$source->initialize()
+            ){
+                return '';
+            }
+            $this->sources[$id] = & $source;
+        }
+        
+        $result = $this->sources[$id]->$callback($params);
+        
+        return $result;
     }
 }
 

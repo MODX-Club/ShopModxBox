@@ -1,7 +1,15 @@
+ShopModxBox-2.3.0-beta
+=============================================================
+- Processors code refactoring
+- Added policy List and load
+- Added multicurrencies
+- Apdated modxSite Extra
+- Minor bugfix
+
+
 ShopModxBox-2.2.3-beta
 =============================================================
 - Added ShopModxUnitPay extra
-- Added SEO extra
 - Added modRedirect extra
 - Minor bugfix
 
