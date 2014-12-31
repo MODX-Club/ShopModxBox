@@ -18,6 +18,10 @@ class ControllersMgrManagerController extends modExtraManagerController{
         return new $className($modx, $config);
     }
     
+    public static function getInstanceDeprecated(modX &$modx, $className, array $config = array()) {
+        return self::getInstance($modx, $className, $config);
+    }
+    
     public function getOption($key, $options = null, $default = null, $skipEmpty = false){
         $options = array_merge($this->config, (array)$options);
         return $this->modx->getOption($key, $options, $default, $skipEmpty);
@@ -63,8 +67,8 @@ class ControllersMgrManagerController extends modExtraManagerController{
         return $paths;
     }
     
-    public function getTemplateFile() {
-        return 'index.tpl';
-    }
+    # public function getTemplateFile() {
+    #     return 'index.tpl';
+    # }
 }
 ?>

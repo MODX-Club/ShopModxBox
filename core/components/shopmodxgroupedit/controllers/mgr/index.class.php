@@ -13,11 +13,6 @@ class shopModxGroupEditMgrManagerController extends modExtraManagerController{
          
     }
     
-    public static function getInstance(modX &$modx, $className, array $config = array()) {
-        $className = __CLASS__;
-        return new $className($modx, $config);
-    }
-    
     public function getOption($key, $options = null, $default = null, $skipEmpty = false){
         $options = array_merge($this->config, (array)$options);
         return $this->modx->getOption($key, $options, $default, $skipEmpty);
@@ -50,9 +45,9 @@ class shopModxGroupEditMgrManagerController extends modExtraManagerController{
         return $paths;
     }
     
-    public function getTemplateFile() {
-        return 'index.tpl';
-    }
+    # public function getTemplateFile() {
+    #     return 'index.tpl';
+    # }
 }
 
 
@@ -61,6 +56,10 @@ class ControllersMgrManagerController extends shopModxGroupEditMgrManagerControl
     public static function getInstance(modX &$modx, $className, array $config = array()) {
         $className = __CLASS__;
         return new $className($modx, $config);
+    }
+    
+    public static function getInstanceDeprecated(modX &$modx, $className, array $config = array()) {
+        return self::getInstance($modx, $className, $config);
     }
     
     public function getPageTitle() {
@@ -75,6 +74,7 @@ class ControllersMgrManagerController extends shopModxGroupEditMgrManagerControl
     
     
     public function loadCustomCssJs() {
+        
         parent::loadCustomCssJs();
         
         $assets_url = $this->getOption('assets');
@@ -84,7 +84,9 @@ class ControllersMgrManagerController extends shopModxGroupEditMgrManagerControl
         $this->addJavascript("{$assets_url}js/widgets/tabs.js");
         $this->addJavascript("{$assets_url}js/widgets/grid.js");
         
-        
+        $this->addHtml('<script type="text/javascript">
+            Ext.onReady(function(){MODx.add("shopmodxgroupedit-panel-mainpanel")});
+        </script>');
         
         //$this->addJavascript($this->config['jsUrl'].'group_edit.js');
         /*$this->addJavascript($this->modx->getOption('manager_url').'assets/modext/util/datetime.js');

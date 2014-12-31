@@ -8,6 +8,10 @@ class ControllersMgrOrdersListManagerController extends ControllersMgrManagerCon
         $className = __CLASS__;
         return new $className($modx, $config);
     }
+    
+    public static function getInstanceDeprecated(modX &$modx, $className, array $config = array()) {
+        return self::getInstance($modx, $className, $config);
+    }
 
     function loadCustomCssJs(){
         parent::loadCustomCssJs();
@@ -15,10 +19,12 @@ class ControllersMgrOrdersListManagerController extends ControllersMgrManagerCon
         $this->modx->regClientStartupScript($assets_url.'js/ext/ux/RowExpander.js'); 
         $this->modx->regClientStartupScript($assets_url.'js/widgets/orders/orders.grid.js'); 
         
+        $this->modx->regClientStartupScript('<script type="text/javascript">Ext.onReady(function(){MODx.add("shop-grid-ordersgrid")});</script>', true); 
+        
         return;
     }
     
-    public function getTemplateFile() {
-        return 'orders/list/index.tpl';
-    }
+    # public function getTemplateFile() {
+    #     return 'orders/list/index.tpl';
+    # }
 }
