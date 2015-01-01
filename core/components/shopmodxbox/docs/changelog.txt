@@ -1,3 +1,8 @@
+ShopModxBox-2.4.0-beta
+=============================================================
+- MODX2.3 compability
+
+
 ShopModxBox-2.3.0-beta
 =============================================================
 - Processors code refactoring
