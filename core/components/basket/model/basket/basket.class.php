@@ -4,6 +4,8 @@
     Основной класс корзины
 */
 
+$this->loadClass('modProcessor', '', false, true);
+
 class Basket extends modProcessor{
          
     
