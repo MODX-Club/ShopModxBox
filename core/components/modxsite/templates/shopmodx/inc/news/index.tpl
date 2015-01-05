@@ -2,7 +2,10 @@
     Выводим новости с постраничностью
 *}
 
-{assign var=params value=[]}
+{$params = [
+    "getPage"   => 1,
+    "page"      => (int)$smarty.get.page
+]}
 
 {processor action="web/news/getdata" ns="modxsite" params=$params assign=result}
 
@@ -25,4 +28,4 @@
 {/foreach}
 
 
-[[+page.nav]]
+{ph name="page.nav"}

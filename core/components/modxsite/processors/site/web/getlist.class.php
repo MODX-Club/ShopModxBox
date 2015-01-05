@@ -210,7 +210,7 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             $_count = count($array);
         }
         
-        return array(
+        return $this->prepareResponse(array(
             'success' => true,
             'message' => $this->getMessage(),
             'count'   => $_count,
@@ -218,7 +218,7 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             'limit'   => (int)$this->getProperty('limit', 0),
             'page'    => (int)$this->getProperty('page', 0),
             'object'  => $array,
-        );
+        ));
     }
     
     

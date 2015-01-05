@@ -22,7 +22,7 @@
     <div class="row-fluid">
         <div class="span12">        
             
-            [[+page.nav]]
+            {ph name="page.nav"}
         
         </div>
     </div>
