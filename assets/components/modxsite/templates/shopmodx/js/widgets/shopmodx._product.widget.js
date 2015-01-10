@@ -8,9 +8,9 @@ ShopMODX.widgets._Product.prototype = {
         this.bindEvents();  
     }
     ,bindEvents:function(){
-        var scope = this;
+        var scope = this; 
         
-        $('[data-'+this.config.cmpFlag+'-'+this.config.productCls+'="'+this.config.productClsVal+'"]').on('click',this.config.ruler,function(e){
+        $(document).on('click', '[data-'+this.config.cmpFlag+'-'+this.config.productCls+'="'+this.config.productClsVal+'"] ' + this.config.ruler ,function(e){
             e.stopPropagation();
             scope.addToCart.call(this,scope);
             return false;
