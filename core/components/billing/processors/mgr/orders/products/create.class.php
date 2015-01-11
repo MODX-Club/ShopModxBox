@@ -80,9 +80,9 @@ class modMgrOrdersProductsCreateProcessor extends modObjectCreateProcessor{
         if(
             $response = $this->modx->runProcessor('web/catalog/products/getdata',
             array(
-                "where" => [
+                "where" => array(
                     "id"    => $product->get('resource_id'),    
-                ],
+                ),
                 "current"       => 1,
                 "showhidden"    => 1,
                 "showunpublished"    => 1,
