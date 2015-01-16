@@ -1,10 +1,22 @@
 {* Получаем товары*}
-{$params = [
-    "limit" => 6,
-    "getPage"   => 1,
-    "page"      => (int)$smarty.get.page
-]}
-{processor action="web/catalog/products/getdata" ns="modxsite" params=$params assign=result}
+{extends "common/list/list.tpl"}
 
-{* Набиваем через единый шаблон листинга *}
-{include file="shop/catalog/list/fetch.tpl"}
+
+{block name=params append}
+
+    {$params = array_merge((array)$params, [
+        "limit"     => 6,
+        "cache"     => 1,
+        "sort"      => "modResource.id"
+    ])}
+    
+    {$processor = "web/catalog/products/getdata"}
+      
+    {$no_records_error = "Товары не были получены"}
+    
+    {$outer_tpl = "shop/catalog/list/fetch.tpl"}
+    
+{/block}
+
+{processor action="web/catalog/products/getdata" ns="modxsite" params=$params assign=result}
+ 

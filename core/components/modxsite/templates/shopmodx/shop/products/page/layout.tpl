@@ -5,17 +5,21 @@
 {extends file="shop/products/layout.tpl"}
 
 {block name=cart}
-
-    <div class="row-fluid">
+    
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{$image}">
+                <img src="{$src}" title="{$object.pagetitle}" align="left"/>
+            </a>
         
-        {$smarty.block.parent}
-        
-        {block name=product_content}
-            <div class="span8">
-                {$object.content}
-            </span>
-        {/block}
-        
+            {$smarty.block.parent}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            {$object.content}
+        </div>
     </div>
     
 {/block}

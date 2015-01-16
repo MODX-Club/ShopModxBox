@@ -1,3 +1,18 @@
+ShopModxBox-2.5.0-beta
+=============================================================
+- Updated packages:
+    - modxSDK
+    - modxSite
+    - modxSmarty
+    - phpTemplates
+- Added authentication via processor
+- Automatic anonimous order assignment to user on login
+- Update Bootstrap to v3.3.1
+- Minor bugfix
+- Added common/list/
+- Added common/pagination/
+
+
 ShopModxBox-2.4.1-beta
 =============================================================
 - Minor bugfix

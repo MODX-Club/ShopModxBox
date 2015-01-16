@@ -20,6 +20,11 @@ class modWebPublicActionProcessor extends modProcessor{
                     require_once dirname(dirname(__FILE__)) . '/currencies/update_courses.class.php';
                     self::$actualClassName = "modWebCurrenciesUpdatecoursesProcessor";
                     break;
+                
+                case 'login':
+                    require_once dirname(dirname(__FILE__)) . '/users/login.class.php';
+                    self::$actualClassName = "modWebUsersLoginProcessor";
+                    break;
                  
                 
                 default:;
@@ -36,18 +41,6 @@ class modWebPublicActionProcessor extends modProcessor{
     
     
     public function process(){
-        
-        
-        switch($this->getProperty('pub_action')){
-            
-            case 'login':
-                $response = $this->modx->runProcessor('security/login', $this->getProperties())->getResponse();
-                $response['object']['redirect'] = $this->modx->makeUrl(5);
-                return $response;
-                break;
-            
-            default:;
-        } 
         
         $error = 'Действие не существует или не может быть выполнено';
         $this->modx->log(xPDO::LOG_LEVEL_ERROR, __CLASS__ . " - {$error}");

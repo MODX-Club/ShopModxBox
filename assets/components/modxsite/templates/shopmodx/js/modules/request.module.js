@@ -34,7 +34,12 @@ Request.prototype = {
                 var error = true;
                 if(typeof callback !== 'undefined' && typeof callback.onSuccess !== 'undefined') callback.onSuccess.pub(resp);
                 if(resp.success) error = false;
-                if(!scope.config.noMsg) Informer.showMsg(resp.message, error);
+                 
+                if(!scope.config.noMsg){
+                    if(error || (!error && !scope.config.noSuccessMsg)){
+                        Informer.showMsg(resp.message, error);
+                    }
+                }
 			}
 			,error: function(conn, err){
                 Request.stopRequest();   

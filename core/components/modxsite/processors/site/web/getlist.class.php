@@ -79,7 +79,6 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         if(!$c = $this->getCount($c)){
             return $data;
         }
-        $c = $this->prepareQueryAfterCount($c);
 
         $this->setSelection($c);
         
@@ -94,26 +93,29 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             $sortKey = $this->modx->getSelectColumns($sortClassKey,$this->getProperty('sortAlias',$sortClassKey),'',array($this->getProperty('sort')));
         }
         
-        $query = clone $c;
-        $query = $this->prepareCountQuery($query);
-        if(!$this->total = $this->countTotal($this->classKey,$query)){
+        $c = $this->prepareCountQuery($c);
+        if(!$this->total = $this->countTotal($this->classKey,$c)){
             return false;
         }
         
+        $c = $this->prepareQueryAfterCount($c);
+        
+        
         if($sortKey){
             $c->sortby($sortKey,$this->getProperty('dir'));
-            $query->sortby($sortKey,$this->getProperty('dir'));
         }
+        
+        $query = clone $c;
         
         $limit = intval($this->getProperty('limit'));
         $start = intval($this->getProperty('start'));
         
-        if ($limit > 0) {
+        if ($limit || $start) {
             $query->limit($limit,$start);
         }
         
         $query = $this->prepareUniqObjectsQuery($query);
-        if($query->prepare() && $query->stmt->execute() && $rows = $row = $query->stmt->fetchAll(PDO::FETCH_ASSOC)){
+        if($query->prepare() && $query->stmt->execute() && $rows = $query->stmt->fetchAll(PDO::FETCH_ASSOC)){
             $IDs = array();
             foreach($rows as $row){
                 $IDs[] = $row['id'];
@@ -125,6 +127,12 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             ));
         }
         else{
+            
+            if($query->stmt AND $query->stmt->errorCode() !== "00000"){
+                $this->modx->log(xPDO::LOG_LEVEL_ERROR, __CLASS__);
+                $this->modx->log(xPDO::LOG_LEVEL_ERROR, print_r($query->stmt->errorInfo(), true));
+            }
+            
             return false;
         }     
         
@@ -142,13 +150,50 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
     /*
      * Count total results
      */
-    protected function countTotal($className, xPDOQuery & $query){
-        return $this->modx->getCount($this->classKey,$query);
+    protected function countTotal($className, xPDOQuery & $criteria){
+        $count = 0; 
+        
+        $query = clone($criteria);
+        
+        $stmt = null;
+        $expr = '*';
+        if ($pk = $this->modx->getPK($className)) {
+            if (!is_array($pk)) {
+                $pk = array($pk);
+            }
+            $expr = $this->modx->getSelectColumns($className, $query->getAlias(), '', $pk);
+        } 
+        if (isset($query->query['columns'])) {
+            $query->query['columns'] = array();
+        }
+        if (!empty($query->query['groupby']) || !empty($query->query['having'])) {
+            $query->select($expr);
+            if ($query->prepare()) {
+                $countQuery = new xPDOCriteria($this->modx, "SELECT COUNT(*) FROM ({$query->toSQL(false)}) cq", $query->bindings, $query->cacheFlag);
+                $stmt = $countQuery->prepare();
+            }
+        } else {
+            $query->select(array("COUNT(DISTINCT {$expr})"));
+            $stmt = $query->prepare();
+        }
+        if ($stmt) {
+            if ($stmt->execute()) {
+                $count = intval($stmt->fetchColumn());
+                
+            }
+            else if($stmt->errorCode() !== "00000"){
+                $this->modx->log(xPDO::LOG_LEVEL_ERROR, __CLASS__);
+                $this->modx->log(xPDO::LOG_LEVEL_ERROR, print_r($stmt->errorInfo(), true));
+            }
+        } 
+        
+        return $count;
     }
 
     protected function prepareUniqObjectsQuery(xPDOQuery & $query){
-        if (isset($query->query['columns'])) $query->query['columns'] = array();
-        $query->select(array ("DISTINCT {$this->classKey}.id"));
+        
+        $query->select(array ("{$this->classKey}.id"));
+        $query->distinct(); 
         
         return $query;
     } 
@@ -238,8 +283,17 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             }
             $this->sources[$id] = & $source;
         }
+         
         
-        $result = $this->sources[$id]->$callback($params);
+        switch($callback){
+            case 'getBaseUrl':
+                if(!is_string($params)){
+                    $params = '';
+                }
+                break;
+        }
+        
+        $result = $this->sources[$id]->$callback($params); 
         
         return $result;
     }

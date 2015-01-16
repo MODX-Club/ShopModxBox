@@ -4,14 +4,13 @@
 
 
 {* Переопределяем блок контента *}
-{block name=content}
+{block name=content append}
 
-    <div>{field name=content}</div>    
-
-    <h2>Новинки</h2>
+    <h2>Новинки</h2> 
     
     {processor action="web/catalog/products/hot/getdata" ns="modxsite" params="limit=`6`" assign=result}
+    
     {* Набиваем через единый шаблон листинга *}
     {include file="shop/catalog/list/fetch.tpl"}
-    
+     
 {/block}

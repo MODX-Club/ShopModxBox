@@ -7,7 +7,7 @@ $memory = round(memory_get_usage()/1024/1024, 4).' Mb';
 
 print "<div>Memory: {$memory}</div>";
 
-$totalTime= ($modx->getMicroTime() - $modx->startTime);
+$totalTime= (microtime(true) - $modx->startTime);
 $queryTime= $modx->queryTime;
 $queryTime= sprintf("%2.4f s", $queryTime);
 $queries= isset ($modx->executedQueries) ? $modx->executedQueries : 0;

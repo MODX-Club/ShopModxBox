@@ -2,30 +2,19 @@
     Выводим новости с постраничностью
 *}
 
-{$params = [
-    "getPage"   => 1,
-    "page"      => (int)$smarty.get.page
-]}
-
-{processor action="web/news/getdata" ns="modxsite" params=$params assign=result}
+{extends "common/list/list.tpl"}
 
 
-{* <pre>
-    {print_r($result)}
-</pre> *}
+{block name=params append}
 
-
-{foreach $result.object as $object}
-    <div style="margin: 0 0 50px;">
-        <h3>{$object.pagetitle}</h3>
-        <p><i>{date('Y-m-d', $object.publishedon)}</i></p>
-        <div>
-            {$object.summary}
-            
-            <p><a href="{$object.uri}" title="{$object.pagetitle}">Читать новость полностью...</a></p>
-        </div>
-    </div>
-{/foreach}
-
-
-{ph name="page.nav"}
+    {$params = array_merge((array)$params, [
+        "limit" => 5,
+        "cache"     => 1 
+    ])}
+    
+    {$processor = "web/news/getdata"} 
+    
+    {$inner_tpl = "inc/news/inner.tpl"}
+    
+{/block}
+   

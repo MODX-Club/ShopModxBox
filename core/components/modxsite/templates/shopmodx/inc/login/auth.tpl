@@ -1,7 +1,10 @@
-{if $modx->user->isAuthenticated()}
-    {chunk name="dbt.lgnLogoutTpl"}
+{*if $modx->user->isAuthenticated($modx->context->key)*}
+{if $modx->user->id}
+
+    {include "inc/login/logout.tpl"}
+    
 {else}
     <div class="entrance-modal">
-        <a href="#modal-entrance" class="pseudo" role="button" class="pdeudo" data-toggle="modal">Вход</a>
+        <a href="javascript:;" class="pseudo" role="button" class="pdeudo" data-toggle="modal" data-target="#LoginModal">Вход</a>
     </div>
 {/if}
