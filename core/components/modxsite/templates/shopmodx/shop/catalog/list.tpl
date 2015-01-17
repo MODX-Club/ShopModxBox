@@ -17,6 +17,4 @@
     {$outer_tpl = "shop/catalog/list/fetch.tpl"}
     
 {/block}
-
-{processor action="web/catalog/products/getdata" ns="modxsite" params=$params assign=result}
  
