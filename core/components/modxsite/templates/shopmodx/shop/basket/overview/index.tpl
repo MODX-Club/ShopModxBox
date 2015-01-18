@@ -27,34 +27,26 @@
                                     <td class="title" width="7%">Удалить</td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    {foreach $basket_result.object as $object}
-                                        {*assign var=data value=$object.product_data*}
-                                        {assign var=key value=$object.id}
+                            <tbody> 
+                                {foreach $basket_result.object as $object}
+                                    {$key = $object.id}
+                                     
+                                    <tr data-smodx-item-id="{$key}" data-smodx-item="good">            
+                                        <td>
+                                            <img src="{snippet name=phpthumbof params="input=`$object.image`&options=`w=100`"}" />
+                                        </td>
+                                        <td>
+                                            <a href="{$object.uri}">{$object.pagetitle}</a>
+                                        </td>
+                                        <td class="button">
+                                            <input type="text" data-smodx-behav="goodNum" value="{$object.quantity}" class="field2 input-mini" name="quantity[{$key}]">
+                                        </td>
+                                        <td class="cost">{$object.price|number_format:0:"":" "} {$object.currency_code}</td>
                                         
-                                        {*
-                                        <pre>
-                                            {print_r($object)}
-                                        </pre>
-                                        *}
-                                        <tr data-smodx-item-id="{$key}" data-smodx-item="good">            
-                                            <td>
-                                                <img src="{snippet name=phpthumbof params="input=`$object.image`&options=`w=100`"}" />
-                                            </td>
-                                            <td>
-                                                <a href="{$object.uri}">{$object.pagetitle}</a>
-                                            </td>
-                                            <td class="button">
-                                                <input type="text" data-smodx-behav="goodNum" value="{$object.quantity}" class="field2 input-mini" name="quantity[{$key}]">
-                                            </td>
-                                            <td class="cost">{$object.price|number_format:0:"":" "} {$object.currency_code}</td>
-                                            {* <td class="cost">{$object.price*$object.quantity|number_format:0:"":" "}</td> *}
-                                            <td><a class="btn btn-danger" data-smodx-behav="goodDel" href="{$current_uri}?basket_action=remove_product&product_key={$key}">удалить</a></td>
-                                        </tr>
-                                        
-                                    {/foreach}
-                                </tr>
+                                        <td><a class="btn btn-danger" data-smodx-behav="goodDel" href="{$current_uri}?basket_action=remove_product&product_key={$key}">удалить</a></td>
+                                    </tr>
+                                    
+                                {/foreach}
                             </tbody>
                         </table>
                         
