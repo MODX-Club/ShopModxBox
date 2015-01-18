@@ -32,6 +32,7 @@ Shop.grid.OrdersGrid = function(config){
             ,'ip'
             ,'address'
             ,'comments'
+            ,'sum'
         ]
         ,cls: 'orders-grid'
         ,plugins: this.expander
@@ -120,10 +121,12 @@ Ext.extend(Shop.grid.OrdersGrid, MODx.grid.Grid,{
                     }
                     ,editable: true
                 }
-                /*,{
-                    header: 'IP'
-                    ,dataIndex: 'ip'
-                }*/
+                ,{
+                    header: 'Сумма'
+                    ,dataIndex: 'sum'
+                    ,renderer: this.hiderRenderer
+                    ,editable: false
+                }
                 ,{
                     header: 'ФИО'
                     ,dataIndex: 'contractor_fullname'
