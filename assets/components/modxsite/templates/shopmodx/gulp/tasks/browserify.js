@@ -39,6 +39,25 @@ gulp.task('browserify', function(callback) {
       // Log when bundling starts
       bundleLogger.start(bundleConfig.outputName);
 
+      var uglifyConfig;
+      if (!config.debug) {
+        uglifyConfig = {
+          sourceRoot: gulp.dest(bundleConfig.dest),
+          outSourceMap: false,
+          output: {
+            beautify: false
+          }
+        };
+      } else {
+        uglifyConfig = {
+          sourceRoot: gulp.dest(bundleConfig.dest),
+          outSourceMap: true,
+          output: {
+            beautify: true
+          }
+        };
+      }
+
       return bundler
         .bundle()
         // Report compile errors
@@ -52,13 +71,9 @@ gulp.task('browserify', function(callback) {
         .pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
         .pipe(plugins.uglifyjs(
           bundleConfig.outputName,
-          {
-            sourceRoot: gulp.dest(bundleConfig.dest),
-            outSourceMap: true,
-            output: {
-              beautify: true
-            }
-          })) // now gulp-uglify works
+          uglifyConfig
+          )
+        ) // now gulp-uglify works
 
         // Specify the output destination
         .pipe(gulp.dest(bundleConfig.dest))
