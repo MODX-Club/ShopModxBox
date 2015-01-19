@@ -1,0 +1,97 @@
+@baseFont: 'Open Sans';
+@baseFontSize: e('12px/14px');
+@baseFontWeight: 400;
+
+@hoverLinkColor: #005580;
+
+
+// mixins
+
+.font(@s:@baseFontWeight, @w:@baseFontSize, @f:@baseFont){ font: @arguments }
+
+.fontOutput(@f:@baseFont, @w:300){
+    font-family:@f;
+    font-weight:@w;    
+}
+.link(){
+    text-decoration:none;
+    border-bottom:1px dashed;    
+}
+.hover(@hc:@hoverLinkColor){
+    color:@hc;
+    text-decoration: inherit;
+}
+
+// eof mixins
+
+// default styles
+
+body{
+    background: url(../img/bg.png) repeat 0 0 transparent;
+    position:relative;
+}
+h1,h2,h3,h4,h5,h6{ .fontOutput }
+
+.pseudo{
+    &:hover{
+        .hover
+    }
+    .link 
+}
+.title{
+    .font();
+}
+
+// eof default styles
+
+textarea{
+    padding-left: 5px;
+}
+
+header{
+    .logo{
+        a{
+            .font(300, e('26px/31px'));
+            background: url(../img/logo1.png) no-repeat 0 0 transparent;
+            width: 250px;
+            height: 58px;
+            display:block;
+        }
+    }
+    padding-top:20px;
+    
+    .navbar{        
+        .navbar-inner{
+            padding-left:0;
+            padding-right:0;
+        }
+        margin-top:20px;
+    }
+    .entrance-modal,.basket,.loginLogin{
+        width: 100%;
+        position: relative;
+        margin: 15px 0;
+        text-align: right;
+    }
+    .loginLogin a{
+        margin-left:10px;
+    }
+}
+.content{
+    .order_control .btn{
+        margin:5px 0px;
+    }
+    .order_data{
+        
+    }
+}
+footer{
+    .powby{
+
+    }
+    .copy a{
+        float:right;
+    }
+    margin-top:50px;
+    margin-bottom: 15px;
+}
