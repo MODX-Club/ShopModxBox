@@ -69,7 +69,7 @@
                                     
                                     <input type="submit" data-smodx-behav="recount" class="btn update_button" value="Пересчитать">
                                     <a class="btn btn-success" data-smodx-behav="accept" href="{link id=83}"><span>Оформить заказ</span></a>
-                                    <a class="btn" data-smodx-behav="clear" href="{$current_uri}?basket_action=empty_basket"><span>Очистить корзину</span></a>  
+                                    <a class="btn btn-warning" data-smodx-behav="clear" href="{$current_uri}?basket_action=empty_basket"><span>Очистить корзину</span></a>  
                                 </div>
                                 
                             </div>
@@ -79,8 +79,7 @@
                 </div>
         
             {else}
-                <div class="alert alert-block">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <div class="alert alert-warning">
                     <h4>Корзина пуста</h4>
                 </div>
             {/if}

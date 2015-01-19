@@ -1,0 +1,11 @@
+header .logo a {
+    background: url("../img/logo1.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    font: 300 26px/31px "Open Sans";
+    height: 58px;
+    width: 250px;
+}
+
+header {
+    min-height: 30px;
+}

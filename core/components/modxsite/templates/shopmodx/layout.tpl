@@ -108,7 +108,7 @@
         
         {block name=styles}
         
-            {* less *}
+            {* less *} 
             <link href="{$template_url}css/styles.less" rel="stylesheet/less" type="text/css" />
             <script type="text/javascript" src="{$template_url}libs/less/js/less-1.3.3.min.js"></script>
             {* eof less *}
@@ -175,7 +175,7 @@
             {/block} 
             
             {block name=footer}
-                <footer>
+                <footer class="navbar navbar-default">
                     <div class="copy pull-right">
                         {*
                             Если вы создаете магазин на базе этой сборки или просто на базе shopModx,

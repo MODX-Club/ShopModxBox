@@ -1,3 +1,10 @@
+ShopModxBox-2.5.1-beta
+=============================================================
+- Updated modRedirect
+- Authomatic authentification in web context on manager login
+- Added order sum in orders manager
+
+
 ShopModxBox-2.5.0-beta
 =============================================================
 - Updated packages:
