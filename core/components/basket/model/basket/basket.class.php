@@ -28,8 +28,7 @@ class Basket extends modProcessor{
         
         // Проверяем, авторизован ли пользователь
         if(
-            $this->modx->user->isAuthenticated($this->modx->context->key)
-            AND $user_id  = $this->modx->user->get('id')
+            $user_id  = (int)$this->modx->user->get('id')
         ){
             $c = $this->modx->newQuery('Order', array(
                 'contractor'    => $user_id,
