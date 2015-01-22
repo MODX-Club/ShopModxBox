@@ -24,7 +24,7 @@
                     <td><a href="{$site_url}{$product.uri}">{$product.pagetitle}</a></td> 
                     <td>{$product.quantity}&nbsp;</td>
                     <td>{$product.price|number_format:2:",":" "} {$product.currency_code}</td>
-                    <td>{$product.quantity * $product.price|number_format:2:",":" "} {$product.currency_code}</td>
+                    <td>{$summ = $product.quantity * $product.price}{$summ|number_format:2:",":" "} {$product.currency_code}</td>
                 </tr>
             {/foreach}
         </tbody>
