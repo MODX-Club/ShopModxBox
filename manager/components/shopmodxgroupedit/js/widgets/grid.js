@@ -213,13 +213,16 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
                 {
                     header: "ID"
                     ,dataIndex: 'id'
-                    ,width: 20
+                    ,width: 40
                 },{
                     header: 'Тип'
                     ,width: 50
                     ,dataIndex: 'object_type'
                     ,renderer: function(value){
                         switch(value){
+                            case 'document':
+                                value = 'Документ';
+                                break;
                             case 'model':
                                 value = 'Модель товара';
                                 break;
@@ -262,6 +265,34 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
                         return '<div class="'+ classes +'">'+ output +'</div>';
                     }
                     ,editable: true
+                }
+                ,{
+                    header: 'Опубликованный'
+                    ,dataIndex: 'published'
+                    ,editable: true
+                    ,renderer: function(value, column, record){
+                        if(value == 'true' || value == '1'){
+                            value = '<span style="color:green;">Да</span>';
+                        }
+                        else{
+                            value = '<span style="color:red;">Нет</span>';
+                        }
+                        return value;
+                    }
+                }
+                ,{
+                    header: 'Скрытый'
+                    ,dataIndex: 'hidemenu'
+                    ,editable: true
+                    ,renderer: function(value, column, record){
+                        if(value == 'true' || value == '1'){
+                            value = '<span style="color:red;">Да</span>';
+                        }
+                        else{
+                            value = '<span style="color:green;">Нет</span>';
+                        }
+                        return value;
+                    }
                 }
                 ,{
                     header: 'Расширенный заголовок'
@@ -338,6 +369,10 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
             case 'sm_trade_price':
                 return this.grid.getPriceCellEditor(record); 
                 
+            case 'published':
+            case 'hidemenu':
+                return this.grid.getBooleanCellEditor(record); 
+                
             case 'sm_currency':
                 return this.grid.getPriceCurrencyCellEditor(record);
                 
@@ -376,6 +411,17 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
             
             return new Ext.grid.GridEditor(o);
         }
+    }
+    
+    ,getBooleanCellEditor: function(record){
+        var object_type = record.get('object_type');
+        //console.log(object_type);
+        
+         var o = MODx.load({
+            xtype: 'combo-boolean'
+        });
+        
+        return new Ext.grid.GridEditor(o);
     }
     
     ,getPriceCurrencyCellEditor: function(record){
