@@ -45,6 +45,8 @@ shopModxGroupEdit.grid.GroupEdit = function(config){
                 ,allowBlank: true
                 ,defaultValue: null*/
             }
+            ,'sm_currency'
+            ,'currency_title'
             ,{
                 name: 'sm_trade_price'
             }
@@ -72,6 +74,23 @@ shopModxGroupEdit.grid.GroupEdit = function(config){
                 ,scope: this
             }
         }
+    });
+    
+    this._tbar.products_only = new Ext.form.Checkbox({
+        label: 'Только товары'
+        ,hidden_name: 'products_only'
+        ,value: 1
+        // ,listeners:{
+        //     select: {
+        //         fn: function(combo){
+        //             var context_key = combo.getValue();
+        //             var store = this.getStore();
+        //             store.setBaseParam('context_key', context_key);
+        //             this.getBottomToolbar().changePage(0);
+        //         }
+        //         ,scope: this
+        //     }
+        // }
     });
     
     this._tbar.types.documents = new Ext.Toolbar.Button({
@@ -123,8 +142,9 @@ shopModxGroupEdit.grid.GroupEdit = function(config){
             }
             ,'-'
             ,this._tbar.context_key
-            //,this._tbar.types.documents
-            //,this._tbar.types.products
+            // ,this._tbar.products_only
+            ,this._tbar.types.documents
+            ,this._tbar.types.products
             //,this._tbar.types.models
             ,this._tbar.upLevelButton
             ,'-'
@@ -267,6 +287,25 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
                     ,editable: true
                     ,xtype: 'numbercolumn'
                 }
+                ,{
+                    header: 'Валюта'
+                    ,dataIndex: 'sm_currency'
+                    ,editable: true
+                    ,renderer: function(value, cell, record){
+                        /*
+                            Надо изменить механизм получения названия валют
+                            на выборку из готового массива всех валют.
+                        */
+                        var currency;
+                        if(currency = record.get('currency_title')){
+                            value = currency;
+                        }
+                        return value;
+                    }
+                    // ,editor: {
+                    //     xtype: 'shopmodx-combo-currencies'
+                    // }
+                }
                 /*,{
                     header: 'Оптовая цена'
                     ,dataIndex: 'sm_trade_price'
@@ -297,8 +336,10 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
             // Редактор цены
             case 'sm_price':
             case 'sm_trade_price':
-                return this.grid.getPriceCellEditor(record);
-                // break;
+                return this.grid.getPriceCellEditor(record); 
+                
+            case 'sm_currency':
+                return this.grid.getPriceCurrencyCellEditor(record);
                 
                 return new Ext.grid.GridEditor(o);
                 // break;
@@ -331,6 +372,20 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
             var o = MODx.load({
                 xtype: 'numberfield'
                 ,align: 'left'
+            });
+            
+            return new Ext.grid.GridEditor(o);
+        }
+    }
+    
+    ,getPriceCurrencyCellEditor: function(record){
+        var object_type = record.get('object_type');  
+        
+        if(object_type == 'product'){
+            var o = MODx.load({
+                xtype: 'shopmodx-combo-currencies'
+                ,align: 'left'
+                ,value: record.get('sm_currency')
             });
             
             return new Ext.grid.GridEditor(o);
@@ -590,7 +645,3 @@ Ext.extend(shopModxGroupEdit.grid.GroupEdit, MODx.grid.Grid, {
     
 });
 Ext.reg('shopmodxgroupedit-grid-groupedit', shopModxGroupEdit.grid.GroupEdit);
-
-
-
-
