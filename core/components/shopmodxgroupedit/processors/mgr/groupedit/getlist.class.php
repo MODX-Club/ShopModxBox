@@ -65,10 +65,6 @@ class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProces
             'dir'           => 'DESC',
         ));
         
-        if($sort = $this->getProperty('sort')){
-            $this->setProperty('sort', "{$this->classKey}.{$sort}");
-        }
-        
         return parent::initialize();
     }
     
@@ -140,10 +136,12 @@ class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProces
     protected function setSelection(xPDOQuery $c){
         $c->leftJoin('ShopmodxProduct', 'Product');
         $c->leftJoin('modResource', 'Parent');
+        $c->leftJoin('modResource', "Currency", "Currency.id = Product.sm_currency");
         $c->select(array(
             "Product.*",    
             'Parent.parent as uplevel_id',    
-            'Parent.pagetitle as parent_title',    
+            'Parent.pagetitle as parent_title',  
+            'Currency.pagetitle as currency_title',  
         ));
         
         return parent::setSelection($c);
