@@ -21,14 +21,14 @@ class ShopmodxGroupeditGetlistInitializerProcessor extends modProcessor{
         /** @var modProcessor $processor */
         
         switch($properties['listType']){
-            case 'products':
-                $className = 'ShopmodxGroupeditProductsGetlistProcessor';
-                break;
                 
             case 'models':
                 $className = 'ShopmodxGroupeditProductsModelsGetdataProcessor';
                 break;
                 
+            case 'products':
+                # $className = 'ShopmodxGroupeditProductsGetlistProcessor';
+                # break;
             case 'documents':
                 $className = 'ShopmodxGroupeditDocumentsGetdataProcessor';
                 break;
@@ -62,8 +62,12 @@ class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProces
             'parent'        => 0,
             'context_key'   => 'web',
             'sort'          => '',
-            'dir'           => 'DESC',
+            'dir'           => 'ASC',
         ));
+        
+        # if($sort = $this->getProperty('sort')){
+        #     $this->setProperty('sort', "{$this->classKey}.{$sort}");
+        # }
         
         return parent::initialize();
     }
@@ -76,20 +80,23 @@ class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProces
             return false;
         }
         
-        $sortKey = 'show_in_tree';
-        $dir = 'DESC';
-        $c->sortby($sortKey,$dir);
-        $query->sortby($sortKey,$dir);
-        
-        $sortKey = 'isfolder';
-        $dir = 'DESC';
-        $c->sortby($sortKey,$dir);
-        $query->sortby($sortKey,$dir);
-        
-        $sortKey = 'pagetitle';
-        $dir = 'ASC';
-        $c->sortby($sortKey,$dir);
-        $query->sortby($sortKey,$dir);
+        # $sortKey = 'pagetitle';
+        if($sortKey = $this->getProperty('sort')){
+            $dir = $this->getProperty('dir');
+            $c->sortby($sortKey,$dir);
+            $query->sortby($sortKey,$dir);
+        }
+        else{
+            $sortKey = 'show_in_tree';
+            $dir = 'DESC';
+            $c->sortby($sortKey,$dir);
+            $query->sortby($sortKey,$dir);
+            
+            $sortKey = 'isfolder';
+            $dir = 'DESC';
+            $c->sortby($sortKey,$dir);
+            $query->sortby($sortKey,$dir);
+        }
         
         
         $limit = intval($this->getProperty('limit'));
@@ -120,9 +127,17 @@ class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProces
     
     public function prepareQueryBeforeCount(xPDOQuery $c){
         $c = parent::prepareQueryBeforeCount($c);
-        $where =  array(
-            "{$this->classKey}.parent"    => $this->getProperty('parent'), 
-        );
+        $c->leftJoin('ShopmodxProduct', 'Product');
+        
+        $where =  array();
+        
+        if($this->getProperty('listType') == 'products'){
+            $where["Product.id:!="] = null;
+        }
+        else{
+            $where["{$this->classKey}.parent"] = $this->getProperty('parent');
+        }
+         
         
         if($context_key = $this->getProperty('context_key')){
             $where["{$this->classKey}.context_key"] = $this->getProperty('context_key');
@@ -134,13 +149,12 @@ class ShopmodxGroupeditDocumentsGetdataProcessor extends modSiteWebGetlistProces
      
 
     protected function setSelection(xPDOQuery $c){
-        $c->leftJoin('ShopmodxProduct', 'Product');
         $c->leftJoin('modResource', 'Parent');
         $c->leftJoin('modResource', "Currency", "Currency.id = Product.sm_currency");
         $c->select(array(
             "Product.*",    
             'Parent.parent as uplevel_id',    
-            'Parent.pagetitle as parent_title',  
+            'Parent.pagetitle as parent_title',   
             'Currency.pagetitle as currency_title',  
         ));
         

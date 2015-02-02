@@ -1,3 +1,14 @@
+ShopModxBox-2.6.0-beta
+=============================================================
+- Updated packages:
+    - modxSite
+    - modxSmarty
+    - modRedirect
+- Improved ShopModxGroupEdit
+- Added new site skin. (Old skin moved to depricated/v1).
+- Updated MODX for v2.3.3
+
+
 ShopModxBox-2.5.1-beta
 =============================================================
 - Added new policies for manager

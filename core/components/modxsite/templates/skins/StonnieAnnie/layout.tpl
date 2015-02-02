@@ -19,7 +19,7 @@
     
     {* bootstrap *}
     
-	<link href="{$pre_template_url}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$pre_template_url}bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="{$pre_template_url}bootstrap/css/styles.css" rel="stylesheet">
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript" src="{$pre_template_url}bootstrap/js/bootstrap.min.js"></script>

@@ -1,3 +1,10 @@
+modxSite-1.3.1
+=============================================================
+1. Changed check captcha order 
+2. Force Smarty compiling on non-cached templates (in controller)
+3. Minor bugfix
+
+
 modxSite-1.3.0
 =============================================================
 1. Queries new order

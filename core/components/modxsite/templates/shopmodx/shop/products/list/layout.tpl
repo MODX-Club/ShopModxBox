@@ -15,7 +15,7 @@
                     Здесь нам не приходится проверять фото на наличие, так как это выполняется на уровне процессора.
                 *}
                 <a href="{$image}">
-                    <img src="{$src}" title="{$object.pagetitle}" align="left" class="img-responsive"/>
+                    <img src="{$src}" title="{$object.pagetitle|@escape}" align="left" class="img-responsive"/>
                 </a>
                 
             </div>   

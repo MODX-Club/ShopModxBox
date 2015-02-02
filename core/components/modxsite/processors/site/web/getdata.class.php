@@ -54,6 +54,7 @@ class modSiteWebGetdataProcessor extends modSiteWebGetlistProcessor{
                 if($c->stmt->errorCode() !== "00000"){
                     $this->modx->log(xPDO::LOG_LEVEL_ERROR, __CLASS__);
                     $this->modx->log(xPDO::LOG_LEVEL_ERROR, print_r($c->stmt->errorInfo(), true));
+                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, $c->toSQL());
                 }
             }
         }

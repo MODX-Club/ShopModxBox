@@ -19,6 +19,7 @@
 /assets/components/modxsite/templates/*
 !/assets/components/modxsite/templates/shopmodx/
 !/assets/components/modxsite/templates/skins/
+!/assets/components/modxsite/templates/depricated/
 !/assets/components/modcaptcha/
 !/assets/components/modhybridauth/
  
@@ -32,6 +33,7 @@
 /core/components/modxsite/templates/*
 !/core/components/modxsite/templates/shopmodx/
 !/core/components/modxsite/templates/skins/
+!/core/components/modxsite/templates/depricated/
 !/core/components/shopmodxbox/
 !/core/components/shopmodxgroupedit/
 !/core/components/edinayakassa/

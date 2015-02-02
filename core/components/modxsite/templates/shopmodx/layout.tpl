@@ -43,58 +43,19 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {* eof bootstrap meta *}
             
-            {* bootstrap *}
-            {*
-                <link href="{$template_url}libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-                <link href="{$template_url}libs/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
-                <script type="text/javascript" src="{$template_url}libs/bootstrap/js/bootstrap.min.js"></script>
-            *}
-            
             <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
             
             <!-- Optional theme -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
             
             <!-- Latest compiled and minified JavaScript -->
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
             
         {/block} 
         
         
         {block name=shopmodx_scripts}
-            
-            {* jGrowl *}
-            <link href="{$template_url}libs/jgrowl/jquery.jgrowl.css" rel="stylesheet" type="text/css" />
-            <script type="text/javascript" src="{$template_url}libs/jgrowl/jquery.jgrowl.js"></script>
-            {* eof jGrowl *}
-            
-            {* placeholeder.js *}
-            <script type="text/javascript" src="{$template_url}libs/placeholder/placeholder.js"></script>
-            {* eof placeholeder.js *}
-    
-            {* custom scripts *}
-            <script type="text/javascript" src="{$template_url}js/f.js"></script>
-            <script type="text/javascript" src="{$template_url}js/shopmodx.js"></script>
-            <script type="text/javascript" src="{$template_url}js/modules/informer.module.js"></script>
-            <script type="text/javascript" src="{$template_url}js/modules/callback.module.js"></script>
-            <script type="text/javascript" src="{$template_url}js/modules/request.module.js"></script>
-            
-            <script type="text/javascript" src="{$template_url}js/modules/shopmodx._callback.module.js"></script>
-            <script type="text/javascript" src="{$template_url}js/modules/shopmodx.callback.module.js"></script>
-            <script type="text/javascript" src="{$template_url}js/modules/shopmodx.request.module.js"></script>
-            <script type="text/javascript" src="{$template_url}js/modules/shopmodx.informer.module.js"></script>
-            
-            <script type="text/javascript" src="{$template_url}js/widgets/shopmodx._product.widget.js"></script>
-            <script type="text/javascript" src="{$template_url}js/widgets/shopmodx._basket.widget.js"></script>
-            <script type="text/javascript" src="{$template_url}js/widgets/shopmodx._order.widget.js"></script>
-            <script type="text/javascript" src="{$template_url}js/widgets/shopmodx.product.widget.js"></script>
-            <script type="text/javascript" src="{$template_url}js/widgets/shopmodx.basket.widget.js"></script>
-            <script type="text/javascript" src="{$template_url}js/widgets/shopmodx.order.widget.js"></script>
-            
-            <script type="text/javascript" src="{$template_url}js/events.js"></script>
-            <script type="text/javascript" src="{$template_url}js/initialization.js"></script>
-            {* eof custom scripts *}
             
         {/block} 
         
@@ -107,13 +68,7 @@
         
         
         {block name=styles}
-        
-            {* less *} 
-            <link href="{$template_url}css/styles.less" rel="stylesheet/less" type="text/css" />
-            <script type="text/javascript" src="{$template_url}libs/less/js/less-1.3.3.min.js"></script>
-            {* eof less *}
-            
-            <link href="{$template_url}css/style.css" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" href="{$template_url}bundle/styles/styles.css">
         {/block}
         
         
@@ -219,7 +174,14 @@
         {/if}
     {/block}
     
-    {block name=footers}{/block}
+    {block name=footers}    
+        <script src="{$template_url}vendor/AlertifyJS/build/alertify.min.js"></script>
+        <script src="{$template_url}bundle/app.js"></script>
+    {/block}
+    
+    {block name=shopmodx_scripts}
+        
+    {/block} 
     
     </body>
 {/block}

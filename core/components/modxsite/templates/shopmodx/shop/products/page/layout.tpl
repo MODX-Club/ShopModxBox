@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-12">
             <a href="{$image}">
-                <img src="{$src}" title="{$object.pagetitle}" align="left"/>
+                <img src="{$src}" title="{$object.pagetitle|@escape}" align="left"/>
             </a>
         
             {$smarty.block.parent}

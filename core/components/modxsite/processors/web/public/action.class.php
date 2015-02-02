@@ -10,7 +10,7 @@ class modWebPublicActionProcessor extends modProcessor{
     protected static $actualClassName;
     
     public static function getInstance(modX &$modx,$className,$properties = array()) {
-        
+
         // Здесь мы имеем возможность переопределить реальный класс процессора
         if(!empty($properties['pub_action']) && !self::$actualClassName){
              

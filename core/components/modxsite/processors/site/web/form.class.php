@@ -138,9 +138,8 @@ class modSiteWebFormProcessor extends modProcessor{
         ));
         
         if($result !== 'true'){
+            $error = (!empty($result) ? $result : "Неверный проверочный код");
             // Надо будет добавить лексиконы в modCaptcha
-            # $error = (!empty($result) ? $result : "Неверный проверочный код");
-            $error = "Неверный проверочный код";
             $this->addFieldError('captcha', $error);
         }
         

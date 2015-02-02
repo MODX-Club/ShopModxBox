@@ -176,6 +176,7 @@ Ext.extend(Shop.grid.OrdersGrid, MODx.grid.Grid,{
         var xtype = 'textfield';
         var record = this.grid.store.getAt(rowIndex);
         var column = this.getColumnAt(colIndex);
+        var o;
         //console.log(column);
         if(!Shop.hasPermission('edit_all_orders') && MODx.user.id != record.get('manager')){
             return;
@@ -199,7 +200,12 @@ Ext.extend(Shop.grid.OrdersGrid, MODx.grid.Grid,{
                 if(record.get('status_id') == 1){
                     return;
                 }
-                xtype = 'shop-combo-orderstatus';
+                
+                o = MODx.load({
+                    xtype: 'shop-combo-orderstatus'
+                    ,value: record.get('status_id')
+                }); 
+                
                 break;
             case 'address':
             case 'comments':
@@ -207,10 +213,11 @@ Ext.extend(Shop.grid.OrdersGrid, MODx.grid.Grid,{
                 return;
         }
         
-         
-        var o = MODx.load({
-            xtype: xtype
-        });
+        if(!o){
+            o = MODx.load({
+                xtype: xtype
+            });
+        } 
         
         return new Ext.grid.GridEditor(o);
     }

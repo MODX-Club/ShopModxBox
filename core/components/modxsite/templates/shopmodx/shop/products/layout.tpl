@@ -26,11 +26,11 @@
                 <tbody>
                     <tr>
                         <td>Наименование: </td>
-                        <td><a href="{$object.uri}" title="{$object.pagetitle}">{$object.pagetitle}</a></td>
+                        <td><a href="{$object.uri}" title="{$object.pagetitle|@escape}">{$object.pagetitle}</a></td>
                     </tr>
                     <tr>
                         <td>Категория: </td>
-                        <td><a href="{$object.category_uri}" title="{$object.category_title}">{$object.category_title}</a></td>
+                        <td><a href="{$object.category_uri}" title="{$object.category_title|@escape}">{$object.category_title}</a></td>
                     </tr>
                     <tr>
                         <td>Цена: </td>

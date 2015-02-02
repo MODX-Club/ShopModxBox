@@ -1,5 +1,3 @@
-<h2>Сменить пароль</h2>
-
 {$result = $modx->runSnippet('ChangePassword', [
     "submitVar" => "change-password",
     "placeholderPrefix" => "cp.",
@@ -20,7 +18,7 @@
 
     <div class="updprof-error">{$modx->getPlaceholder('cp.error_messag')}</div>
     <div class="updprof-success success">{$modx->getPlaceholder('cp.successMessage')}</div>
-    <form class="form-horizontal" action="[[~[[*id]]]]" method="post">
+    <form class="form-horizontal" action="" method="post">
         <input type="hidden" name="nospam" value="" />
         <div class="form-group">
             <label for="password_old" class="col-md-3 control-label">Старый пароль</label>
