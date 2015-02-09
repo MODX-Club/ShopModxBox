@@ -44,7 +44,7 @@ class modBasketWebOrdersEmptyProcessor extends modBasketWebOrdersStatusUpdatePro
         // Сбрассываем сессию
         unset($_SESSION['order_id']);
         
-        return $this->success('Козина успешно очищена',$this->object->toArray());
+        return $this->success('Корзина успешно очищена',$this->object->toArray());
     }  
     
 }
