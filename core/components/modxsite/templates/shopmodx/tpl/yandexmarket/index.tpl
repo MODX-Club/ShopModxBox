@@ -24,10 +24,8 @@
         {* Валюты *}
         <currencies>
             {processor action="web/currencies/getdata" ns="modxsite" params="limit=`0`" assign=currencies_result}
-            {assign var=rate value=1}
             {foreach $currencies_result.object as $currency}
-                <currency id="{$currency.pagetitle}" rate="{$rate}"/>
-                {assign var=rate value=$rate+1}
+                <currency id="{$currency.pagetitle}" rate="{$currency.tvs.exchange_rate.value|default:1}"/>
             {/foreach}
         </currencies>
         
