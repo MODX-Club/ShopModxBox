@@ -5,6 +5,6 @@
     
 {else}
     <div class="entrance-modal">
-        <a href="javascript:;" class="pseudo" role="button" class="pdeudo" data-toggle="modal" data-target="#LoginModal">Вход</a>
+        <a href="javascript:;" class="pseudo" role="button" data-toggle="modal" data-target="#LoginModal">Вход</a>
     </div>
 {/if}
