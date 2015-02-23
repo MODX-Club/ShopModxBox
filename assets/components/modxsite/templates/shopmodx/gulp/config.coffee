@@ -38,7 +38,7 @@ module.exports =
     # enable full-paths
     fullPaths: no
     # // Enable source maps
-    debug: no
+    debug: false
     # // Additional file extentions to make optional
     extensions: ['.coffee', '.cjsx', '.jsx']
     # // A separate bundle will be generated for each

@@ -8,6 +8,11 @@ Request = Object.create(Request).init({
   connector: Env.connector
 });
 
+window.ShopMODX = {
+    Request: Request,
+    Env: Env
+};
+
 $(function() {
 
   $('[data-smodx-behav="recount"]').remove();
@@ -34,3 +39,4 @@ $(function() {
 
 
 });
+

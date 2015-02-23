@@ -33,6 +33,11 @@ Shop.grid.OrdersGrid = function(config){
             ,'address'
             ,'comments'
             ,'sum'
+            ,'paysystem_name'
+            ,'pay_id'
+            ,'paysys_invoice_id'
+            ,'pay_date'
+            ,'pay_sum' 
         ]
         ,cls: 'orders-grid'
         ,plugins: this.expander
@@ -124,9 +129,67 @@ Ext.extend(Shop.grid.OrdersGrid, MODx.grid.Grid,{
                 ,{
                     header: 'Сумма'
                     ,dataIndex: 'sum'
-                    ,renderer: this.hiderRenderer
+                    ,renderer: function(value, cell, record){
+                        
+                        if(value){
+                            value = value + ' руб.';
+                        }
+                        // Иначе просто возвращаем пусто
+                        else{
+                            return value;
+                        }
+                        
+                        return this.hiderRenderer(value, cell, record);
+                    }
+                    ,scope: this
+                    ,editable: false
+                    ,width: 80
+                }
+                ,{
+                    header: 'Оплата'
+                    ,dataIndex: 'pay_id'
+                    ,renderer: function(value, cell, record){
+                        /*
+                        ,'paysystem_name'
+                        ,'pay_id'
+                        ,'paysys_invoice_id'
+                        ,'pay_date'
+                        ,'pay_sum'
+                        */
+                        
+                        /*
+                            Если имеется ID оплаты, то подставляем ЧП-данные
+                        */
+                        
+                        if(value){
+                            value = record.get('pay_sum') + ' руб. ('+ record.get('paysystem_name') +')';
+                            value = '<span style="color:green;">'+value+'</span>';
+                        }
+                        // Иначе просто возвращаем пусто
+                        else{
+                            return value;
+                        }
+                        
+                        return this.hiderRenderer(value, cell, record);
+                    }
+                    ,scope: this
                     ,editable: false
                 }
+                ,{
+                    header: 'Дата оплаты'
+                    ,dataIndex: 'pay_date'
+                    ,renderer: this.hiderRenderer
+                    ,editable: false
+                    ,width: 180
+                    ,hidden: true
+                }                
+                ,{
+                    header: 'Номер счета'
+                    ,dataIndex: 'paysys_invoice_id'
+                    ,renderer: this.hiderRenderer
+                    ,editable: false
+                    ,hidden: true
+                }                
                 ,{
                     header: 'ФИО'
                     ,dataIndex: 'contractor_fullname'

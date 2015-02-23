@@ -1,3 +1,32 @@
+ShopModxBox-2.6.1-beta
+=============================================================
+- Updates modxSmarty
+- Removed chunks:
+    - dbt.mainmenu.outerTpl
+    - dbt.mainmenu.rowTpl
+    - dbt.lgnLoginTpl
+    - dbt.lgnLogoutTpl
+- Added template inc/menu/mainmenu/menu.tpl
+- Added layout param {$main_menu_is_cached = true}
+- Added sending email notifications on order paying
+- #13 Fixed
+- #14 Fixed
+- #15 inc/modals/login.tpl Login modal window code refactoring
+- inc/login/login.tpl marked as depricated
+- #17 Fixed
+- #19 Added payment info in orders managment panel
+- Changed Alertify position to top-right
+- Moved jquery.js and bootstrap.js into end of body
+- Added JS object ShopMODX with properties Request and Env
+- Added JS param 'url' for ShopMODX.Request.run()
+
+
+ShopModxBox-2.6.0-beta
+=============================================================
+- Fixed currencies rates in Yandex.Market export
+- Minor bugfix
+
+
 ShopModxBox-2.6.0-beta
 =============================================================
 - Updated packages:

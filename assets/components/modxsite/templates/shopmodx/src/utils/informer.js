@@ -1,5 +1,7 @@
 var Alertify = require('Alertify');
 
+Alertify.defaults.notifier.position = 'top-right';
+
 var Informer = function(props) {
   this.props = {};
   this.initialize(props || {});

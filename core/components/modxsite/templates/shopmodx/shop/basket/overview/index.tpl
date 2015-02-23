@@ -43,7 +43,7 @@
                                         </td>
                                         <td class="cost">{$object.price|number_format:0:"":" "} {$object.currency_code}</td>
                                         
-                                        <td><a class="btn btn-danger" data-smodx-behav="goodDel" href="{$current_uri}?basket_action=remove_product&product_key={$key}">удалить</a></td>
+                                        <td><a class="btn btn-danger" data-smodx-behav="goodDel" href="javascript:;">удалить</a></td>
                                     </tr>
                                     
                                 {/foreach}

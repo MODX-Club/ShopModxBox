@@ -6,15 +6,17 @@
 {block name=params}
     
     {$options = "&q=100&w=200"}
-    
-    {$image = $object.image|default:$object.imageDefault}
-    
-    {$src = $modx->runSnippet('phpthumbof', [
-        "input" => $image,
-        "options"   => $options
-    ])}
 
 {/block}
+
+
+{$image = $object.image|default:$object.imageDefault}
+
+{$src = $modx->runSnippet('phpthumbof', [
+    "input" => $image,
+    "options"   => $options
+])}
+
 
 {block name=cart}
 

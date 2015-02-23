@@ -10,10 +10,10 @@
 {$site_name = $modx->getOption('site_name')}
 {$cultureKey = $modx->getOption('cultureKey')}
 
-{*
-    container-fluid OR container
-*}
-{$container_class = "container"}
+
+{$main_menu_is_cached = true} {* кешировать ли главное меню *}
+
+{$container_class = "container"} {* container-fluid OR container *}
 
 {/block}
 
@@ -32,25 +32,20 @@
         
         
         
-        {block name=jquery}
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        {/block}
-        
         
         {block name=bootstrap}
         
-            {* bootstrap meta *}
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            {* eof bootstrap meta *}
+            {block name=bootstrap_meta}
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            {/block}
             
             <!-- Latest compiled and minified CSS -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
             
-            <!-- Optional theme -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-            
-            <!-- Latest compiled and minified JavaScript -->
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+            {block name=bootstrap_theme}
+                <!-- Optional theme -->
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+            {/block}
             
         {/block} 
         
@@ -111,14 +106,15 @@
                         @MainMenu - это набор параметров 
                         Подробная статья: http://modxclub.ru/blog/102.html
                     *}
-                    {snippet name="Wayfinder@MainMenu"}
+                    
+                    {include "inc/menu/mainmenu/menu.tpl"}
                     
                 </header>
                 
             {/block}
             
             {block name=pagetitle}
-                <h1>{if $modx->resource->longtitle}{$modx->resource->longtitle}{else}{$modx->resource->pagetitle}{/if}</h1>
+                <h1 class="page-header">{if $modx->resource->longtitle}{$modx->resource->longtitle}{else}{$modx->resource->pagetitle}{/if}</h1>
             {/block}
             
             {block name=Breadcrumbs}
@@ -140,48 +136,65 @@
                             а так же очищает вашу совесть и ставит жирный плюс в карму ;-)
                         *}
                         <a href="http://modxclub.ru" title="Клуб MODX-экспертов"><img src="{config name=assets_url}images/site/logos/modx_h30.jpg" /></a>
-                        <a href="http://shopmodx.modxclub.ru" class="powby" title="ShopModx. Модуль для разработки интернет-магазинов на MODX Revolution"><img src="{$template_url}img/poweredby1.png" /></a></a>
+                        <a href="http://shopmodx.modxclub.ru" class="powby" title="ShopModx. Модуль для разработки интернет-магазинов на MODX Revolution"><img src="{$template_url}img/poweredby1.png" /></a>
                     </div>       
                 </footer>
             {/block}
             
         </div>
     
-    {* 
-        modals 
-        Модальное окно чисто для всплывашки. Проверка авторизации выше.
-    *}
-    
-    {block name=modals}
-        [[!smarty?tpl=`inc/modals/login.tpl`]]
-    {/block}
-    
-    
-    
-    {block name=jivosite}
-        
-        {*
-            Если у вас будут возникать вопросы по разработке,
-            вы можете задавать их нам в чателку на сайте shopmodx.modxclub.ru
+        {* 
+            modals 
+            Модальное окно чисто для всплывашки. Проверка авторизации выше.
         *}
-    
-        {if $widget_id = $modx->getOption('jivosite.widget_id')}
-            <!-- BEGIN JIVOSITE CODE -->
-            <script type='text/javascript'>
-            (function(){ var widget_id = '{$widget_id}';
-            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();</script>
-            <!-- END JIVOSITE CODE -->
-        {/if}
-    {/block}
-    
-    {block name=footers}    
-        <script src="{$template_url}vendor/AlertifyJS/build/alertify.min.js"></script>
-        <script src="{$template_url}bundle/app.js"></script>
-    {/block}
-    
-    {block name=shopmodx_scripts}
         
-    {/block} 
+        {block name=modals}
+            {include "inc/modals/login.tpl"}
+        {/block}
+        
+        
+        {block name=jquery}
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        {/block}
+        
+        
+        {block name=bootstrap_js}
+            <!-- Latest compiled and minified JavaScript -->
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        {/block}
+        
+        {block name=footers}
+            
+            {block alertify}
+                <script src="{$template_url}vendor/AlertifyJS/build/alertify.min.js"></script>
+            {/block}
+            
+            {$smarty.block.child}
+            
+            <script src="{$template_url}bundle/app.js"></script>
+        {/block}
+        
+        
+        {block name=shopmodx_scripts}
+            {* depricated *}
+        {/block}
+        
+        
+        {block name=jivosite}
+            
+            {*
+                Если у вас будут возникать вопросы по разработке,
+                вы можете задавать их нам в чателку на сайте shopmodx.modxclub.ru
+            *}
+        
+            {if $widget_id = $modx->getOption('jivosite.widget_id')}
+                <!-- BEGIN JIVOSITE CODE -->
+                <script type='text/javascript'>
+                (function(){ var widget_id = '{$widget_id}';
+                var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();</script>
+                <!-- END JIVOSITE CODE -->
+            {/if}
+        {/block}
     
     </body>
 {/block}
