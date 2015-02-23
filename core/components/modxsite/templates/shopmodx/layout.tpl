@@ -169,6 +169,8 @@
                 <script src="{$template_url}vendor/AlertifyJS/build/alertify.min.js"></script>
             {/block}
             
+            {$smarty.block.child}
+            
             <script src="{$template_url}bundle/app.js"></script>
         {/block}
         

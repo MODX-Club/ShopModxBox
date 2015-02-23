@@ -17,6 +17,8 @@ ShopModxBox-2.6.1-beta
 - #19 Added payment info in orders managment panel
 - Changed Alertify position to top-right
 - Moved jquery.js and bootstrap.js into end of body
+- Added JS object ShopMODX with properties Request and Env
+- Added JS param 'url' for ShopMODX.Request.run()
 
 
 ShopModxBox-2.6.0-beta

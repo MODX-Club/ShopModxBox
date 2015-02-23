@@ -28,8 +28,8 @@ Request =
 
     @
 
-  getActionUrl: (action = {} ) ->
-    url = @connectorsUrl + @connector
+  getActionUrl: (action = {}) ->
+    url = action.url || @connectorsUrl + @connector
     action.key = action.key or @actionKey
     "#{url}?#{action.key}=#{action.name}"
 
@@ -48,7 +48,7 @@ Request =
 
     prefix
 
-  run: (action, data, event) ->
+  run: (action, data, event, url) ->
     return new rsvp.Promise (resolve, reject) =>
 
       callback =
@@ -82,12 +82,12 @@ Request =
 
       switch @method
         when 'post'
-          xhr(@method, @getActionUrl(name: action))
+          xhr(@method, @getActionUrl(name: action, url: url))
             .type @dataType
             .send data
             .end callback
         else
-          xhr(@method, @getActionUrl(name: action))
+          xhr(@method, @getActionUrl(name: action, url: url))
             .type @dataType
             .query data
             .end callback
