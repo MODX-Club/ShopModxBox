@@ -70,7 +70,8 @@
         <br class="clear" />
         <div class="form-group">
             <div class="col-md-3 col-md-offset-3">
-            <input class="btn btn-primary" type="submit" name="registerbtn" value="[[%register.register]]" />
+                <input class="btn btn-primary" type="submit" name="registerbtn" value="[[%register.register]]" />
+            </div>
         </div>
     </form>
 </div>
