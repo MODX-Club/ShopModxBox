@@ -1,11 +1,11 @@
 
  
     
-{$request = $smarty.post}
-
-{if $request}
-    {$modx->error->reset()}
-    {processor action="web/forms/feedback" ns="modxsite" params=$request assign=form_result}
+{if $smarty.post.feedback_submit}
+ {$request = $smarty.post}
+ {processor action="web/forms/feedback" ns="modxsite" params=$request assign=form_result}
+{else}
+ {$request = []}
 {/if} 
 
 {if !$form_result.success}
@@ -110,7 +110,7 @@
                     </div>
                     
                     <div class="panel-footer">
-                        <input type="submit" class="btn btn-primary" name="submit" value="Отправить" />
+                        <input type="submit" class="btn btn-primary" name="feedback_submit" value="Отправить" />
                     </div>
                     
                 </div>
