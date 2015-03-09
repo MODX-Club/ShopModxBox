@@ -1,3 +1,4 @@
+{block list_headers}{/block}
 {*
     Base template for listing
 *}
