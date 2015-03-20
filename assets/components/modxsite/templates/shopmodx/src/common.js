@@ -30,6 +30,7 @@ $(function() {
       .then(function(resp) {
         if (resp.success) {
           var url = window.location.href.replace(/\?.*/, '');
+          url = url.replace(/#.*/, '');
           window.location.replace(url);
         }
       });
