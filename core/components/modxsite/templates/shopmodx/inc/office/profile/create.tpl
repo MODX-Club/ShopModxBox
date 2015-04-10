@@ -43,8 +43,10 @@
             
             <div class="panel-body">
              
-                <div class="registerMessage">{$modx->getPlaceholder('reg.error.message')}</div>
-             
+                {if $message = $modx->getPlaceholder('reg.error.message')}
+                    <div class="registerMessage alert alert-danger">{$message}</div>
+                {/if}
+                
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="username">{$modx->lexicon('register.username', [
                         namespace=>"login", 
