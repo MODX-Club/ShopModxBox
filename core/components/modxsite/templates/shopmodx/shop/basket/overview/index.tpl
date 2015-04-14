@@ -33,7 +33,7 @@
                                      
                                     <tr data-smodx-item-id="{$key}" data-smodx-item="good">            
                                         <td>
-                                            <img src="{snippet name=phpthumbof params="input=`$object.image`&options=`w=100`"}" />
+                                            <img src="{snippet name=phpthumbof params="input=`{$object.image|default:$object.imageDefault}`&options=`w=100`"}" />
                                         </td>
                                         <td>
                                             <a href="{$object.uri}">{$object.pagetitle}</a>
