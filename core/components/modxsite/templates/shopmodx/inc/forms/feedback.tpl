@@ -2,10 +2,10 @@
  
     
 {if $smarty.post.feedback_submit}
- {$request = $smarty.post}
- {processor action="web/forms/feedback" ns="modxsite" params=$request assign=form_result}
+    {$request = $smarty.post}
+    {processor action="web/forms/feedback" ns="modxsite" params=$request assign=form_result}
 {else}
- {$request = []}
+    {$request = []}
 {/if} 
 
 {if !$form_result.success}
@@ -95,7 +95,7 @@
                             <div class="form-group {if $form_result.field_errors.captcha}has-error{/if}"> 
                                 <label for="captcha">Введите код с картинки</label>
                                 <input id="captcha" type="text" class="form-control w150" placeholder="Проверочный код" name="captcha" value="" />
-                                [[$modcaptcha]]
+                                {$modx->parseChunk('modcaptcha')}
                                 {if $form_result.field_errors.captcha}
                                     <div>
                                         <span class="help-inline">{$form_result.field_errors.captcha}</span>
