@@ -29,8 +29,7 @@ $(function() {
     Request.run('login', data.join('&'))
       .then(function(resp) {
         if (resp.success) {
-          var url = window.location.href.replace(/\?.*/, '');
-          url = url.replace(/#.*/, '');
+          var url = window.location.pathname;
           window.location.replace(url);
         }
       });
