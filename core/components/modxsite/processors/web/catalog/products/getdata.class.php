@@ -25,11 +25,38 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $c = parent::prepareQueryBeforeCount($c);
         
+        $alias = $c->getAlias();
+        
+        
         $c->innerJoin('ShopmodxProduct', 'Product');
         
         if($this->getProperty('hot')){
-            $c->innerJoin('modTemplateVarResource',  'hot', "hot.contentid = {$this->classKey}.id AND hot.tmplvarid = 8 AND hot.value='1'");
+            $c->innerJoin('modTemplateVarResource',  'hot', "hot.contentid = {$alias}.id AND hot.tmplvarid = 8 AND hot.value='1'");
         }
+        
+        // Поиск товаров в категории и подкатегориях
+        if($category_id = (int)$this->getProperty('category_id')){
+            $categories = array($category_id);
+            $this->getCategories($category_id, $categories);
+            $c->where(array(
+                "parent:IN" => $categories,
+            ));
+        }
+        
+        
+        // Курс валюты 
+        $base_currency_id = (int)$this->getProperty('base_currency_id');
+        $c->leftJoin('modResource', "base_currency_doc", "base_currency_doc.id = {$base_currency_id}");
+        $c->leftJoin('modResource', "currency_doc", "currency_doc.id = Product.sm_currency");
+        $c->leftJoin('modTemplateVarResource', "course_tv", "course_tv.contentid = Product.sm_currency");
+        
+        $c->select(array(
+            "Product.*",
+            "course_tv.value as course",
+            "if({$base_currency_id} != Product.sm_currency && course_tv.value, round(Product.sm_price * course_tv.value, 2), Product.sm_price) as sm_price",
+            "if({$base_currency_id} != Product.sm_currency && course_tv.value, {$base_currency_id}, Product.sm_currency) as sm_currency",
+            "if({$base_currency_id} != Product.sm_currency && course_tv.value, base_currency_doc.pagetitle, currency_doc.pagetitle) as currency_code",
+        ));
         
         return $c;
     }
@@ -59,27 +86,36 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
     protected function setSelection(xPDOQuery $c) {
         $c = parent::setSelection($c);
         
-        $base_currency_id = (int)$this->getProperty('base_currency_id');
-        
         $c->leftJoin('modResource', "Parent");
         
-        // Курс валюты 
-        $c->leftJoin('modResource', "base_currency_doc", "base_currency_doc.id = {$base_currency_id}");
-        $c->leftJoin('modResource', "currency_doc", "currency_doc.id = Product.sm_currency");
-        $c->leftJoin('modTemplateVarResource', "course_tv", "course_tv.contentid = Product.sm_currency");
-        
         $c->select(array(
-            "Product.*",
             "Product.id as `product_id`",
             "Parent.id as category_id",
             "Parent.uri as category_uri",
             "Parent.pagetitle as category_title",
-            "course_tv.value as course",
-            "if({$base_currency_id} != Product.sm_currency && course_tv.value, round(Product.sm_price * course_tv.value, 2), Product.sm_price) as sm_price",
-            "if({$base_currency_id} != Product.sm_currency && course_tv.value, {$base_currency_id}, Product.sm_currency) as sm_currency",
-            "if({$base_currency_id} != Product.sm_currency && course_tv.value, base_currency_doc.pagetitle, currency_doc.pagetitle) as currency_code",
         ));
         return $c;
+    }
+    
+    
+    protected function getCategories($parent, array & $categories){
+        $q = $this->modx->newQuery('modResource', array(
+            'deleted'   => 0,
+            'published' => 1,
+            'hidemenu'  => 0,
+            'isfolder'  => 1,
+            'parent'    => $parent,
+        ));
+        $q->select(array(
+            'id',    
+        ));
+        if($s = $q->prepare() AND $s->execute()){
+            while($row = $s->fetch(PDO::FETCH_ASSOC)){
+                $categories[] = $row['id'];
+                $this->getCategories($row['id'], $categories);
+            }
+        }
+        return $categories;
     }
 }
 

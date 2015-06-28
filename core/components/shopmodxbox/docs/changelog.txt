@@ -1,3 +1,10 @@
+ShopModxBox-2.6.2-beta
+=============================================================
+- Moved products searching in subcategories into modWebCatalogProductsGetdataProcessor 
+- Added modWebCatalogProductsPricesMinmaxGetdataProcessor for counting minimal and maximal prices
+- Minor bugfixes
+
+
 ShopModxBox-2.6.1-beta
 =============================================================
 - Updates modxSmarty
