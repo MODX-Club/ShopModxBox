@@ -95,7 +95,7 @@
                             <div class="form-group {if $form_result.field_errors.captcha}has-error{/if}"> 
                                 <label for="captcha">Введите код с картинки</label>
                                 <input id="captcha" type="text" class="form-control w150" placeholder="Проверочный код" name="captcha" value="" />
-                                {$modx->parseChunk('modcaptcha')}
+                                {$modx->parseChunk('modcaptcha', [])}
                                 {if $form_result.field_errors.captcha}
                                     <div>
                                         <span class="help-inline">{$form_result.field_errors.captcha}</span>
