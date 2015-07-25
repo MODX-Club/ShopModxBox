@@ -35,8 +35,8 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
         }
         
         // Поиск товаров в категории и подкатегориях
-        if($category_id = (int)$this->getProperty('category_id')){
-            $categories = array($category_id);
+        if($category_id = $this->getProperty('category_id')){
+            $categories = array();
             $this->getCategories($category_id, $categories);
             $c->where(array(
                 "parent:IN" => $categories,
@@ -98,23 +98,44 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
     }
     
     
-    protected function getCategories($parent, array & $categories){
+    protected function getCategories($parents, array & $categories){
+        
+        if(!is_array($parents)){
+            $parents = explode(",", $parents);
+        }
+        
+        $parents = array_map('intval', $parents);
+        $parents = array_filter($parents, function($item){
+            return $item > 0;
+        });
+        
+        if(!$parents){
+            return $categories;
+        }
+        
+        $categories = $categories + $parents;
+        
         $q = $this->modx->newQuery('modResource', array(
             'deleted'   => 0,
             'published' => 1,
             'hidemenu'  => 0,
             'isfolder'  => 1,
-            'parent'    => $parent,
+            'parent:in'    => $parents,
         ));
+        
         $q->select(array(
             'id',    
         ));
+        
         if($s = $q->prepare() AND $s->execute()){
             while($row = $s->fetch(PDO::FETCH_ASSOC)){
                 $categories[] = $row['id'];
                 $this->getCategories($row['id'], $categories);
             }
         }
+        
+        $categories = array_unique($categories);
+        
         return $categories;
     }
 }
