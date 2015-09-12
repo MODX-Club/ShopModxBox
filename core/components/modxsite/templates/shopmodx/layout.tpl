@@ -1,9 +1,9 @@
+<!DOCTYPE html>
 {*
     Базовый шаблон сайта.
     Расширить можно в любом другом шаблоне просто прописав в начале файла {extends file="layout.tpl"}
     Статьи по modxSmarty: http://modxclub.ru/tag/modxSmarty/
 *}
-<!DOCTYPE html>
 
 {block name=params}
 
