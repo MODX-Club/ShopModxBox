@@ -85,7 +85,7 @@ abstract class modWebPaymentsCreateProcessor extends modObjectCreateProcessor{
         
         // Проверяем, если указан счет платежной системы, то надо убедиться, что 
         // он еще не числится в биллинге
-        if($paysys_invoice_id = $this->object->get('paysys_invoice_id')){
+        if($paysys_invoice_id = $this->getProperty('paysys_invoice_id')){
             if($this->modx->getCount($this->classKey, array(
                 'paysys_invoice_id' => $paysys_invoice_id,
                 'paysystem_id'      => $paysystem_id,
