@@ -288,7 +288,7 @@ Ext.extend(Shop.grid.OrdersGrid, MODx.grid.Grid,{
     ,showEditWindow: function(column, record){
         new MODx.Window({
             title: column.header
-            ,width: 'auto'
+            ,width: 540
             ,url: this.url
             ,action: 'update'
             ,fields:[
