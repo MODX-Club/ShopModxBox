@@ -29,6 +29,11 @@
             {/foreach}
         </tbody>
     </table>
+    
+    <br />
+    <br />
+    
+    <strong>Итого: </strong> {if $order_data.discount}<s>{((float)$order_data.original_sum)|number_format:2:".":" "}</s> {$product.currency_code}<br /><strong>С учетом скидки {$order_data.discount}%: </strong>{/if} {((float)$order_data.sum)|number_format:2:".":" "} {$product.currency_code}
 
 
 {/block}

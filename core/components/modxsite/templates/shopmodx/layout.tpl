@@ -39,12 +39,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {/block}
             
-            <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-            
             {block name=bootstrap_theme}
-                <!-- Optional theme -->
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
             {/block}
             
         {/block} 
@@ -56,9 +51,6 @@
         
         
         {block name=fonts}
-            {* fonts *}
-            <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-            {* eof fonts *}
         {/block}
         
         
@@ -135,7 +127,7 @@
                             на ваши вопросы по MODX Revolution и нашим модулям на сайте modxclub.ru,
                             а так же очищает вашу совесть и ставит жирный плюс в карму ;-)
                         *}
-                        <a href="http://modxclub.ru" title="Клуб MODX-экспертов"><img src="{config name=assets_url}images/site/logos/modx_h30.jpg" /></a>
+                        <a href="https://modxclub.ru" title="Клуб MODX-экспертов"><img src="{config name=assets_url}images/site/logos/modx_h30.jpg" /></a>
                         <a href="http://shopmodx.modxclub.ru" class="powby" title="ShopModx. Модуль для разработки интернет-магазинов на MODX Revolution"><img src="{$template_url}img/poweredby1.png" /></a>
                     </div>       
                 </footer>
@@ -159,8 +151,7 @@
         
         
         {block name=bootstrap_js}
-            <!-- Latest compiled and minified JavaScript -->
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+            <script src="{$template_url}vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         {/block}
         
         {block name=footers}

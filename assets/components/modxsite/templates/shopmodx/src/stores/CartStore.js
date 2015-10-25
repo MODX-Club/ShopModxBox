@@ -26,6 +26,9 @@ CartStore.dispatchToken = Dispatcher.register(function(payload) {
     case ActionTypes.CART_REFRESH:
       _store.total = action.data.total;
       _store.sum = action.data.sum;
+      _store.original_sum = action.data.original_sum;
+      _store.discount = action.data.discount;
+      console.log(_store);
 
       CartStore.emitChange();
       break;
@@ -33,6 +36,7 @@ CartStore.dispatchToken = Dispatcher.register(function(payload) {
     case ActionTypes.CART_RESET:
       _store.total = 0;
       _store.sum = 0;
+      _store.original_sum = 0;
 
       CartStore.emitChange();
       break;

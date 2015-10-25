@@ -4,13 +4,15 @@
 */
 require_once MODX_CORE_PATH . 'components/modxsite/processors/site/web/getdata.class.php';
 
-class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetlistProcessor{
+class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetdataProcessor{
     
     public $classKey = 'OrderProduct';
     
     protected $sum = 0;         // Общая сумма заказа
+    protected $original_sum = 0;         // Общая сумма заказа без учета скидки
     protected $positions = 0;   // Количество позиций
     protected $quantity = 0;    // Общее количество товаров
+    protected $discount = 0;    // Скидка. Todo: Надо будет переделать, так как сейчас это не расчитано на выборку более одного заказа
     
     
     public function prepareQueryBeforeCount(xPDOQuery $c){
@@ -36,6 +38,7 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetlistProces
     public function setSelection(xPDOQuery $c){
         $c = parent::setSelection($c);
         
+        $c->innerJoin('Order');
         $c->innerJoin('ShopmodxProduct', 'Product');
         $c->leftJoin('modResource', "currency_doc", "currency_doc.id = {$this->classKey}.currency_id");
         
@@ -46,6 +49,10 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetlistProces
             "{$this->classKey}.currency_id as order_currency", 
             "currency_doc.pagetitle as order_currency_code", 
         ));
+        
+        if($columns = $this->modx->getSelectColumns('Order', 'Order', 'order_', array ('id'), true)){
+            $c->select(explode(",", $columns));
+        }
         
         return $c;
     }
@@ -60,7 +67,16 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetlistProces
         $ids = array();
         foreach($list as $l){
             $this->quantity += $l['quantity'];
-            $this->sum += $l['quantity'] * $l['price'];
+            
+            $sum = $l['quantity'] * $l['price'];
+            $this->original_sum += $sum;
+            
+            if(!empty($l['order_discount'])){
+                $this->discount = $l['order_discount'];
+                $sum = round($sum * ((100 - $l['order_discount']) / 100), 2);
+            }
+            
+            $this->sum += $sum;
             $ids[] = $l['resource_id'];
         }
         
@@ -99,6 +115,8 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetlistProces
         $result = parent::outputArray($array, $count);
         
         $result['sum'] = $this->sum;
+        $result['original_sum'] = $this->original_sum;
+        $result['discount'] = $this->discount;
         $result['quantity'] = $this->quantity;
         $result['positions'] = $count;
         

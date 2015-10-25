@@ -36,6 +36,16 @@ Cart.prototype = {
     [].slice.call(nodes).map(function(el) {
         $(el).text(numeral(data.sum).format('0,0'));
     }, this);
+    
+    nodes = document.querySelectorAll([this.props.wrapper, ".cost_original"].join(' '));
+    [].slice.call(nodes).map(function(el) {
+        var sum = '';
+        console.log(data);
+        if(data.discount > 0){
+            sum = numeral(data.original_sum).format('0,0');
+        }
+        $(el).text(sum);
+    }, this);
 
     nodes = document.querySelectorAll([this.props.wrapper, ".num"].join(' '));
     [].slice.call(nodes).map(function(el) {

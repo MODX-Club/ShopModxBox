@@ -14,6 +14,7 @@ class ShopOrderdataGetlistProcessor extends modBasketMgrOrdersProductsGetdataPro
         $this->setDefaultProperties(array(
             'limit' => 0,
             'grid'  => true,
+            'show_canceled'  => true,
         ));
         
         if(!$this->getProperty('order_id')){

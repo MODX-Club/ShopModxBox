@@ -55,7 +55,7 @@
                             
                                 <div data-smodx-data="cost" class="order_data">
                                     <p>В корзине:     <span class="num">{$basket_result.quantity}</span> <span class="text">{$basket_result.quantity|spell:"товар":"товара":"товаров"}</span></p>
-                                    <p>Сумма заказа: <span class="cost">{$basket_result.sum|number_format:0:".":" "}</span> руб.</p>
+                                    <p>Сумма заказа: <span><s class="cost_original">{if $basket_result.discount}{((float)$basket_result.original_sum)|number_format:0:".":" "}{/if}</s></span> <span class="cost">{$basket_result.sum|number_format:0:".":" "}</span> руб.</p>
                                 </div>
                                 
                             </div>

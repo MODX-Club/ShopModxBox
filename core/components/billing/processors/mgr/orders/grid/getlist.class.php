@@ -23,10 +23,22 @@ class modMgrOrdersGridGetlistProcessor extends modMgrOrdersGetlistProcessor{
         $c->select(array(
             "ContractorProfile.fullname  as contractor_fullname",
             "ContractorProfile.email as contractor_email",
+            "ContractorProfile.address as contractor_address",
             "if(ContractorProfile.mobilephone != '', ContractorProfile.mobilephone, ContractorProfile.phone) as contractor_phone",
             "ManagerProfile.fullname as manager_fullname",
         ));
         
+        $className = 'OrderStatus';
+        $tableAlias = 'Status';
+        
+        # $c->leftJoin($className, $tableAlias);
+        
+        if($columns = $this->modx->getSelectColumns($className, $tableAlias, 'status_')){
+            $columns = explode(',', $columns);
+            $c->select($columns);
+        }
+        
+        # exit;
         
         // Проверяем право видеть все заявки
         if(!$this->modx->hasPermission('view_all_orders')){
@@ -49,11 +61,25 @@ class modMgrOrdersGridGetlistProcessor extends modMgrOrdersGetlistProcessor{
     }
     
     
+    # public function setSelection(xPDOQuery & $c){
+    #     $c = parent::setSelection($c);
+    #     
+    #     
+    #     return $c;
+    # }
+    
+    
     public function prepareRow($object){
         
         $row = parent::prepareRow($object);
         
-        $menu = array();
+        $menu = array(
+            array(
+                'text' => 'Добавить товар',
+                'handler'   => 'this.addProduct',
+            ),
+            
+        );
         
         // Если статус Новый, то предлагаем принять в работу
         switch($row['status_id']){
@@ -72,13 +98,32 @@ class modMgrOrdersGridGetlistProcessor extends modMgrOrdersGetlistProcessor{
                 $menu[] = array(
                     'text' => 'Изменить статус',
                     'handler'   => 'this.updateOrderStatus',
-                );;
+                );
+        }
+        
+        if($row['status_id'] > 1){
+            
+            $menu[] = array(
+                'text' => 'Печать заказа',
+                'handler'   => 'this.printOrder',
+            );
         }
         
         if($this->modx->hasPermission('delete_order')){
             $menu[] = array(
                 'text' => 'Удалить заказ',
                 'handler'   => 'this.deleteOrder',
+            );
+        }
+        
+        if(!empty($row['contractor'])){
+            $menu[] = array(
+                'text' => 'Данные клиента',
+                'handler'   => 'this.ShowContractorInfo',
+            );
+            $menu[] = array(
+                'text' => 'Фильтровать по клиенту',
+                'handler'   => 'this.FilterByContractor',
             );
         }
         

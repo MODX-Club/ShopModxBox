@@ -7,6 +7,7 @@ $xpdo_meta_map['OrderStatus']= array (
   'fields' => 
   array (
     'status' => NULL,
+    'color' => '',
     'rank' => 0,
     'comment' => NULL,
   ),
@@ -16,6 +17,13 @@ $xpdo_meta_map['OrderStatus']= array (
     array (
       'dbtype' => 'varchar',
       'precision' => '100',
+      'phptype' => 'string',
+      'null' => false,
+    ),
+    'color' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '7',
       'phptype' => 'string',
       'null' => false,
     ),

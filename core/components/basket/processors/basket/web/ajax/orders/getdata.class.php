@@ -18,6 +18,8 @@ class modBasketWebAjaxOrdersGetdataProcessor extends modBasketWebOrdersProductsG
         if($response['success']){
             $response['object'] = array(
                 "sum" => $response['sum'],
+                "original_sum" => $response['original_sum'],
+                "discount" => $response['discount'],
                 "total" => $response['quantity'],
             );
         }

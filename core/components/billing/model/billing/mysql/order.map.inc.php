@@ -16,6 +16,7 @@ $xpdo_meta_map['Order']= array (
     'manager' => NULL,
     'address' => NULL,
     'comments' => NULL,
+    'discount' => 0,
   ),
   'fieldMeta' => 
   array ( 
@@ -99,6 +100,15 @@ $xpdo_meta_map['Order']= array (
       'dbtype' => 'mediumtext',
       'phptype' => 'string',
       'null' => true,
+    ),
+    'discount' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '3',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'indexes' => 

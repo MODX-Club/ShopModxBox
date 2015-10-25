@@ -1,3 +1,12 @@
+ShopModxBox-2.7.0-beta
+=============================================================
+- Updated packages Console, Ace
+- Added filters orders adition in manager-panel
+- Added orders adition in manager-panel (add/remove order products, discounts and etc.)
+- Added console scripts:
+    - basket/mgr/shop/order/getlist
+
+
 ShopModxBox-2.6.2-beta
 =============================================================
 - Moved products searching in subcategories into modWebCatalogProductsGetdataProcessor 

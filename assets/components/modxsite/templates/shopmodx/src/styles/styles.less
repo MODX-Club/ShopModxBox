@@ -1,7 +1,13 @@
-@import "less/theme";
+
+@import url("../../vendor/bootstrap/less/bootstrap.less");
+@icon-font-path: '../../vendor/bootstrap/fonts/';
+
+// @import "less/theme";
 
 @import url("../../vendor/AlertifyJS/build/css/themes/bootstrap.css");
 @import url("../../vendor/AlertifyJS/build/css/alertify.css");
+
+@import "less/theme";
 
 // mixins
 .font(@s:@baseFontWeight, @w:@baseFontSize, @f:@baseFont) {

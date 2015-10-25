@@ -40,7 +40,7 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         
         if(
             $sort = $this->getProperty('sort')
-            AND mb_strpos($str, ".", 0,  'utf-8') === false
+            AND mb_strpos($sort, ".", 0,  'utf-8') === false
             AND $fields = $this->modx->getFields($this->classKey)
             AND array_key_exists($sort, $fields)
         ){ 

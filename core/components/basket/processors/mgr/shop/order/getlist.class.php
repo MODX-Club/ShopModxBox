@@ -3,113 +3,97 @@
 require_once MODX_CORE_PATH . 'components/billing/processors/mgr/orders/grid/getlist.class.php';
 
 class ShopOrdersGetlistProcessor extends modMgrOrdersGridGetlistProcessor{
-}
-
-return 'ShopOrdersGetlistProcessor';
-
-
-
-class ShopOrdersGetlistProcessor_depricated extends modObjectGetlistProcessor{
-    public $classKey = 'ShopOrder';
-    public $defaultSortField = 'id';
     
-    public function initialize(){
-        $this->setDefaultProperties(array(
-            'grid'  => true,
-            "sort"  => "{$this->classKey}.id",
-            "dir"   => "desc",
-        ));
-        return parent::initialize();
-    }
     
     public function prepareQueryBeforeCount(xPDOQuery $c){
-        $c->innerJoin('ShopOrderStatus', 'Status');
-        $c->innerJoin('modUser', 'CreatedBy');
-        $c->innerJoin('modUserProfile', 'CreatedByProfile', 'CreatedBy.id=CreatedByProfile.internalKey');
-        $c->leftJoin('modUser', 'ModifiedBy');
-        $c->leftJoin('modUserProfile', 'ModifiedByProfile', 'ModifiedBy.id=ModifiedByProfile.internalKey');
-        $c->leftJoin('modUser', 'Manager');
-        $c->leftJoin('modUserProfile', 'ManagerProfile', 'Manager.id=ManagerProfile.internalKey');
-        $c->select(array(
-            "Status.status as status_str",
-            "CreatedByProfile.fullname  as CreatedBy_fullname",
-            "if(CreatedByProfile.mobilephone != '', CreatedByProfile.mobilephone, CreatedByProfile.phone)     as CreatedBy_phone",
-            "CreatedByProfile.email     as CreatedBy_email",
-            "ManagerProfile.fullname    as Manager_fullname",
-            "{$this->classKey}.*",
-            "{$this->classKey}.id as order_id",
-        ));
+        $c = parent::prepareQueryBeforeCount($c);
         
+        $alias = $c->getAlias();
         
-        // Проверяем право видеть все заявки
-        if(!$this->modx->hasPermission('view_all_orders')){
-            $c->andCondition(array(
-                'status' => 1,
-                'OR:manager:=' => $this->modx->user->id,
-            ));
+        $where = array();
+        
+        if($status = (int)$this->getProperty('status')){
+            $where['status_id'] = $status;
         }
         
-        if($id = $this->getProperty('order_id')){
-            $c->where(array(
-                "{$this->classKey}.id" => $id,
-            ));
+        if($contractor = (int)$this->getProperty('contractor')){
+            $where['contractor'] = $contractor;
         }
         
-        /*$c->prepare();
-        print $c->toSQL();*/
+        if($date_from = $this->getProperty('date_from')){
+            $where['createdon:>='] = date('Y-m-d H:i:s', strtotime($this->getProperty('date_from')));
+        }
+        
+        if($date_from = $this->getProperty('date_till')){
+            $where['createdon:<='] = date('Y-m-d H:i:s', strtotime($this->getProperty('date_till')));
+        }
+                
+        if($where){
+            $c->where($where);
+        }
+        
+        
+        
+        if($search = $this->getProperty('search')){
+            $word = $this->modx->quote("%{$search}%");
+            
+            $q = $this->modx->newQuery('OrderProduct');
+            $q->innerJoin('ShopmodxProduct', 'Product');
+            $q->innerJoin('modResource', 'ResourceProduct', "ResourceProduct.id = Product.resource_id");
+            
+            $q_alias = $q->getAlias();
+            
+            $q->select(array(
+                "{$q_alias}.order_id",
+            ));
+            
+            $order_id = (int)$search;
+            
+            $q->where(array(
+                "order_id = {$alias}.id 
+                AND (order_id = {$order_id}
+                    OR ResourceProduct.pagetitle LIKE {$word} 
+                    OR ResourceProduct.longtitle LIKE {$word}
+                    OR ResourceProduct.content LIKE {$word}
+                )",
+            ));
+            
+            $q->prepare();
+            $sql = $q->toSQL();
+            
+            # print $sql;
+            
+            $conditions = [];
+            
+            $conditions[] = new xPDOQueryCondition(array(
+                'sql' => "ContractorProfile.address LIKE {$word}",
+            ));
+            
+            if($phone = preg_replace('/[^\+0-9\-\(\)]/', '', $search)){
+                $phone = $this->modx->quote("%{$phone}%");
+                
+                $conditions[] = new xPDOQueryCondition(array(
+                    'sql' => "REPLACE(ContractorProfile.phone, ' ', '') LIKE {$phone}",
+                    'conjunction'   => $conditions ? "OR" : "AND",
+                ));
+            }
+            
+            $conditions[] = new xPDOQueryCondition(array(
+                'sql' => "EXISTS ({$sql})",
+                'conjunction'   => $conditions ? "OR" : "AND",
+            ));
+            
+            $c->query['where'][] = $conditions;
+            
+            
+            # $c->prepare();
+            # print $c->toSQL();
+        }
+        
+        
         return $c;
     }
     
-    public function prepareRow($object){
-        // print '<pre>';
-        $row = parent::prepareRow($object);
-        
-        $menu = array();
-        
-        // Если статус Новый, то предлагаем принять в работу
-        switch($row['status']){
-            case '1':   // Новый
-                $menu[] = array(
-                    'text' => 'Принять заказ',
-                    'handler'   => 'this.takeOrder',
-                );
-                break;
-            default:
-                $menu[] = array(
-                    'text' => 'Изменить статус',
-                    'handler'   => 'this.updateOrderStatus',
-                );;
-        }
-        
-        if($this->modx->hasPermission('delete_order')){
-            $menu[] = array(
-                'text' => 'Удалить заявку',
-                'handler'   => 'this.deleteOrder',
-            );
-        }
-        
-        
-        $row['menu'] = $menu;
-        
-        /*print_R($row);
-        
-        exit;*/
-        return $row;
-    }
-    
-    
-    public function outputArray(array $array, $count = false){
-        if(!$this->getProperty('grid')){
-            return array(
-                'success'   => true,
-                'message'   => '',
-                'total'     => $count,
-                'object'    => $array,
-            );
-        }
-        // else
-        return parent::outputArray($array, $count);
-    } 
 }
 
 return 'ShopOrdersGetlistProcessor';
