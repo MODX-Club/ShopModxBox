@@ -57,15 +57,16 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetdataProces
         return $c;
     }
     
+    
     public function afterIteration(array $list){
         $list = parent::afterIteration($list);
-        
+
         $this->quantity = 0;
         $this->sum = 0;
         
         // Получаем id всех товаров и подсчитываем общее число товаров и сумму
         $ids = array();
-        foreach($list as $l){
+        foreach($list as & $l){
             $this->quantity += $l['quantity'];
             
             $sum = $l['quantity'] * $l['price'];
@@ -78,7 +79,22 @@ class modBasketMgrOrdersProductsGetdataProcessor extends modSiteWebGetdataProces
             
             $this->sum += $sum;
             $ids[] = $l['resource_id'];
+            
+            
+            $menu = array();
+            
+            // Если статус Новый, то предлагаем принять в работу
+            
+            $menu[] = array(
+                'text' => 'Удалить товар',
+                'handler'   => 'this.deleteProduct',
+            );
+            
+            $l['menu'] = $menu;
+            
         }
+        
+        unset($l);
         
         // Получаем данные товаров
         $resources = array();
