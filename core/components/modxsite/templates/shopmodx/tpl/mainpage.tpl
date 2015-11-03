@@ -2,6 +2,7 @@
 {extends file="layout.tpl"}
 
 
+{block name="title"}{$site_name}{/block}
 
 {* Переопределяем блок контента *}
 {block name=content append}
