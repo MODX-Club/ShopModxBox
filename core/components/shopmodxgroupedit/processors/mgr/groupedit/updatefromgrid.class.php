@@ -15,6 +15,14 @@ class ShopmodxGroupeditUpdatefromgridProcessor extends modResourceUpdateProcesso
             $properties = array_merge($properties, $data);
             unset($properties['data'], $data);
         }
+        
+        if(!isset($properties['clearCache'])){
+            $properties['clearCache'] = true;
+        }
+        
+        if(!isset($properties['syncsite'])){
+            $properties['syncsite'] = true;
+        }
          
         return parent::getInstance($modx,$className,$properties);
     } 
