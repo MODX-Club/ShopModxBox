@@ -14,7 +14,8 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         $this->setDefaultProperties(array(
             'cache'             => false,           // Use cache
             'cache_lifetime'    => 0,               // seconds
-            'cache_prefix'      => 'getdata/',      
+            xPDO::OPT_CACHE_KEY => "resource",
+            'cache_prefix'      => $this->modx->context->key . '/getdata/',      
             'current'           => false,   // get and return only first element 
             'page'              => 0,   // !empty($_REQUEST['page']) ? (int)$_REQUEST['page'] : 0,
             'getPage'           => false,
@@ -56,9 +57,13 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         // Use or not caching
         $cacheable = $this->getProperty('cache');
         
+        $cache_options = array(
+            xPDO::OPT_CACHE_KEY => $this->getProperty(xPDO::OPT_CACHE_KEY),
+        );
+        
         if($cacheable){
             $key = $this->getProperty('cache_prefix') . md5( __CLASS__ . json_encode($this->getProperties()));
-            if($cache = $this->modx->cacheManager->get($key)){
+            if($cache = $this->modx->cacheManager->get($key, $cache_options)){
                 return $this->prepareResponse($cache);
             }
         }
@@ -66,7 +71,7 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         $result = parent::process();
         
         if($cacheable){
-            $this->modx->cacheManager->set($key, $result, $this->getProperty('cache_lifetime', 0));
+            $this->modx->cacheManager->set($key, $result, $this->getProperty('cache_lifetime', 0), $cache_options);
         }
         
         return $result;
