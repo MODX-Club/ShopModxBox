@@ -14,6 +14,7 @@
  
 # Все тоже самое
 /assets/components/*
+!/assets/components/shopmodx/
 !/assets/components/basket/
 !/assets/components/modxsite/
 /assets/components/modxsite/templates/*
@@ -27,6 +28,7 @@
 !/core/components/
  
 /core/components/*
+!/core/components/shopmodx/
 !/core/components/basket/
 !/core/components/billing/
 !/core/components/modxsite/
@@ -44,5 +46,6 @@
 /manager/*
 !/manager/components/
 /manager/components/*
+!/manager/components/shopmodx/
 !/manager/components/basket/
 !/manager/components/shopmodxgroupedit/

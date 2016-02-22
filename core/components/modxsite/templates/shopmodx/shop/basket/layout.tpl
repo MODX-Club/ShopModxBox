@@ -5,14 +5,15 @@
     {$params = [
         "limit"     => 0
     ]}
-    {$processor = "basket/web/orders/products/getdata"}
+    {$processor = "shopmodx/orders/object"}
 {/block}
 
-{processor action=$processor ns="basket" params=$params assign=basket_result}
+{processor action=$processor ns="shopmodx" params=$params assign=basket_result}
 
 {*<pre>{print_R($basket_result)}</pre>*}
 
 {if $basket_result.success && $basket_result.object}
+    {$Order = $basket_result.object}
     {$total = $basket_result.object.total}
     {$sum = $basket_result.object.sum}
 {/if}

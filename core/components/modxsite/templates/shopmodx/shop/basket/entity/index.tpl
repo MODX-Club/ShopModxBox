@@ -1,12 +1,13 @@
 {* Базовый шаблон для вывода корзины *}
 {* depricated processor action="web/basket/getdata" ns="basket" assign=basket_result*}
 
-{processor action="basket/web/orders/products/getdata" ns="basket" assign=basket_result}
+{processor action="shopmodx/orders/object" ns="shopmodx" assign=basket_result}
 {$modx->error->reset()} 
 
 {if $basket_result.success && $basket_result.object}
-    {assign var=total value=$basket_result.quantity}
-    {assign var=sum value=$basket_result.sum}
+    {$order = $basket_result.object}
+    {$total = $order.quantity}
+    {$sum = $order.sum}
 {/if}
 
 
@@ -42,3 +43,4 @@
     </a>    
 </div>
   
+

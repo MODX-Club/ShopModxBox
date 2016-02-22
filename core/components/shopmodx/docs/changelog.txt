@@ -1,0 +1,111 @@
+shopModx-2.0.0-beta
+========================================
+- Code refactoring
+- Merge Billing Extra into shopModx
+- Merge Basket Extra into shopModx
+- Merge shopModxGroupEdit Extra into shopModx
+- Remove ShopmodxResourceProduct class and other CRC
+
+
+shopModx-0.2.0-beta
+========================================
+- Added param includeTVs in ShopmodxWebGetDataProcessor. Default true.
+- ShopmodxWebGetDataProcessor::getData optimization.
+- Added caching in ShopmodxWebGetlistProcessor
+
+shopModx-0.1.1-beta
+========================================
+- [#8] Set modWebResourceproductGetlistProcessor::setSelection() to protected
+- [#6] Renamed PrepareUniqObjectsQuery to prepareUniqObjectsQuery
+- Minor bugfix
+
+shopModx-0.1.0-beta
+========================================
+- Added method ShopmodxResourceProduct::duplicate
+- Minor bugfix
+
+shopModx-0.0.9-beta
+========================================
+- Removed ShopmodxTemplate class
+- Added method ShopmodxWebGetlistProcessor::countTotal
+
+shopModx-0.0.8-beta
+========================================
+- ShopmodxWebGetListProcessor code refactoring
+- ShopmodxWebGetDataProcessor code refactoring
+
+
+shopModx-0.0.7-beta
+========================================
+- ShopmodxWebGetListProcessor code refactoring
+- ShopmodxWebGetDataProcessor code refactoring
+
+
+shopModx-0.0.6-beta
+========================================
+- [#2] Exclude unpublished currencies
+- Added shopResource data controllers
+- Added ShopmodxWebGetlistProcessor
+- Added ShopmodxWebGetDataProcessor
+- Added ShopmodxWebGetCollectionProcessor
+- Added modWebResourceproductGetlistProcessor
+- Added modWebResourceproductGetDataProcessor
+- Added modWebResourceproductGetcollectionProcessor
+
+
+shopModx-0.0.5-beta
+========================================
+- ShopmodxTemplate code refactored
+
+shopModx-0.0.4-beta
+========================================
+- Added method shopModx::makeUrl(). Return url if aliasMap disabled
+- Added method ShopmodxResource::_process();
+- Added ShopmodxTemplate extends modTemplate with supporting third-party templates system.
+  modxSmarty using recomended http://modx.com/extras/package/modxsmarty
+- Updated class ShopmodxRequest
+- Added ShopmodxResource in create context menu
+- Changed ShopmodxResource related object modTemplate on ShopmodxTemplate
+- Added parser-class ShopmodxParser extends modParser for correct processing link-tags
+  [[~id]] when aliasMap disabled via cacheOptimizer.
+  To anable this class create system setting parser_class=classes.ShopmodxParser
+
+shopModx-0.0.3-beta
+========================================
+- Added abstract class ShopmodxObjectGetListProcessor to fix getCount() bug.
+  Bug details: [#9543] http://tracker.modx.com/issues/9543
+- Added request-class shopmodxRequest. 
+  Use optionaly only with fast memory cache-providers like Memcached and disabled
+  context aliasMap-cache via cacheOptimizer. http://modx.com/extras/package/cacheoptimizer
+  Requires only on large shops (10000+ documents).
+  To anable this class create system setting modRequest.class=classes.ShopmodxRequest
+  Details: http://community.modx-cms.ru/blog/research/9927.html
+- Remove controllers and processors file for some CRC:
+    ShopmodxResourceWarehouse,
+    ShopmodxResourceProductModel,
+    ShopmodxResourceLegalForm,
+    ShopmodxResourceCurrency
+    
+
+shopModx-0.0.2-beta
+========================================
+- [#1] Merged CRC tables
+- Remove CRC:
+    ShopmodxCategory,
+    ShopmodxProducer,
+    ShopmodxVendor
+
+
+shopModx-0.0.1-beta
+========================================
+- Added plugin shopModx
+- Added system event OnShopModxSetResourcesCreateRules
+- Added shopModx service
+- Added CRC:
+    ShopmodxCategory,
+    ShopmodxClient,
+    ShopmodxLegalForm,
+    ShopmodxProducer,
+    ShopmodxProduct,
+    ShopmodxVendor,
+    ShopmodxWarehouse,

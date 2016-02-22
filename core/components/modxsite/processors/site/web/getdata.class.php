@@ -44,6 +44,8 @@ class modSiteWebGetdataProcessor extends modSiteWebGetlistProcessor{
                     if(!empty($row['tv_name'])){
                         $list[$object_id]['tvs'][$row['tv_name']] = array(
                             'tv_id'    => $row['tv_id'],
+                            'caption'    => $row['tv_caption'],
+                            'category'    => $row['tv_category'],
                             'value_id'    => $row['tv_value_id'],
                             'value'    => $row['tv_value'],
                         );

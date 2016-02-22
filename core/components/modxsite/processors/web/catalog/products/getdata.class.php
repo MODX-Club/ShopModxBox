@@ -27,12 +27,23 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
         
         $alias = $c->getAlias();
         
+        $where = array(
+            "template:in"   => array(
+                3,
+                5,
+            ),
+        );
         
-        $c->innerJoin('ShopmodxProduct', 'Product');
         
-        if($this->getProperty('hot')){
-            $c->innerJoin('modTemplateVarResource',  'hot', "hot.contentid = {$alias}.id AND hot.tmplvarid = 8 AND hot.value='1'");
-        }
+        # $c->leftJoin('msProductData', 'Data');
+        
+        $c->leftJoin('ShopmodxProduct', 'Product');
+        
+        
+        
+        # if($this->getProperty('hot')){
+        #     $c->innerJoin('modTemplateVarResource',  'hot', "hot.contentid = {$alias}.id AND hot.tmplvarid = 8 AND hot.value='1'");
+        # }
         
         // Поиск товаров в категории и подкатегориях
         if($category_id = $this->getProperty('category_id')){
@@ -45,18 +56,22 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
         
         
         // Курс валюты 
-        $base_currency_id = (int)$this->getProperty('base_currency_id');
-        $c->leftJoin('modResource', "base_currency_doc", "base_currency_doc.id = {$base_currency_id}");
-        $c->leftJoin('modResource', "currency_doc", "currency_doc.id = Product.sm_currency");
-        $c->leftJoin('modTemplateVarResource', "course_tv", "course_tv.contentid = Product.sm_currency");
+        # $base_currency_id = (int)$this->getProperty('base_currency_id');
+        # $c->leftJoin('modResource', "base_currency_doc", "base_currency_doc.id = {$base_currency_id}");
+        # $c->leftJoin('modResource', "currency_doc", "currency_doc.id = Product.sm_currency");
+        # $c->leftJoin('modTemplateVarResource', "course_tv", "course_tv.contentid = Product.sm_currency");
         
-        $c->select(array(
-            "Product.*",
-            "course_tv.value as course",
-            "if({$base_currency_id} != Product.sm_currency && course_tv.value, round(Product.sm_price * course_tv.value, 2), Product.sm_price) as sm_price",
-            "if({$base_currency_id} != Product.sm_currency && course_tv.value, {$base_currency_id}, Product.sm_currency) as sm_currency",
-            "if({$base_currency_id} != Product.sm_currency && course_tv.value, base_currency_doc.pagetitle, currency_doc.pagetitle) as currency_code",
-        ));
+        # $c->select(array(
+        #     "Product.*",
+        #     "course_tv.value as course",
+        #     "if({$base_currency_id} != Product.sm_currency && course_tv.value, round(Product.sm_price * course_tv.value, 2), Product.sm_price) as sm_price",
+        #     "if({$base_currency_id} != Product.sm_currency && course_tv.value, {$base_currency_id}, Product.sm_currency) as sm_currency",
+        #     "if({$base_currency_id} != Product.sm_currency && course_tv.value, base_currency_doc.pagetitle, currency_doc.pagetitle) as currency_code",
+        # ));
+        
+        if($where){
+            $c->where($where);
+        }
         
         return $c;
     }
@@ -86,14 +101,25 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
     protected function setSelection(xPDOQuery $c) {
         $c = parent::setSelection($c);
         
-        $c->leftJoin('modResource', "Parent");
+        $alias = $c->getAlias();
+        
+        
+        # $c->select(array(
+        #     "if(Product.id is not null, Product.sm_price, if(Data.id is not null, Data.price, {$alias}.price)) as `price`",
+        # ));
         
         $c->select(array(
-            "Product.id as `product_id`",
-            "Parent.id as category_id",
-            "Parent.uri as category_uri",
-            "Parent.pagetitle as category_title",
+            "if(Product.id is not null, Product.sm_price, {$alias}.price) as `price`",
         ));
+        
+        # $c->leftJoin('modResource', "Parent");
+        # 
+        # $c->select(array(
+        #     "Product.id as `product_id`",
+        #     "Parent.id as category_id",
+        #     "Parent.uri as category_uri",
+        #     "Parent.pagetitle as category_title",
+        # ));
         return $c;
     }
     

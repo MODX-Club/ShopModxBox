@@ -110,18 +110,25 @@ class modSiteWebFormProcessor extends modProcessor{
         $fields = $this->getFields();
         
         foreach($fields as $field => $d){
-            if($d['required'] && !$this->getProperty($field)){
-                $error = !empty($d['error_message']) ? $d['error_message'] : 'Поле заполненно не корректно';
-                $this->addFieldError($field, $error);
-                continue;
-            }
-            switch ($field){
-                case 'email':
-                    if(!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/', $this->getProperty($field))){
-                        $this->addFieldError($field, 'Укажите корректный емейл');
-                    }
-                    break;
-                default: 
+            if($d['required']){
+                if(!$this->getProperty($field)){
+                    $error = !empty($d['error_message']) ? $d['error_message'] : 'Поле заполненно не корректно';
+                    $this->addFieldError($field, $error);
+                    continue;
+                }
+                
+                switch ($field){
+                    case 'email':
+                        if(!$$field = filter_var($this->getProperty($field), FILTER_VALIDATE_EMAIL)){
+                            $this->addFieldError($field, 'Укажите корректный емейл');
+                            continue;
+                        }
+                        else{
+                            $this->setProperty($field, $$field);
+                        }
+                        break;
+                    default: 
+                }
             }
         }
         

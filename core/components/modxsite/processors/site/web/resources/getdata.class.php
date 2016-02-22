@@ -73,6 +73,8 @@ class modSiteWebResourcesGetdataProcessor extends modSiteWebGetdataProcessor{
             $c->select(array(
                 "tv.id as tv_id",
                 'tv.name as tv_name',
+                "tv.caption as tv_caption",
+                "tv.category as tv_category",
                 "TemplateVarResources.id as tv_value_id",
                 "TemplateVarResources.value as tv_value",
             ));
@@ -95,24 +97,15 @@ class modSiteWebResourcesGetdataProcessor extends modSiteWebGetdataProcessor{
             $properties = $this->getProperties();
         }
         
-        switch($this->getProperty('image_url_schema')){
-            case 'base':
-                $images_base_url = $this->getSourcePath();
-                break;
-                
-            case 'full':
-                $images_base_url = $this->modx->getOption('site_url');
-                $images_base_url .= preg_replace("/^\/*/", "", $this->getSourcePath());
-                break;
-                
-            default: $images_base_url = '';
-        }
+        $images_base_url = $this->getImageBaseUrl();
         
         foreach($list as & $l){  
             
             // Картинка
-            $l['image'] = '';
-            if(!empty($l['tvs']['image']['value'])){
+            if(
+                empty($l['image'])
+                AND !empty($l['tvs']['image']['value'])
+            ){
                 $l['image'] = $images_base_url . $l['tvs']['image']['value'];
             }
             else{
@@ -158,7 +151,25 @@ class modSiteWebResourcesGetdataProcessor extends modSiteWebGetdataProcessor{
             }
         }
         return $url;
-    }    
+    }
+    
+        
+    protected function getImageBaseUrl(){
+        switch($this->getProperty('image_url_schema')){
+            case 'base':
+                $images_base_url = $this->getSourcePath();
+                break;
+                
+            case 'full':
+                $images_base_url = $this->modx->getOption('site_url');
+                $images_base_url .= preg_replace("/^\/*/", "", $this->getSourcePath());
+                break;
+                
+            default: $images_base_url = '';
+        }
+        
+        return $images_base_url;
+    } 
     
 }
 

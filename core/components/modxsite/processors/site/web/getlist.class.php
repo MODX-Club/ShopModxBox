@@ -39,15 +39,6 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             $this->setProperty('start', ($page-1) * $limit);
         }
         
-        if(
-            $sort = $this->getProperty('sort')
-            AND mb_strpos($sort, ".", 0,  'utf-8') === false
-            AND $fields = $this->modx->getFields($this->classKey)
-            AND array_key_exists($sort, $fields)
-        ){ 
-            $this->setProperty('sort', "{$this->classKey}.{$sort}");
-        }
-        
         return !$this->hasErrors();
     }
 
@@ -89,6 +80,19 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         );
 
         $c = $this->modx->newQuery($this->classKey);
+        
+        $alias = $c->getAlias();
+        
+        if(
+            $sort = $this->getProperty('sort')
+            AND mb_strpos($sort, ".", 0,  'utf-8') === false
+            AND $fields = $this->modx->getFields($this->classKey)
+            AND array_key_exists($sort, $fields)
+        ){ 
+            $this->setProperty('sort', "{$alias}.{$sort}");
+        }
+        
+        
         $c = $this->prepareQueryBeforeCount($c);
         if(!$c = $this->getCount($c)){
             return $data;
@@ -102,6 +106,9 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
     }
     
     protected function getCount(xPDOQuery & $c){
+        
+        $alias = $c->getAlias();
+        
         if(!$sortKey = $this->getProperty('sort')){
             $sortClassKey = $this->getSortClassKey();
             $sortKey = $this->modx->getSelectColumns($sortClassKey,$this->getProperty('sortAlias',$sortClassKey),'',array($this->getProperty('sort')));
@@ -137,7 +144,7 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             
             if ($this->flushWhere && isset($c->query['where'])) $c->query['where'] = array();
             $c->where(array(
-                "{$this->classKey}.id:IN" => $IDs,
+                "{$alias}.id:IN" => $IDs,
             ));
         }
         else{
@@ -207,17 +214,20 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
     }
 
     protected function prepareUniqObjectsQuery(xPDOQuery & $query){
+        $alias = $query->getAlias();
         
-        $query->select(array ("{$this->classKey}.id"));
+        $query->select(array ("{$alias}.id"));
         $query->distinct(); 
         
         return $query;
     } 
 
     protected function setSelection(xPDOQuery $c){
+        $alias = $c->getAlias();
+        
         $c->select(array(
-            "{$this->classKey}.*",
-            "{$this->classKey}.id as `object_id`",    // Make sure resource id will not overwrite
+            "{$alias}.*",
+            "{$alias}.id as `object_id`",    // Make sure resource id will not overwrite
         ));
         return $c;
     }
