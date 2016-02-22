@@ -17,7 +17,11 @@ class modxsite{
      * @$fqn filename with separator like web.resource.create
      * $namespace optional.
      */
+    # Deprecated
     public function loadProcessor($fqn, $namespace = ''){
+        
+        $this->modx->log(1, "Method " . __METHOD__ . " deprecated and will be removed in future");
+        
         $class = null;
         $key = "{$fqn}|{$namespace}";
         if(!empty($this->processorsMap[$key])){
@@ -39,7 +43,11 @@ class modxsite{
         return $class;
     }
     
+    # Deprecated
     public function loadClass($fqn, $path= '', $ignorePkg= false, $transient= false) {
+        
+        $this->modx->log(1, "Method " . __METHOD__ . " deprecated and will be removed in future");
+        
         if (empty($fqn)) {
             $this->modx->log(xPDO::LOG_LEVEL_ERROR, "No class specified for loadClass");
             return false;
@@ -99,7 +107,11 @@ class modxsite{
     }    
     
     
+    # Deprecated
     protected function _loadClass($class, $fqn, $included= false, $path= '', $transient= false) {
+        
+        $this->modx->log(1, "Method " . __METHOD__ . " deprecated and will be removed in future");
+        
         if (empty($path)) $path= XPDO_CORE_PATH;
         if (!$included) {
             /* turn to filesystem path and enforce all lower-case paths and filenames */

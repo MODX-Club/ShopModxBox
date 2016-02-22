@@ -1,3 +1,10 @@
+modxSite-1.5.0
+=============================================================
+1. Added object-processor
+2. Added service modxsite
+3. Code refactoring
+
+
 modxSite-1.4.0
 =============================================================
 1. Remove packages autoinstall
