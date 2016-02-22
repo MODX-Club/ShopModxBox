@@ -34,7 +34,7 @@
 {*
     Вывод таблицы заказов
 *}
-{processor action="web/orders/getlist" ns="basket" assign=result}
+{processor action="shopmodx/orders/getdata" ns="shopmodx" assign=result}
 
 {*<pre>
     {print_r($result)}

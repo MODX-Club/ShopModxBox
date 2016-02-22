@@ -11,7 +11,7 @@
 {if $smarty.post.submit}
     {*processor action="web/basket/order/submit" ns="basket" params=$smarty.post assign=order_result*}
     
-    {processor action="basket/web/orders/submit" ns="basket" params=$smarty.post assign=order_result}
+    {processor action="shopmodx/orders/submit" ns="shopmodx" params=$smarty.post assign=order_result}
     
     
     {if !$order_result.success}
@@ -58,11 +58,11 @@
     *}
 
 
-    {if $modx->basket->getActiveOrderID()}
+    {if $modx->shopmodx->getActiveOrderID()}
      
         {* А здесь в форме мы выводим индивидуальные ошибки в каждом поле *}
             
-        <form name="order_form" action="{link id=$modx->resource->id}?action=submit" method="post" class="form-horizontal">
+        <form name="order_form" data-action="order/submit" action="{link id=$modx->resource->id}?action=submit" method="post" class="form-horizontal">
         
             <div class="form-group {if $order_result.field_errors.fullname}has-error{/if}">
                 <label for="fullname" class="col-md-3 control-label">Имя</label>
@@ -142,7 +142,9 @@
     
     <div class="alert alert-success">
         <strong>{$order_result.message}</strong>
+        {*
         <p>Оплатить данный заказ вы можете в личном кабинете на странице <a href="{link id=111}">управления заказами</a> или по этой <a href="{link id=136}?order_id={$order_result.object.id}">ссылке</a></p>
+        *}
     </div> 
     
 {/if}

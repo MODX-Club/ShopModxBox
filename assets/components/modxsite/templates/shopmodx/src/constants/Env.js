@@ -1,5 +1,5 @@
 module.exports = {
-  connectorsUrl: 'assets/components/basket/connectors/',
-  siteConnectorsUrl: 'assets/components/modxsite/connectors/',
+  connectorsUrl: 'assets/components/shopmodx/connectors/',
+  siteConnectorsUrl: 'assets/components/shopmodx/connectors/',
   connector: 'connector.php'
 };
