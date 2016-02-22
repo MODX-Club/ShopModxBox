@@ -18,4 +18,4 @@ if(!empty($properties['phptemplates.non-cached'])){
     $modx->smarty->force_compile = true;
 }
 
-return $modx->smarty->fetch("tpl/{$tpl}");
+return preg_replace("/[ \n\t\r]+$/sm", "\r", $modx->smarty->fetch("tpl/{$tpl}"));
