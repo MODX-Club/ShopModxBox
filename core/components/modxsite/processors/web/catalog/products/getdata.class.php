@@ -34,9 +34,10 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
             ),
         );
         
-        $c->leftJoin('msProductData', 'Data');
         
-        # $c->innerJoin('ShopmodxProduct', 'Product');
+        # $c->leftJoin('msProductData', 'Data');
+        
+        $c->leftJoin('ShopmodxProduct', 'Product');
         
         
         
@@ -102,8 +103,13 @@ class modWebCatalogProductsGetdataProcessor extends modWebResourcesGetdataProces
         
         $alias = $c->getAlias();
         
+        
+        # $c->select(array(
+        #     "if(Product.id is not null, Product.sm_price, if(Data.id is not null, Data.price, {$alias}.price)) as `price`",
+        # ));
+        
         $c->select(array(
-            "if(Data.id is not null, Data.price, {$alias}.price) as `price`",
+            "if(Product.id is not null, Product.sm_price, {$alias}.price) as `price`",
         ));
         
         # $c->leftJoin('modResource', "Parent");
