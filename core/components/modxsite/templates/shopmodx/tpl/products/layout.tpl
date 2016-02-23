@@ -13,14 +13,18 @@
         Оба способа представлены здесь: http://modxclub.ru/blog/dokumentatsiya-dlya-spetsialistov/224.html
     *}
  
-    {assign var=params value=[
-        "where"=>["id"=>$modx->resource->id]
-        ,"current"  => true
+    {$params = [
+        "where"=>["id"=>$modx->resource->id],
+        "current"  => true,
+        "showhidden"   => 1,
+        "showunpublished"   => 1
     ]}
+    
+    
     {processor action="web/catalog/products/getdata" ns="modxsite" params=$params assign=result}
     {if $result.success}
         {assign var=object value=$result.object}
+        {include file="shop/products/page/layout.tpl"}
     {/if}
      
-    {include file="shop/products/page/layout.tpl"}
 {/block}
