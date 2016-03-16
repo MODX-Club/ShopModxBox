@@ -11,7 +11,9 @@ require_once MODX_CONNECTORS_PATH.'index.php';
 
 $_SERVER['HTTP_MODAUTH']= $modx->user->getUserToken($modx->context->get('key'));
  
-$location = '';
+$location = isset($location) ? $location : ''; 
+$action = isset($action) ? $action : 'web/public/action'; 
+    
 
 /* handle request */
 if(!$path = $modx->getOption('modxsite.core_path')){
@@ -22,6 +24,6 @@ $path .= 'processors/';
 $modx->request->handleRequest(array(
     'processors_path' => $path,
     'location' => $location,
-    'action' => 'web/public/action',
+    'action' => $action,
 ));
 
