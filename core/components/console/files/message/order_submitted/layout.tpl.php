@@ -10,12 +10,12 @@ $modx->setLogTarget('HTML');
 
 $modx->invokeEvent('OnHandleRequest');
  
-$namespace = 'basket';        // Неймспейс комопонента
+$namespace = 'shopmodx';        // Неймспейс комопонента
 
 // $order_id = 1;// ID заказа
-$order_id = $this->modx->basket->getActiveOrderID();// ID текущего активного заказа (если есть не оформленный заказ)
+$order_id = $this->modx->shopmodx->getActiveOrderID();// ID текущего активного заказа (если есть не оформленный заказ)
 
-if(!$order = $this->modx->getObject('Order', $order_id)){
+if(!$order = $this->modx->getObject('ShopmodxOrder', $order_id)){
     print "Ошибка! Не был получен объект заказа";
     return;
 }
@@ -24,7 +24,7 @@ $params = array(
     "order_id"  => $order->id,    
 );
 
-if(!$response = $modx->runProcessor('basket/mgr/orders/products/getdata',
+if(!$response = $modx->runProcessor('shopmodx/orders/products/getdata',
 $params
 , array(
 'processors_path' => $modx->getObject('modNamespace', $namespace)->getCorePath().'processors/',

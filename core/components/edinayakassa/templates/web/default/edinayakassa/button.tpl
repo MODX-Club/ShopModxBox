@@ -11,5 +11,5 @@
         {/if} 
     {/foreach}
 
-    <input type="submit"/>
+    <input class="btn btn-primary" type="submit" value="Оплатить"/>
 </form>

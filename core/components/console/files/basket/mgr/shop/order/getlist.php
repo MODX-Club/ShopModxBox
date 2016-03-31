@@ -8,14 +8,14 @@ $modx->switchContext('web');
 $modx->setLogLevel(3);
 $modx->setLogTarget('HTML');
  
-$namespace = 'basket';        // Неймспейс комопонента
+$namespace = 'shopmodx';        // Неймспейс комопонента
 
 $params = array(  
-    "json"  => false,
+    "format"  => false,
     // "order_id"  => 1,    // ID конкретного заказа
 );
 
-if(!$response = $modx->runProcessor('mgr/shop/order/getlist',
+if(!$response = $modx->runProcessor('shopmodx/orders/getlist',
 $params
 , array(
 'processors_path' => $modx->getObject('modNamespace', $namespace)->getCorePath().'processors/',

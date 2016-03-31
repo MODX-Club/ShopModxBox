@@ -1,3 +1,12 @@
+ShopModxBox-2.8.0-beta
+=============================================================
+- Updated packages modxSite, Ace, Login, shopModx
+- Installed packages modSearch, UserKarma
+- Added translit table russian-modxclub
+- Fix see a list of other people's orders
+- Added discounts
+
+
 ShopModxBox-2.7.0-beta
 =============================================================
 - Updated packages Console, Ace

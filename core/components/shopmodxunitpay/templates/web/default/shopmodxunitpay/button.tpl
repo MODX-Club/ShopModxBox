@@ -10,5 +10,5 @@
     {/if}
     <input type="hidden" name="account" value="{$order_id}"><br>
     <input type="hidden" name="desc" value="{$desc}"><br>
-    <input class="btn" type="submit" value="Оплатить">
+    <input class="btn btn-primary" type="submit" value="Оплатить">
 </form>

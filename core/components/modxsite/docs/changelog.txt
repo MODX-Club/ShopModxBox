@@ -1,3 +1,8 @@
+modxSite-1.7.0
+=============================================================
+1. Added searching via modSearch extra
+
+
 modxSite-1.6.0
 =============================================================
 1. Added thumb processors

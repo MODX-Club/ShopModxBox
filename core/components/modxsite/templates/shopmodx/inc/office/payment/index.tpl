@@ -12,10 +12,11 @@
     {$params = [
         "order_id"  => $order_id
     ]}
-    {processor action="basket/mgr/orders/products/getdata" ns="basket" params=$params assign=result}
+    {processor action="shopmodx/orders/object" ns="shopmodx" params=$params assign=result}
+     
     
     {if $result.success && $result.object}
-        {$order = $result}
+        {$order = $result.object}
         
         {*
             UnitPay
