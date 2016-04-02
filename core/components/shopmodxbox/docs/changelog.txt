@@ -1,3 +1,9 @@
+ShopModxBox-3.1.1-beta
+=============================================================
+- Updated packages modxSite, shopModx
+- Minor bugfix
+
+
 ShopModxBox-3.1.0-beta
 =============================================================
 - Updated packages modxSite, Ace, Login, shopModx

@@ -1,16 +1,43 @@
 {extends file="shop/basket/layout.tpl"}
 
+{block name=params append}
+
+    {if $basket_action = $request.basket_action}
+        {$params = $request}
+        {$processor = "shopmodx/public/action"}
+    {/if}
+    
+{/block}
+
 {block name=basket_content}
     {field name=uri assign=current_uri}
  
-    {*<pre>
-        {print_r($Order)}
-    </pre> *}
-
+    {*
+        <pre>
+            {print_r($Order)}
+        </pre> 
+    *}
+    
+    {if $request && $basket_result}
+    
+        {if $basket_result.success}
+            {if $basket_result.message}
+                <div class="alert alert-success">
+                    {$basket_result.message}
+                </div>
+            {/if}
+        {else}
+            <div class="alert alert-success">
+                {$basket_result.message|default:"Ошибка выполнения запроса"}
+            </div>
+        {/if}
+    
+    {/if}
+    
     <div class="row-fluid">
         <div class="span12">
         
-            {if $Order && $Order._OrderProducts}
+            {if $Order && $Order._OrderProducts && $Order.status_id == '1'}
                 
                 {*
                     Получаем данные товаров

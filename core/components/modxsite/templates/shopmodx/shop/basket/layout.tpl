@@ -2,8 +2,13 @@
 {* depricated processor action="web/basket/entity/getdata" ns="basket" assign=basket_result*}
 
 {block name=params}
+
+    {$request = $smarty.request}
+    {$request = array_diff($request, ['q'  => $request.q])}
+
     {$params = [
-        "limit"     => 0
+        "limit"     => 0,
+        "new_object"    => false
     ]}
     {$processor = "shopmodx/orders/object"}
 {/block}

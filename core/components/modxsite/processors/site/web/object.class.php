@@ -52,7 +52,11 @@ class modSiteWebObjectProcessor extends modObjectProcessor{
             if (empty($primaryKey)){
                 return $this->modx->lexicon($this->objectType.'_err_ns');
             }
-            $this->object = $this->getObject($this->classKey,$primaryKey);
+            
+            $c = $this->modx->newQuery($this->classKey,$primaryKey);
+            $c = $this->prepareQueryBeforeCount($c);
+            
+            $this->object = $this->getObject($this->classKey,$c);
         }
         
         if (empty($this->object)){
@@ -61,6 +65,10 @@ class modSiteWebObjectProcessor extends modObjectProcessor{
         
         // else
         return true;
+    }
+    
+    public function prepareQueryBeforeCount(xPDOQuery $c) {
+        return $c;
     }
     
     

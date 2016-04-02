@@ -67,6 +67,12 @@ class modShopmodxOrdersRecalculateProcessor extends modShopmodxOrdersObjectProce
         return parent::beforeSave();
     }
     
+    
+    public function cleanup() {
+        
+        return $this->success('Корзина пересчитана', $this->object->toArray());
+    } 
+    
 }
 
 return 'modShopmodxOrdersRecalculateProcessor';
