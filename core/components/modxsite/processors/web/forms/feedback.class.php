@@ -16,7 +16,7 @@ class modWebFormsFeedbackProcessor extends modSiteWebFormProcessor{
     public function initialize(){
         
         $this->manager_group_ids = array(
-            $this->modx->getOption('shop.managers_notify_group', 1),
+            $this->modx->getOption('shop.managers_notify_group', null, 1),
         );
         
         return parent::initialize();
