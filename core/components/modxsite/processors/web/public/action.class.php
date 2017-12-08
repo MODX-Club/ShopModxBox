@@ -11,6 +11,42 @@ class modWebPublicActionProcessor extends modProcessor{
     
     public static function getInstance(modX &$modx,$className,$properties = array()) {
 
+        
+        foreach($properties as $field => & $value){
+
+            if(!is_scalar($value)){
+                continue;
+            }
+
+            $v = (string)$value;
+
+            if($v === "null"){
+                $value = null;
+            }
+            else if($v === "true"){
+                $value = true;
+            }
+            else if($v === "false"){
+                $value = false;
+            }
+            else if($v === "NaN"){
+                unset($properties[$field]);
+            }
+            else if($v === "undefined"){
+                unset($properties[$field]);
+            }
+        }
+        
+
+        $request_body = file_get_contents('php://input');
+
+        if($request_body AND $data = json_decode($request_body, 1)){
+            $properties = array_merge($properties, $data);
+        }
+
+
+        $modx->log(1, print_r($properties, 1), "FILE");
+
         // Здесь мы имеем возможность переопределить реальный класс процессора
         if(!empty($properties['pub_action']) && !self::$actualClassName){
              

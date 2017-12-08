@@ -1,4 +1,5 @@
 const defaultQuery = `
+
 ## Default
 query EditorState {
   editorState{
@@ -86,11 +87,39 @@ fragment EditorEntityGallery on EditorEntityGalleryType{
 
 ## Custom
 
+query apiData(
+  $modxResourcesLimit:Int = 0
+  $modxResourcesPage:Int
+  $withPagination:Boolean = false
+  $modxResourceContextKey:String
+  $modxResourceShowHidden:Boolean = true
+  $modxResourceShowUnpublished:Boolean = true
+  $modxResourcesStorage:ReactCmsStorageStoreType = remote
+  $modxResourceSort:[SortBy]
+  $apiGetResources:Boolean = true
+){
+  
+  ...RootMODXResources @include(if: $apiGetResources)
+  
+}
+
+# Сброс серверного кеша
+mutation clearCache{
+  clearCache @storage(store:remote)
+}
+
+
 query MODXResources(
   $modxResourcesLimit:Int = 10
   $modxResourcesPage:Int
   $withPagination:Boolean = false
-){
+  $modxResourceContextKey:String
+  $modxResourceShowHidden:Boolean
+  $modxResourceShowUnpublished:Boolean
+  $modxResourcesStorage:ReactCmsStorageStoreType
+  $modxResourceSort:[SortBy]
+)
+{
   
   ...RootMODXResources
   
@@ -101,7 +130,13 @@ fragment RootMODXResources on RootType{
   modxResourcesList(
     limit: $modxResourcesLimit
     page: $modxResourcesPage
-  ) @include(if:$withPagination)
+    context_key: $modxResourceContextKey
+    showhidden:$modxResourceShowHidden
+    showunpublished:$modxResourceShowUnpublished
+    sort:$modxResourceSort
+  ) 
+    @include(if:$withPagination)
+    @storage(store:$modxResourcesStorage)
   {
     count
     total
@@ -115,7 +150,13 @@ fragment RootMODXResources on RootType{
   modxResources(
     limit: $modxResourcesLimit
     page: $modxResourcesPage
-  ) @skip(if:$withPagination)
+    context_key: $modxResourceContextKey
+    showhidden:$modxResourceShowHidden
+    showunpublished:$modxResourceShowUnpublished
+    sort:$modxResourceSort
+  ) 
+    @skip(if:$withPagination)
+    @storage(store:$modxResourcesStorage)
   {
     ...MODXResources
   }
@@ -168,8 +209,6 @@ fragment MODXResourceFields on MODXResourceType{
   _other
   
 }
-
-
 
 `;
 

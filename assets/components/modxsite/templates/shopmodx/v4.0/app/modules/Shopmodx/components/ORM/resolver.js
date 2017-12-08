@@ -31,9 +31,19 @@ import {
   sortBy,
 } from 'react-cms/src/app/components/ORM/resolver';
 
+
+import {
+  storageDirective,
+} from 'react-cms/src/app/components/ORM/directives';
+
 export {
   sortBy,
 };
+
+
+import {
+  getDirectiveValue,
+} from 'react-cms/src/app/components/ORM/helpers.js';
 
 
 import MODXResourceType, {
@@ -66,6 +76,7 @@ const rootResolver = function(source, args, context, info){
 
   let {
     fieldName,
+    fieldNodes,
     returnType,
     operation,
   } = info;
@@ -74,126 +85,6 @@ const rootResolver = function(source, args, context, info){
   if(source){
     operation = undefined;
   }
-
-
-  // if(operation && operation.name){
-
-  //   switch(operation.name.value){
-
-  //     case "addCompany":
-
-  //       if(returnType === CompanyType){
-
-  //         return addCompany(source, args, context, info); 
-          
-  //       }
-
-  //       break;
-
-  //     case "addCompanyGalleryImage":
-
-  //       if(returnType === CompanyType){
-
-  //         return companyAddGalleryImage(source, args, context, info); 
-          
-  //       }
-
-  //       break;
-
-  //     case "addTopic":
-
-  //       if(returnType === ResourceType){
-
-  //         return addTopic(source, args, context, info); 
-          
-  //       }
-
-  //       break;
-
-  //     case "addComment":
-
-  //       if(returnType === CommentType){
-
-  //         return addComment(source, args, context, info); 
-          
-  //       }
-
-  //       break;
-
-  //     case "clearCache":
-
-
-
-  //       if(typeof window !== "undefined"){
-  //         throw("Операция не разрешена в окне");
-  //       }
-
-  //       const {
-  //         scope,
-  //       } = context;
-
-  //       return new Promise(async (resolve, reject) => {
-
-  //         try{
-
-  //           result = await scope.clearCache();
-
-
-
-  //           resolve(result);
-
-  //         }
-  //         catch(e){
-  //           reject(e);
-  //         }
-
-  //       });
-
-
-  //       break;
-
-  //     // Сохранение поискового запроса
-  //     case "updateCompany":
-
-  //       const {
-  //         remoteResolver,
-  //       } = context;
-
-  //       if(!remoteResolver){
-  //         throw("remoteResolver undefined");
-  //       }
-
-
-  //       return new Promise(async (resolve, reject) => {
-
-  //         try{
-
-  //           const result = await remoteResolver(null, args, context, info);
-
-
-
-  //           // if(result && result.success){
-
-  //           //   resolve(result);
-
-  //           // }
-  //           // else{
-  //           //   reject(result);
-  //           // }
-
-  //           resolve(result);
-
-  //         }
-  //         catch(e){
-  //           reject(e);
-  //         }
-
-  //       });
-
-  //       break;
-
-  //   }
-  // }
 
 
   if(source){
@@ -208,6 +99,28 @@ const rootResolver = function(source, args, context, info){
     // const {
     //   name: returnTypeName,
     // } = returnType;
+
+
+    const {
+      remoteResolver,
+    } = context;
+
+
+    const directives = fieldNodes[0].directives;
+
+    const storage = directives.filter(d => d.name.value === storageDirective.name)[0];
+
+
+    let store = getDirectiveValue(source, args, context, info, storage, "store");
+
+    console.log("store", store);
+
+    if(store === "remote"){
+
+      return remoteResolver(source, args, context, info);
+
+    }
+
 
 
     if(returnType instanceof ObjectsListType){

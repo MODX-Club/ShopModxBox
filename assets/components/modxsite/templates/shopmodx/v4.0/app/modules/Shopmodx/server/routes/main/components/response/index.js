@@ -900,7 +900,7 @@ export default class Response{
     return new GraphQLSchema({
       query: RootType,
       mutation: Mutation,
-      // directives: rootDirectives,
+      directives: rootDirectives,
     });
 
   }
@@ -1966,8 +1966,8 @@ export default class Response{
 
     let result;
 
-    // await this.localQuery({
-    await this.remoteQuery({
+    await this.localQuery({
+    // await this.remoteQuery({
       query,
       operationName,
       variables,
@@ -2085,10 +2085,10 @@ export default class Response{
         params,
       } = request || {};
 
-      // const {
-      //   req,
-      //   ...debugParams
-      // } = graphQLParams;
+      const {
+        req,
+        ...debugParams
+      } = graphQLParams;
 
       // console.log("response localQuery", "resolver");
       // debug("localQuery", debugParams);
@@ -2114,9 +2114,11 @@ export default class Response{
           req,
         }),
         fieldResolver: localResolver,
-        // directives: rootDirectives,
+        directives: rootDirectives,
       })
         .then((result) => {
+
+          // console.log("Response localQuery result", result);
 
           let {
             errors,
@@ -2214,7 +2216,7 @@ export default class Response{
           },
         }),
         fieldResolver: rootResolver,
-        // directives: rootDirectives,
+        directives: rootDirectives,
       })
         .then((result) => {
 

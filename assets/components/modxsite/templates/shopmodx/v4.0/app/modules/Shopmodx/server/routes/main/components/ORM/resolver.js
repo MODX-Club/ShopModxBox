@@ -33,90 +33,214 @@ const rootResolver = (source, args, context, info) => {
 
 
 
-    let result;
+  let result;
 
+
+  let {
+    fieldName,
+    operation,
+    returnType,
+  } = info;
+
+  // const {
+  //   ofType,
+  // } = returnType;
+
+
+  // console.log("operation", operation);
+  // console.log("source", source);
+
+  // Если это не корневой вызов, сбрасываем операцию, чтобы сквозной вызов не выполнялся
+  if(source){
+    operation = undefined;
+  }
+
+
+  if(operation && operation.name){
+
+    switch(operation.name.value){
+
+
+      // Сброс и обновление локального кеша приложения
+      case "clearCache":
+
+        if(typeof window !== "undefined"){
+          throw("Операция не разрешена в окне");
+        }
+
+        const {
+          scope,
+        } = context;
+
+        return new Promise(async (resolve, reject) => {
+
+          try{
+
+            result = await scope.clearCache();
+
+            resolve(result);
+
+          }
+          catch(e){
+            reject(e);
+          }
+
+        });
+
+
+        break;
+
+    }
+  }
+
+
+  if(source){
+
+    if(typeof source.fieldResolver === 'function'){
+      
+
+      
+      result = source.fieldResolver(source, args, context, info);
+    }
+
+    else result = source[fieldName];
+
+  }
+
+  if(result === undefined){
+
+    // Резолвим по типу объекта
 
     const {
-      fieldName,
-      operation,
       returnType,
     } = info;
 
-    // const {
-    //   ofType,
-    // } = returnType;
+    const {
+      name: returnTypeName,
+    } = returnType;
 
-    if(source){
 
-      if(typeof source.fieldResolver === 'function'){
-        
 
-        
-        result = source.fieldResolver(source, args, context, info);
-      }
-
-      else result = source[fieldName];
-
-    }
-
-    if(result === undefined){
-
-      // Резолвим по типу объекта
-
+    if(returnType instanceof ObjectsListType){
+      
       const {
-        returnType,
-      } = info;
-
-      const {
-        name: returnTypeName,
+        _fields: {
+          object: objectField,
+        },
       } = returnType;
 
+      if(objectField && objectField.type){
 
-
-      if(returnType instanceof ObjectsListType){
-        
         const {
-          _fields: {
-            object: objectField,
-          },
-        } = returnType;
-
-        if(objectField && objectField.type){
-
-          const {
-            type: objectType,
-          } = objectField;
-
-          const {
-            ofType,
-          } = objectType || {};
- 
-          return getObjectsList(ofType, source, args, context, info);
-        }
-
-
-      }
-
-      else if(returnType instanceof GraphQLList){
+          type: objectType,
+        } = objectField;
 
         const {
           ofType,
-        } = returnType;
+        } = objectType || {};
 
-        return getObjects(ofType, source, args, context, info);
-
-      }
-
-      else if(returnType instanceof GraphQLObjectType){
-
-
-        return getObject(returnType, source, args, context, info);
+        return getObjectsList(ofType, source, args, context, info);
       }
 
 
     }
 
-    return result;
+    else if(returnType instanceof GraphQLList){
+
+      const {
+        ofType,
+      } = returnType;
+
+      return getObjects(ofType, source, args, context, info);
+
+    }
+
+    else if(returnType instanceof GraphQLObjectType){
+
+
+      return getObject(returnType, source, args, context, info);
+    }
+
+
+  }
+
+  return result;
+
+}
+
+
+const getObjectsList = (ofType, source, args, context, info) => {
+
+  return new Promise( async (resolve, reject) => {
+
+    let result;
+
+    let resolver;
+
+    if(ofType === SiteContentType){
+
+      resolver = getSiteContentList;
+        
+    }
+
+    else if(ofType === MODXResourceType){
+
+      console.log("Server root resolver MODXResourceType", args);
+
+      resolver = getMODXResourcesList;
+        
+    }
+
+    if(resolver){
+      result = await resolver(source, args, context, info)
+      .then(r => r)
+      .catch(e => {
+        reject(e);
+      });
+
+
+      if(result){
+
+        const {
+          fieldNodes: {
+            0: {
+              selectionSet,
+            }
+          },
+        } = info;
+
+        const totalSelection = selectionSet && selectionSet.selections && selectionSet.selections.find(n => n && n.name && n.name.value === "total");
+
+
+        /*
+          Если запрошен список с постраничностью, то добавляем информацию о количестве и странице
+        */
+        if(totalSelection){
+
+          // Object.assign(result);
+          // console.log("result", result);
+
+          const {
+            page,
+            limit,
+          } = args;
+
+          Object.assign(result, {
+            page,
+            limit,
+            // count: result.object && result.object.length,
+          });
+
+        }
+
+      }
+
+    }
+
+
+    return resolve(result);
+
+  });
 
 }
 
@@ -178,40 +302,4 @@ const getObject = (ofType, source, args, context, info) => {
 
 export default rootResolver;
 
-
-
-const getObjectsList = (ofType, source, args, context, info) => {
-
-  return new Promise( async (resolve, reject) => {
-
-    let object;
-
-    let resolver;
-
-    if(ofType === SiteContentType){
-
-      resolver = getSiteContentList;
-        
-    }
-
-    else if(ofType === MODXResourceType){
-
-      resolver = getMODXResourcesList;
-        
-    }
-
-    if(resolver){
-      object = await resolver(source, args, context, info)
-      .then(r => r)
-      .catch(e => {
-        reject(e);
-      });
-    }
-
-
-    return resolve(object);
-
-  });
-
-}
 

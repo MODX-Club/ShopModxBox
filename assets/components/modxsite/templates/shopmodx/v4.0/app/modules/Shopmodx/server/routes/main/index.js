@@ -92,27 +92,27 @@ export default class Router extends ReactCmsRouter{
 
 
 
-  async loadData(){
+  // async loadData(){
 
 
-    // debug("loadData main");
+  //   // debug("loadData main");
 
-    // knex.raw("SET SESSION group_concat_max_len = 10000000;").then().catch(e => {
-    //   console.error("SET SESSION Error", e);
-    // });
+  //   // knex.raw("SET SESSION group_concat_max_len = 10000000;").then().catch(e => {
+  //   //   console.error("SET SESSION Error", e);
+  //   // });
 
-    // await this.loadApiData();
+  //   // await this.loadApiData();
 
-    // // this.loadMapData();
+  //   // // this.loadMapData();
 
-    // await this.loadCitiesData();
+  //   // await this.loadCitiesData();
 
-    // this.loadRedirects();
+  //   // this.loadRedirects();
 
-    this.inited = true;
+  //   this.inited = true;
 
-    return true;
-  }
+  //   return true;
+  // }
  
   getHeaderScripts(){
 

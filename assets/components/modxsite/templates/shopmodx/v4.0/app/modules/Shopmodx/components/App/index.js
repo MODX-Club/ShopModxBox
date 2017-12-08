@@ -92,8 +92,7 @@ import {
 export const createStores = function(){
 
   let stores = {
-    // CoordsStore: new DataStore(new Dispatcher()),   // Координаты трейсируемых объектов
-    // CompaniesStore: new DataStore(new Dispatcher()),
+    MODXResourcesStore: new DataStore(new Dispatcher()),
     // RatingsStore: new DataStore(new Dispatcher()),
     // UsersStore: new DataStore(new Dispatcher()),
     // CommentsStore: new DataStore(new Dispatcher()),
@@ -124,22 +123,16 @@ export const createStores = function(){
 
 export const initData = function(apiData){
   let {
+    MODXResourcesStore,
   } = this.state;
 
   if(apiData){
 
     const {
-      places,
-      contacts,
-      services,
-      places_contacts,
-      places_services,
-      places_types,
-      contacts_services,
-      contactGrades,
+      modxResources,
     } = apiData;
 
-    // ContactGradesStore.getDispatcher().dispatch(ContactGradesStore.actions['SET_DATA'], contactGrades || []);
+    modxResources !== undefined && MODXResourcesStore.getDispatcher().dispatch(MODXResourcesStore.actions['SET_DATA'], modxResources || []);
 
   }
 
@@ -288,7 +281,7 @@ export class AppMain extends ReactCmsApp{
     Object.assign(this.state, {
       notifications_store: notifications_store,
       inited: false,
-      developMode: false,
+      developMode: true,
     }, createStores());
 
     let {

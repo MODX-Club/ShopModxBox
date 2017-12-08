@@ -2,6 +2,7 @@
 
 import {
   MainApp,
+  DefaultPage,
   MainPage,
   DbPage,
 } from "modules/Shopmodx";
@@ -34,12 +35,12 @@ let routes = {
       path: "/db",
       component: DbPage,
     },
-    // {
-    // path: "*",
-    //   // name: "notfound",
-    //   component: NotFoundPage,
-    //   // redirect: '/'
-    // },
+    {
+    path: "*",
+      // name: "notfound",
+      component: DefaultPage,
+      // redirect: '/'
+    },
   ]
 };
 
