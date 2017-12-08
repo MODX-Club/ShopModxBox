@@ -1,0 +1,103 @@
+---
+layout: 'default'
+hljs: 	'light'
+component:	'alert'
+---
+<section class="blue">
+    <div class="content">
+      <div class="grid two">
+        <div class="column">
+          <h1> Test Page</h1>
+		  Page used for testing 
+        </div>
+        <div class="right column">
+          <div class="dialog">
+            <div> Header </div>
+            <h1> Dialog </h1>
+			<div>Contents</div>						
+            <div><div class="left" style="margin:0 10px;">Auxiliary</div><div>Primary</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div style="display:none">
+<iframe id="c" width="100%" height="100%" marginheight="0" marginwidth="0" frameborder="0" src="test.html"></iframe>
+    <div id="c2" style="background:red;height:100%;">
+    This my custom content
+        <select> 
+            <option> First </option>
+            <option> Second </option>
+        </select>
+
+        <textarea> Demo </textarea>
+
+    </div>
+  </div>
+  <section class="dark">
+    <div class="content">
+      <div class="segment">
+        <h1><i class="fa fa-code"></i> Demo</h1>
+        <hr />
+<pre>
+<code class="lang-javascript">
+alertify.minimalDialog || alertify.dialog('minimalDialog',function(){
+    var iframe;
+    return {
+        main:function(content){
+            //this.setContent(content); 
+        },
+        setup:function(){
+            var self = this;
+            return{
+                focus:{element:self.focusSelector,select:true},
+                options:{
+                    frameless:true,
+                    padding:false,
+                    overflow:false,
+                    resizable:false,
+                    movable:true,
+                    modal:false
+                }
+            }
+        },
+        build:function(){
+          if (!iframe) {
+            iframe = document.createElement("iframe");
+            iframe.width = iframe.height = "100%";
+            iframe.marginHeight = iframe.marginWidth = 0;
+            iframe.frameBorder = "no";            
+            this.elements.content.appendChild(iframe);
+            $(iframe).css({top:0,bottom:0}).scrollLock();
+            this.elements.body.style.minHeight="500px";
+          }
+        },
+        prepare:function(){
+            iframe.src = "arabic.html";
+            setTimeout(function(){                
+                //iframe.contentWindow.document.body.onmousewheel = function(event){  console.log('test', event.srcElement.tagName); event.stopPropagation();};
+            }, 2000);
+        },
+        focusSelector:function(){
+            return this.elements.body.querySelector(this.get('selector'));
+        },
+        settings:{
+            selector:undefined
+        }
+    };
+});
+alertify.minimalDialog("nothing").moveTo(0,0);
+</code> 
+</pre>
+
+
+        <div class="RIGHT">
+          <a class="button example" href="javascript:void(0);">
+            <span> Run </span>
+          </a>
+        </div>
+      </div>
+			<br/>
+			<br/>
+    </div>
+  </section>
