@@ -1,3 +1,9 @@
+modxSite-1.8.0
+=============================================================
+1. Added public-processors
+2. Code refactoring
+
+
 modxSite-1.7.2
 =============================================================
 1. Added method modSiteWebObjectProcessor::prepareQueryBeforeCount()

@@ -25,8 +25,61 @@ class modWebPublicActionProcessor extends modProcessor{
                     require_once dirname(dirname(__FILE__)) . '/users/login.class.php';
                     self::$actualClassName = "modWebUsersLoginProcessor";
                     break;
-                 
-                
+
+
+                case 'getpage':
+                    require_once dirname(dirname(__FILE__)) . '/import/getpage.class.php';
+                    self::$actualClassName = "modWebImportGetpageProcessor";
+                    break;
+
+
+                case 'update_product':
+                    require_once dirname(dirname(__FILE__)) . '/catalog/products/update.class.php';
+                    self::$actualClassName = "modWebCatalogProductsUpdateProcessor";
+                    break;
+
+                case 'resources/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/resources/getdata.class.php';
+                    self::$actualClassName = "modWebResourcesGetdataProcessor";
+                    break;
+
+                case 'catalog/categories/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/catalog/category/getdata.class.php';
+                    self::$actualClassName = "modWebCatalogCategoryGetdataProcessor";
+                    break;
+
+                case 'catalog/products/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/catalog/products/getdata.class.php';
+                    self::$actualClassName = "modWebCatalogProductsGetdataProcessor";
+                    break;
+
+                case 'form/callme':
+                    require_once dirname(dirname(__FILE__)) . '/forms/callme.class.php';
+                    self::$actualClassName = "modWebFormsCallmeProcessor";
+                    break;
+                    
+                case 'orders/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/orders/getdata.class.php';                    
+                    self::$actualClassName =  'modWebOrdersGetdataProcessor';
+                    break;
+                    
+                case 'orders/object':
+                    require_once dirname(dirname(__FILE__)) . '/orders/object.class.php';                    
+                    self::$actualClassName =  'modWebOrdersObjectProcessor';
+                    break;
+
+                case 'users/getdata':
+                    require __DIR__ . '/../users/getdata.class.php';
+                    self::$actualClassName = 'modWebUsersGetdataProcessor';
+                    break;
+
+                case 'users/own_profile/getdata':
+                    require __DIR__ . '/../users/own_profile/getdata.class.php';
+                    self::$actualClassName = 'modWebUsersOwnprofileGetdataProcessor';
+                    break;
+
+
+
                 default:;
             } 
         }

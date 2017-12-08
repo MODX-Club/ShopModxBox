@@ -192,7 +192,7 @@ class modSiteWebObjectProcessor extends modObjectProcessor{
         }
         
         // else
-        return $this->success('', $this->object);
+        return $this->cleanup();
     }
     
     /**
@@ -311,7 +311,7 @@ class modSiteWebObjectProcessor extends modObjectProcessor{
     }
     
     public function cleanup() {
-        return $this->success('Объект успешно сохранен', $this->object);
+        return $this->success('', $this->object);
     }
     
     

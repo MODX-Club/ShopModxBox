@@ -20,8 +20,29 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
             'page'              => 0,   // !empty($_REQUEST['page']) ? (int)$_REQUEST['page'] : 0,
             'getPage'           => false,
             'getPageParamsSet'  => "getPage",   // Имя набора параметров для getPage
+            "format"            => "",          // json will return correct array
+            "count"             => true,
         ));
-        
+
+
+        if($id = (int)$this->getProperty("id")){
+            $this->setProperties(array(
+                "where" => array(
+                    "id"    => $id,
+                ),
+                "limit" => 1,
+                "current"   => true,
+            ));
+        }
+
+        if($this->getProperty('current')){
+            $this->setProperty('limit', 1);
+        }
+
+        if($page = $this->getProperty('page') AND $page > 1 AND $limit = $this->getProperty('limit', 0)){
+            $this->setProperty('start', ($page-1) * $limit);
+        }
+
         $initialized = parent::initialize();
         
         /*
@@ -29,14 +50,6 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         */
         if($initialized !== true){
             return $initialized;
-        }
-        
-        if($this->getProperty('current')){
-            $this->setProperty('limit', 1);
-        }
-        
-        if($page = $this->getProperty('page') AND $page > 1 AND $limit = $this->getProperty('limit', 0)){
-            $this->setProperty('start', ($page-1) * $limit);
         }
         
         return !$this->hasErrors();
@@ -173,6 +186,11 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
      * Count total results
      */
     protected function countTotal($className, xPDOQuery & $criteria){
+
+        if(!$this->getProperty("count")){
+            return 1;
+        }
+
         $count = 0; 
         
         $query = clone($criteria);
@@ -265,32 +283,6 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         
         return $response;
     }
-
-    public function outputArray(array $array, $count = false){
-        
-        if($this->getProperty('current')){
-            if($array){
-                $array = current($array);
-                $_count = 1;
-            }
-            else{
-                $_count = 0;
-            }
-        }
-        else{
-            $_count = count($array);
-        }
-        
-        return $this->prepareResponse(array(
-            'success' => true,
-            'message' => $this->getMessage(),
-            'count'   => $_count,
-            'total'   => $count,
-            'limit'   => (int)$this->getProperty('limit', 0),
-            'page'    => (int)$this->getProperty('page', 0),
-            'object'  => $array,
-        ));
-    }
     
     
     protected function getSourcePath($id = null, $callback = 'getBaseUrl', $params = array()){
@@ -321,6 +313,38 @@ class modSiteWebGetlistProcessor extends modObjectGetListProcessor{
         
         $result = $this->sources[$id]->$callback($params); 
         
+        return $result;
+    }
+    
+    public function outputArray(array $array, $count = false){
+        
+        if($this->getProperty('current')){
+            if($array){
+                $array = current($array);
+                $_count = 1;
+            }
+            else{
+                $_count = 0;
+            }
+        }
+        else{
+            $_count = count($array);
+
+            if($this->getProperty("format") == "json"){
+                $array = array_values($array);
+            }
+        }
+
+        $result = $this->prepareResponse(array(
+            'success' => true,
+            'message' => $this->getMessage(),
+            'count'   => $_count,
+            'total'   => $count,
+            'limit'   => (int)$this->getProperty('limit', 0),
+            'page'    => (int)$this->getProperty('page', 0),
+            'object'  => $array,
+        ));
+
         return $result;
     }
 }
