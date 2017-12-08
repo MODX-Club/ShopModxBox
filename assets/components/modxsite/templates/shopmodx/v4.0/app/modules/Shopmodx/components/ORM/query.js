@@ -91,12 +91,15 @@ query apiData(
   $modxResourcesLimit:Int = 0
   $modxResourcesPage:Int
   $withPagination:Boolean = false
-  $modxResourceContextKey:String
-  $modxResourceShowHidden:Boolean = true
-  $modxResourceShowUnpublished:Boolean = true
+  $modxResourcesContextKey:String
+  $modxResourcesShowHidden:Boolean = true
+  $modxResourcesShowUnpublished:Boolean = true
   $modxResourcesStorage:ReactCmsStorageStoreType = remote
-  $modxResourceSort:[SortBy]
+  $modxResourcesSort:[MODXResourceSortBy]
+  $modxResourcesParent:Int
   $apiGetResources:Boolean = true
+  $modxResourcesTemplates:[Int]
+  $modxResourcesOptions:JSON
 ){
   
   ...RootMODXResources @include(if: $apiGetResources)
@@ -113,11 +116,14 @@ query MODXResources(
   $modxResourcesLimit:Int = 10
   $modxResourcesPage:Int
   $withPagination:Boolean = false
-  $modxResourceContextKey:String
-  $modxResourceShowHidden:Boolean
-  $modxResourceShowUnpublished:Boolean
+  $modxResourcesContextKey:String
+  $modxResourcesShowHidden:Boolean
+  $modxResourcesShowUnpublished:Boolean
   $modxResourcesStorage:ReactCmsStorageStoreType
-  $modxResourceSort:[SortBy]
+  $modxResourcesSort:[MODXResourceSortBy]
+  $modxResourcesParent:Int
+  $modxResourcesTemplates:[Int]
+  $modxResourcesOptions:JSON
 )
 {
   
@@ -130,10 +136,13 @@ fragment RootMODXResources on RootType{
   modxResourcesList(
     limit: $modxResourcesLimit
     page: $modxResourcesPage
-    context_key: $modxResourceContextKey
-    showhidden:$modxResourceShowHidden
-    showunpublished:$modxResourceShowUnpublished
-    sort:$modxResourceSort
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$modxResourcesParent
+    templates:$modxResourcesTemplates
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
   ) 
     @include(if:$withPagination)
     @storage(store:$modxResourcesStorage)
@@ -150,10 +159,13 @@ fragment RootMODXResources on RootType{
   modxResources(
     limit: $modxResourcesLimit
     page: $modxResourcesPage
-    context_key: $modxResourceContextKey
-    showhidden:$modxResourceShowHidden
-    showunpublished:$modxResourceShowUnpublished
-    sort:$modxResourceSort
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$modxResourcesParent
+    templates:$modxResourcesTemplates
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
   ) 
     @skip(if:$withPagination)
     @storage(store:$modxResourcesStorage)

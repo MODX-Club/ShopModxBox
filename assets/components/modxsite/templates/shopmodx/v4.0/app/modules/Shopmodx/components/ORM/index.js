@@ -94,17 +94,16 @@ export default new GraphQLObjectType({
       type: MODXResourceType,
       name: "modxResourcesList",
       description: "Список MODX-документов с постраничностью",
-      args: Object.assign({}, listArgs, MODXResourceArgs),
+      args: Object.assign({}, MODXResourceArgs),
     }),
     modxResources: {
       type: new GraphQLList(MODXResourceType),
       description: "Список MODX-документов",
-      args: Object.assign({}, listArgs, MODXResourceArgs),
+      args: Object.assign({}, MODXResourceArgs),
     },
     modxResource: {
       type: MODXResourceType,
       description: MODXResourceType.description,
-      args: listArgs,
     },
 
   }),
