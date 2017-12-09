@@ -113,8 +113,6 @@ const rootResolver = function(source, args, context, info){
 
     let store = getDirectiveValue(source, args, context, info, storage, "store");
 
-    console.log("store", store);
-
     if(store === "remote"){
 
       return remoteResolver(source, args, context, info);

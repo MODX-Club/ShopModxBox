@@ -100,6 +100,8 @@ query apiData(
   $apiGetResources:Boolean = true
   $modxResourcesTemplates:[Int]
   $modxResourcesOptions:JSON
+  $modxResourcesUri:String
+  $getImageFormats:Boolean = false
 ){
   
   ...RootMODXResources @include(if: $apiGetResources)
@@ -124,10 +126,40 @@ query MODXResources(
   $modxResourcesParent:Int
   $modxResourcesTemplates:[Int]
   $modxResourcesOptions:JSON
+  $modxResourcesUri:String
+  $getImageFormats:Boolean = false
 )
 {
   
   ...RootMODXResources
+  
+}
+
+query MODXResourceById(
+  $modxResourceId:Int!
+  $getImageFormats:Boolean = false
+)
+{
+  
+  modxResource(
+    id:$modxResourceId
+  ){
+    ...MODXResource
+  }
+  
+}
+
+query MODXResourceByUri(
+  $modxResourceUri:String!
+  $getImageFormats:Boolean = false
+)
+{
+  
+  modxResource(
+    uri:$modxResourceUri
+  ){
+    ...MODXResource
+  }
   
 }
 
@@ -141,6 +173,7 @@ fragment RootMODXResources on RootType{
     showunpublished:$modxResourcesShowUnpublished
     parent:$modxResourcesParent
     templates:$modxResourcesTemplates
+    uri:$modxResourcesUri
     sort:$modxResourcesSort
     options:$modxResourcesOptions
   ) 
@@ -152,7 +185,7 @@ fragment RootMODXResources on RootType{
     limit
     page
     object{
-      ...MODXResources
+      ...MODXResource
     }
   }
   
@@ -164,18 +197,19 @@ fragment RootMODXResources on RootType{
     showunpublished:$modxResourcesShowUnpublished
     parent:$modxResourcesParent
     templates:$modxResourcesTemplates
+    uri:$modxResourcesUri
     sort:$modxResourcesSort
     options:$modxResourcesOptions
   ) 
     @skip(if:$withPagination)
     @storage(store:$modxResourcesStorage)
   {
-    ...MODXResources
+    ...MODXResource
   }
   
 }
 
-fragment MODXResources on MODXResourceType{
+fragment MODXResource on MODXResourceType{
   
   ...MODXResourceFields
   
@@ -216,6 +250,19 @@ fragment MODXResourceFields on MODXResourceType{
   uri_override
   hide_children_in_tree
   show_in_tree
+  price
+  price_old
+  article
+  image
+  imageFormats @include(if:$getImageFormats)
+  {
+    thumb
+    slider_thumb
+    slider_dot_thumb
+    small
+    middle
+    big
+  }
   properties
   tvs
   _other

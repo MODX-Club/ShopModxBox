@@ -114,6 +114,10 @@
             {/block}
             
             {block name=content}
+                {$modx->getChunk("test4", [
+                    "sdfsdf" => "SDFsdfs"
+                ])}
+                [[!$test4]]
                 {$modx->resource->content}
             {/block} 
             

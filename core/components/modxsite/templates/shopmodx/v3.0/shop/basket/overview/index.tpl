@@ -27,7 +27,7 @@
                 </div>
             {/if}
         {else}
-            <div class="alert alert-danger">
+            <div class="alert alert-success">
                 {$basket_result.message|default:"Ошибка выполнения запроса"}
             </div>
         {/if}

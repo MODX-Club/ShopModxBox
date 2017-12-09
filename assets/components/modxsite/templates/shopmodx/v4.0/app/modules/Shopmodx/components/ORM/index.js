@@ -104,6 +104,16 @@ export default new GraphQLObjectType({
     modxResource: {
       type: MODXResourceType,
       description: MODXResourceType.description,
+      args: {
+        id: {
+          type: GraphQLInt,
+          description: "Поиск по ID",
+        },
+        uri: {
+          type: GraphQLString,
+          description: "Поиск по УРЛу",
+        },
+      },
     },
 
   }),
