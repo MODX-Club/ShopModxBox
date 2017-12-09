@@ -25,6 +25,7 @@ export default class MainMenu extends Component{
     remoteQuery: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     document: PropTypes.object.isRequired,
+    menuItems: PropTypes.array.isRequired,
   };
 
 
@@ -102,6 +103,7 @@ export default class MainMenu extends Component{
         user,
       },
       userActions,
+      menuItems,
     } = this.context;
 
     const {
@@ -135,75 +137,120 @@ export default class MainMenu extends Component{
             </div>
           </Link>
         </div> 
-        
-        <div id="navbar-main" className="collapse navbar-collapse navbar-right"> 
 
-          {user
-            ?
+        <div 
+          id="navbar-main" 
+          className="collapse navbar-collapse navbar-right"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            padding: 10,
+          }}
+        > 
+          
+          {menuItems && menuItems.map(n => {
 
-            <span
+            const {
+              id,
+              pagetitle,
+              menutitle,
+              uri,
+            } = n;
+
+            /*
+              За яндексом было замечено, что он неправильно индексирует относительные ссылки на реакт-сайтах
+            */
+            const link = `/${uri}`;
+
+            return <Link
+              key={id}
+              to={link}
+              href={link}
+              title={pagetitle}
               style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItem: "center",
+                padding: 5,
               }}
             >
-              
-              <a 
-                id="office" 
-                href="javascript:;" 
-                data-toggle="dropdown" 
-                className="dropdown-toggle flex align-center"
+              {menutitle || pagetitle}
+            </Link>
+
+          }) || null}
+
+          <div
+            style={{
+              marginLeft: 10,
+            }}
+          >
+            
+            {user
+              ?
+
+              <span
                 style={{
                   display: "flex",
-                  marginRight: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
                 }}
               >
-                <Avatar 
-                  user={user}
+                
+                <a 
+                  id="office" 
+                  href="javascript:;" 
+                  data-toggle="dropdown" 
+                  className="dropdown-toggle flex align-center"
                   style={{
-                    width: 20,
-                    height: 20,
-                    fontSize: "18px",
+                    display: "flex",
+                    marginRight: 5,
                   }}
-                />
+                >
+                  <Avatar 
+                    user={user}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      fontSize: "18px",
+                    }}
+                  />
 
-              </a>
+                </a>
 
+                <a 
+                  href="javascript:;"
+                  onClick={e => {
+                    userActions.logout();
+                  }}
+                >
+                  <i className="glyphicon glyphicon-log-out"></i> Выйти
+                </a>
+                
+              </span>
+
+              :
               <a 
-                href="javascript:;"
-                onClick={e => {
-                  userActions.logout();
+                href="javascript:;" 
+                rel="nofollow"
+                onClick={event => {
+                  userActions.loginClicked();
                 }}
               >
-                <i className="glyphicon glyphicon-log-out"></i> Выйти
+                <Grid 
+                  container
+                  gutter={0}
+                  align="center"
+                >
+                  <LoginIcon 
+                    style={{
+                      height: 16,
+                      width: 16,
+                    }}
+                  />  Войти
+                </Grid>
               </a>
               
-            </span>
+            }
 
-            :
-            <a 
-              href="javascript:;" 
-              rel="nofollow"
-              onClick={event => {
-                userActions.loginClicked();
-              }}
-            >
-              <Grid 
-                container
-                gutter={0}
-                align="center"
-              >
-                <LoginIcon 
-                  style={{
-                    height: 16,
-                    width: 16,
-                  }}
-                />  Войти
-              </Grid>
-            </a>
-            
-          }
+          </div>
 
  
           {/*

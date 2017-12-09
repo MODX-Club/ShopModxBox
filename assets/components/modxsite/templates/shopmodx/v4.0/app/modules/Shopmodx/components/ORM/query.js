@@ -159,13 +159,70 @@ fragment UserFields on UserType{
 }
 
 
+query MainMenuData(
+  $modxResourcesLimit:Int = 10
+  $modxResourcesPage:Int
+  $modxResourcesContextKey:String = "web"
+  $modxResourcesShowHidden:Boolean = false
+  $modxResourcesShowUnpublished:Boolean = false
+  $modxResourcesStorage:ReactCmsStorageStoreType
+  $modxResourcesSort:[MODXResourceSortBy] = {
+    by: menuindex
+    dir: asc
+  }
+  $modxResourcesParent:Int = 0
+  $modxResourcesTemplates:[Int]
+  $modxResourcesOptions:JSON
+  $modxResourcesUri:String
+  $getImageFormats:Boolean = false
+)
+{
+  
+  menuItems:modxResources(
+    limit: $modxResourcesLimit
+    page: $modxResourcesPage
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$modxResourcesParent
+    templates:$modxResourcesTemplates
+    uri:$modxResourcesUri
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
+  )
+    @storage(store:$modxResourcesStorage)
+  {
+    id
+    pagetitle
+    longtitle
+    menutitle
+    hidemenu
+    published
+    deleted
+    alias
+    uri
+    context_key
+    image
+    imageFormats @include(if:$getImageFormats)
+    {
+      thumb
+      slider_thumb
+      slider_dot_thumb
+      small
+      middle
+      big
+    }
+  }
+  
+}
 
 
+# Все документы
 query MODXResources(
   $modxResourcesLimit:Int = 10
   $modxResourcesPage:Int
   $withPagination:Boolean = false
-  $modxResourcesContextKey:String
+  $modxResourcesContextKey:String = "web"
   $modxResourcesShowHidden:Boolean
   $modxResourcesShowUnpublished:Boolean
   $modxResourcesStorage:ReactCmsStorageStoreType
@@ -182,14 +239,184 @@ query MODXResources(
   
 }
 
+
+# Все товары
+query CatalogProducts(
+  $modxResourcesLimit:Int = 10
+  $modxResourcesPage:Int
+  $withPagination:Boolean = false
+  $modxResourcesContextKey:String = "web"
+  $modxResourcesShowHidden:Boolean
+  $modxResourcesShowUnpublished:Boolean
+  $modxResourcesStorage:ReactCmsStorageStoreType
+  $modxResourcesSort:[MODXResourceSortBy]
+  $modxResourcesParent:Int
+  $modxResourcesTemplates:[Int] = [3]
+  $modxResourcesOptions:JSON
+  $modxResourcesUri:String
+  $getImageFormats:Boolean = false
+)
+{
+  
+  ...RootMODXResources
+  
+}
+
+
+# Все категории
+query CatalogCategories(
+  $modxResourcesLimit:Int = 10
+  $modxResourcesPage:Int
+  $withPagination:Boolean = false
+  $modxResourcesContextKey:String = "web"
+  $modxResourcesShowHidden:Boolean
+  $modxResourcesShowUnpublished:Boolean
+  $modxResourcesStorage:ReactCmsStorageStoreType
+  $modxResourcesSort:[MODXResourceSortBy]
+  $modxResourcesParent:Int
+  $modxResourcesTemplates:[Int] = [2]
+  $modxResourcesOptions:JSON
+  $modxResourcesUri:String
+  $getImageFormats:Boolean = false
+)
+{
+  
+  ...RootMODXResources
+  
+}
+
+query CatalogCategory(
+  $categoryId:Int!
+  $modxResourcesLimit:Int = 10
+  $modxResourcesPage:Int
+  $withPagination:Boolean = false
+  $modxResourcesContextKey:String = "web"
+  $modxResourcesShowHidden:Boolean
+  $modxResourcesShowUnpublished:Boolean
+  $modxResourcesStorage:ReactCmsStorageStoreType
+  $modxResourcesSort:[MODXResourceSortBy]
+  $modxResourcesCategoryTemplates:[Int] = [2]
+  $modxResourcesProductTemplates:[Int] = [3]
+  $modxResourcesOptions:JSON
+  $modxResourcesUri:String
+  $getImageFormats:Boolean = false
+  $categoryGetSubCategories:Boolean = true
+  $categoryGetProducts:Boolean = true
+)
+{
+   
+  ...CategorySubCategories @include(if:$categoryGetSubCategories)
+  
+  
+  ...CategoryProducts @include(if:$categoryGetProducts)
+  
+}
+
+
+fragment CategorySubCategories on RootType{
+  # дочерние категории
+  subcategoriesList: modxResourcesList(
+    limit: $modxResourcesLimit
+    page: $modxResourcesPage
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$categoryId
+    templates:$modxResourcesCategoryTemplates
+    uri:$modxResourcesUri
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
+  ) 
+    @include(if:$withPagination)
+    @storage(store:$modxResourcesStorage)
+  {
+    count
+    total
+    limit
+    page
+    object{
+      ...MODXResource
+    }
+  }
+  
+  subcategories: modxResources(
+    limit: $modxResourcesLimit
+    page: $modxResourcesPage
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$categoryId
+    templates:$modxResourcesCategoryTemplates
+    uri:$modxResourcesUri
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
+  ) 
+    @skip(if:$withPagination)
+    @storage(store:$modxResourcesStorage)
+  {
+    ...MODXResource
+  }
+}
+
+fragment CategoryProducts on RootType{
+  
+  #дочерние товары
+  productsList: modxResourcesList(
+    limit: $modxResourcesLimit
+    page: $modxResourcesPage
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$categoryId
+    templates:$modxResourcesProductTemplates
+    uri:$modxResourcesUri
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
+  ) 
+    @include(if:$withPagination)
+    @storage(store:$modxResourcesStorage)
+  {
+    count
+    total
+    limit
+    page
+    object{
+      ...MODXResource
+    }
+  }
+  
+  products: modxResources(
+    limit: $modxResourcesLimit
+    page: $modxResourcesPage
+    context_key: $modxResourcesContextKey
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
+    parent:$categoryId
+    templates:$modxResourcesProductTemplates
+    uri:$modxResourcesUri
+    sort:$modxResourcesSort
+    options:$modxResourcesOptions
+  ) 
+    @skip(if:$withPagination)
+    @storage(store:$modxResourcesStorage)
+  {
+    ...MODXResource
+  }
+}
+
+
 query MODXResourceById(
   $modxResourceId:Int!
   $getImageFormats:Boolean = false
+  $modxResourcesShowHidden:Boolean
+  $modxResourcesShowUnpublished:Boolean
 )
 {
   
   modxResource(
     id:$modxResourceId
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
   ){
     ...MODXResource
   }
@@ -199,11 +426,15 @@ query MODXResourceById(
 query MODXResourceByUri(
   $modxResourceUri:String!
   $getImageFormats:Boolean = false
+  $modxResourcesShowHidden:Boolean
+  $modxResourcesShowUnpublished:Boolean
 )
 {
   
   modxResource(
     uri:$modxResourceUri
+    showhidden:$modxResourcesShowHidden
+    showunpublished:$modxResourcesShowUnpublished
   ){
     ...MODXResource
   }

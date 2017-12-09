@@ -41,6 +41,7 @@ import {
 
 import MODXResourceType, {
   MODXResourceArgs,
+  MODXResourcesArgs,
 } from './MODXResource';
 
 import UserType, {
@@ -128,26 +129,17 @@ export default new GraphQLObjectType({
       type: MODXResourceType,
       name: "modxResourcesList",
       description: "Список MODX-документов с постраничностью",
-      args: Object.assign({}, MODXResourceArgs),
+      args: Object.assign({}, MODXResourcesArgs),
     }),
     modxResources: {
       type: new GraphQLList(MODXResourceType),
       description: "Список MODX-документов",
-      args: Object.assign({}, MODXResourceArgs),
+      args: Object.assign({}, MODXResourcesArgs),
     },
     modxResource: {
       type: MODXResourceType,
       description: MODXResourceType.description,
-      args: {
-        id: {
-          type: GraphQLInt,
-          description: "Поиск по ID",
-        },
-        uri: {
-          type: GraphQLString,
-          description: "Поиск по УРЛу",
-        },
-      },
+      args: MODXResourceArgs,
     },
 
   }),

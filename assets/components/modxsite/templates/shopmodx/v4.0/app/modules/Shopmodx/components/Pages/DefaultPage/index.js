@@ -12,8 +12,22 @@ import PropTypes from 'prop-types';
 import Page from '../';
 
 import ProductView from 'modules/Shopmodx/components/Pages/Catalog/Products/Product/View';
+import CatalogView from 'modules/Shopmodx/components/Pages/Catalog/View';
+
+
+let {
+	...defaultProps = {}
+} = Page.defaultProps || {};
+
+Object.assign(defaultProps, {
+	ProductView,
+	CatalogView,
+});
 
 export default class DefaultPage extends Page{
+
+
+	static defaultProps = defaultProps;
 
 
 	loadData(options = {}){
@@ -60,6 +74,7 @@ export default class DefaultPage extends Page{
 			variables: {
 				modxResourceUri: pathname,
 				modxResourcesStorage: "local",
+				modxResourcesShowHidden: true,
 				getImageFormats: true,
 			},
 			req,
@@ -75,30 +90,63 @@ export default class DefaultPage extends Page{
 		}
 
 
-		// Получаем текущего пользователя
-		
-		await provider({
-			operationName: "CurrentUser",
-			variables: {
-			},
-			req,
-		})
-		.then(r => {
 
-			const {
-				user,
-			} = r.data;
 
-			Object.assign(result.data, {
-				user,
+		if(typeof window === "undefined"){
+			
+			// Получаем текущего пользователя
+			await provider({
+				operationName: "CurrentUser",
+				variables: {
+				},
+				req,
+			})
+			.then(r => {
+
+				const {
+					user,
+				} = r.data;
+
+				Object.assign(result.data, {
+					user,
+				});
+
+				// console.log("DefaultPage CurrentUser", r);
+
+			})
+			.catch(e => {
+				throw(e);
 			});
 
-			// console.log("DefaultPage CurrentUser", r);
+			/*
+				Здесь получаем только данные, необходымые для инициализации на стороне сервера
+			*/
 
-		})
-		.catch(e => {
-			throw(e);
-		});
+			// Получаем донные для основного меню
+			await provider({
+				operationName: "MainMenuData",
+				variables: {
+				},
+				req,
+			})
+			.then(r => {
+
+				const {
+					menuItems,
+				} = r.data;
+
+				Object.assign(result.data, {
+					menuItems,
+				});
+
+				console.log("DefaultPage MainMenuData", r);
+
+			})
+			.catch(e => {
+				throw(e);
+			});
+
+		}
 
 
 		// console.log("DefaultPage result", result);
@@ -143,6 +191,11 @@ export default class DefaultPage extends Page{
 	renderComponent(){
 
 		const {
+			ProductView,
+			CatalogView,
+		} = this.props;
+
+		const {
 			...componentState
 		} = this.state;
 
@@ -166,6 +219,13 @@ export default class DefaultPage extends Page{
 			case 3:
 
 				content = <ProductView
+					key={id}
+					{...componentState}
+				/>
+
+			case 17:
+
+				content = <CatalogView
 					key={id}
 					{...componentState}
 				/>

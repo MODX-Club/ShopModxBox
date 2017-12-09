@@ -137,7 +137,8 @@ let {
 } = ReactCmsApp.childContextTypes || {};
 
 Object.assign(childContextTypes, {
-  order: PropTypes.object,
+  order: PropTypes.object,              // Текущий объект заказа пользователя
+  menuItems: PropTypes.array.isRequired,  // Пункты меню
 });
 
 export class AppMain extends ReactCmsApp{
@@ -157,12 +158,14 @@ export class AppMain extends ReactCmsApp{
 
     let {
       order,
+      menuItems,
     } = this.state;
 
     let context = super.getChildContext() || {};
 
     Object.assign(context, {
       order,
+      menuItems,
     });
 
     return context;
@@ -180,6 +183,7 @@ export class AppMain extends ReactCmsApp{
       inited: false,
       developMode: true,
       order: {},
+      menuItems: [],
     }, createStores());
 
     let {
@@ -233,6 +237,32 @@ export class AppMain extends ReactCmsApp{
   
 
   componentWillMount(){
+
+
+    const {
+      document,
+    } = this.props;
+
+    let {
+      // apiData,
+      resourceState,
+    } = document;
+
+    if(resourceState && resourceState){
+
+      const {
+        state,
+      } = resourceState;
+
+      const {
+        menuItems,
+      } = state || {};
+
+      menuItems && Object.assign(this.state, {
+        menuItems,
+      });
+
+    }
 
     return;
 
