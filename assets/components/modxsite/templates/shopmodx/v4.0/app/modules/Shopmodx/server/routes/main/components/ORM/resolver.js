@@ -29,6 +29,14 @@ import {
 } from './MODXResource';
 
 
+import UserType from 'modules/Site/components/ORM/User';
+
+import {
+  getList as getUsersList,
+} from './User';
+
+
+
 const rootResolver = (source, args, context, info) => {
 
 
@@ -171,6 +179,8 @@ const rootResolver = (source, args, context, info) => {
 
 const getObjectsList = (ofType, source, args, context, info) => {
 
+  console.log("getObjectsList ofType", ofType);
+
   return new Promise( async (resolve, reject) => {
 
     let result;
@@ -185,9 +195,15 @@ const getObjectsList = (ofType, source, args, context, info) => {
 
     else if(ofType === MODXResourceType){
 
-      console.log("Server root resolver MODXResourceType", args);
-
       resolver = getMODXResourcesList;
+        
+    }
+
+    else if(ofType === UserType){
+
+      console.log("rootResolver getUsersList", args);
+
+      resolver = getUsersList;
         
     }
 

@@ -43,6 +43,10 @@ import MODXResourceType, {
   MODXResourceArgs,
 } from './MODXResource';
 
+import UserType, {
+  UsersArgs,
+} from './User';
+
 
 
 export const rootDirectives = [
@@ -89,6 +93,36 @@ export default new GraphQLObjectType({
       resolve: source => (null),
     },
 
+    usersList: new listField({
+      type: UserType,
+      name: "usersList",
+      description: "Список пользователей с постраничностью",
+      args: UsersArgs,
+    }),
+    users: {
+      type: new GraphQLList(UserType),
+      name: "Users",
+      description: "Список пользователей",
+      args: UsersArgs,
+    },
+    user: {
+      type: UserType,
+      name: "User",
+      description: UserType.description,
+      args: {
+        id: {
+          type: GraphQLInt,
+        },
+        username: {
+          type: GraphQLString,
+          description: "Поиск по юзернейму",
+        },
+        ownProfile: {
+          type: GraphQLBoolean,
+          description: "Получить текущего пользователя",
+        },
+      },
+    },
 
     modxResourcesList: new listField({
       type: MODXResourceType,

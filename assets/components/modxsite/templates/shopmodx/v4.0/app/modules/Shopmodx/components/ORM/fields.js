@@ -15,6 +15,10 @@ import {
 import {
   ObjectsListType,
   imageType,
+  order,
+  SortBy,
+  SortField,
+  listArgs,
 } from 'react-cms/src/app/components/ORM/fields';
 
 
@@ -32,74 +36,78 @@ export {
   imageType,
 };
 
-export const order = {
-  type: new GraphQLEnumType({
-    name: "SortType",
-    values: {
-      asc: {
-        value: 'asc',
-        description: 'В прямом порядке',
-      },
-      desc: {
-        value: 'desc',
-        description: 'В обратном порядке',
-      },
-    },
-  }),
-  description: 'Порядок сортировки',
-};
 
-export const SortBy = new GraphQLInputObjectType({
-  name: "SortBy",
-  fields: {
-    by: {
-      type: new GraphQLEnumType({
-        name: 'SortByValues',
-        values: {
-          id: {
-            value: 'id',
-            description: 'По ID',
-          },
-          rand: {
-            value: 'rand()',
-            description: 'В случайном порядке',
-          },
-        },
-      }),
-      description: 'Способ сортировки',
-    },
-    dir: order,
-  },
-});
+export {order}
+// export const order = {
+//   type: new GraphQLEnumType({
+//     name: "SortType",
+//     values: {
+//       asc: {
+//         value: 'asc',
+//         description: 'В прямом порядке',
+//       },
+//       desc: {
+//         value: 'desc',
+//         description: 'В обратном порядке',
+//       },
+//     },
+//   }),
+//   description: 'Порядок сортировки',
+// };
 
-export const SortField = {
-  type: new GraphQLList(SortBy),
-};
+export {SortBy}
+// export const SortBy = new GraphQLInputObjectType({
+//   name: "SortBy",
+//   fields: {
+//     by: {
+//       type: new GraphQLEnumType({
+//         name: 'SortByValues',
+//         values: {
+//           id: {
+//             value: 'id',
+//             description: 'По ID',
+//           },
+//           rand: {
+//             value: 'rand()',
+//             description: 'В случайном порядке',
+//           },
+//         },
+//       }),
+//       description: 'Способ сортировки',
+//     },
+//     dir: order,
+//   },
+// });
 
+export {SortField}
+// export const SortField = {
+//   type: new GraphQLList(SortBy),
+// };
 
-export const listArgs = {
-  ids: {
-    type: new GraphQLList(GraphQLInt),
-    description: 'Список ID',
-  },
-  search: {
-    type: GraphQLString,
-    description: 'Поисковый запрос',
-  },
-  sort: SortField,
-  limit: {
-    type: new GraphQLNonNull(GraphQLInt),
-    description: 'Лимит записей',
-  },
-  page: {
-    type: GraphQLInt,
-    description: 'Страница',
-  },
-  offset: {
-    type: GraphQLInt,
-    description: 'Сколько записей пропустить',
-  },
-};
+export {listArgs}
+// export const listArgs = {
+//   ids: {
+//     type: new GraphQLList(GraphQLInt),
+//     description: 'Список ID',
+//   },
+//   search: {
+//     type: GraphQLString,
+//     description: 'Поисковый запрос',
+//   },
+//   sort: SortField,
+//   limit: {
+//     type: new GraphQLNonNull(GraphQLInt),
+//     description: 'Лимит записей',
+//   },
+//   page: {
+//     type: GraphQLInt,
+//     description: 'Страница',
+//   },
+//   offset: {
+//     type: GraphQLInt,
+//     description: 'Сколько записей пропустить',
+//   },
+// };
 
 
 // export class ObjectsListType extends GraphQLObjectType{

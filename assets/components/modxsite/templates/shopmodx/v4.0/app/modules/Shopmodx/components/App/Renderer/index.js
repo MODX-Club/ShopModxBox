@@ -15,7 +15,7 @@ import Grid from 'material-ui/Grid';
 
 import {Link} from 'react-router';
 
-import MainMenu from './MainMenu';
+import Header from './Header';
 
 let classes;
 
@@ -92,44 +92,7 @@ export default class Renderer extends Component{
       className="MainApp"
     >
 
-      <Grid
-        container
-        gutter={0}
-        className="header"
-      >
-
-        <Grid
-          item
-        >
-      
-          <div 
-            className="logo"
-          >
-
-            <Link
-              to="/"
-              href="/"
-              title="shopModx eCommerce engine">
-            </Link>
-
-          </div>
-        
-        </Grid>
-
-        <Grid
-          item
-          xs={12}
-        >
-      
-          <MainMenu 
-
-          />
-
-        </Grid>
-
-
-        
-      </Grid>
+      <Header />
       
       {children}
 

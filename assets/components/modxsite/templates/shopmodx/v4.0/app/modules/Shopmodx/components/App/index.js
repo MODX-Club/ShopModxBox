@@ -26,87 +26,18 @@ import {DataStore, Dispatcher} from 'react-cms-data-view';
 import ReactCmsApp from 'react-cms/src/app/components/App';
 
 import Renderer from 'modules/Site/components/App/Renderer';
-
-// import ORM from '../ORM';
-
-// import CoinHive from 'react-coin-hive/src';
-
-// import locale from 'moment/src/locale/ru';
-// import 'moment';
-
-// import RootType, {
-//   Mutation,
-//   rootDirectives,
-// } from '../ORM';
-
-// import Company from '../ORM/Company';
-// import User from '../ORM/User';
-
-// import { Contact } from '../ORM/Contact';
-// import { Place } from '../ORM/Place';
-// import { PlaceContact } from '../ORM/PlaceContact';
-
-// import defaultQuery from 'modules/Site/components/ORM/query';
-
-// import rootResolver from 'modules/Site/components/ORM/resolver';
-
-// import {
-//   buildSchema,
-//   graphql,
-//   execute,
-//   parse,
-//   GraphQLSchema,
-//   GraphQLObjectType,
-//   GraphQLInt,
-//   GraphQLFloat,
-//   GraphQLString,
-//   GraphQLBoolean,
-//   GraphQLList,
-//   GraphQLNonNull,
-//   GraphQLID,
-
-//   introspectionQuery, 
-//   buildClientSchema, 
-//   printSchema,
-// } from 'graphql';
-
-
+ 
 import {
   buildExecutionContext,
   buildResolveInfo,
   getOperationRootType,
 } from 'graphql/execution/execute';
 
-
-
-// import injectTapEventPlugin from 'react-tap-event-plugin';
-// injectTapEventPlugin();
-
-
+ 
 export const createStores = function(){
 
   let stores = {
     MODXResourcesStore: new DataStore(new Dispatcher()),
-    // RatingsStore: new DataStore(new Dispatcher()),
-    // UsersStore: new DataStore(new Dispatcher()),
-    // CommentsStore: new DataStore(new Dispatcher()),
-    // ResourcesStore: new DataStore(new Dispatcher()),
-    // TopicsStore: new DataStore(new Dispatcher()),
-    // EditVersionsStore: new DataStore(new Dispatcher()),
-    // BeersStore: new DataStore(new Dispatcher()),
-    // PlacesBeersStore: new DataStore(new Dispatcher()),
-    // AlbumsStore: new DataStore(new Dispatcher()),
-    // EventsStore: new DataStore(new Dispatcher()),
-
-    // // ContactsStore: new DataStore(new Dispatcher()),
-    
-    // PlacesStore: new DataStore(new Dispatcher()),
-    // PlaceTypesStore: new DataStore(new Dispatcher()),
-    // ServicesStore: new DataStore(new Dispatcher()),
-    // PlaceContactsStore: new DataStore(new Dispatcher()),
-    // PlacesServicesStore: new DataStore(new Dispatcher()),
-    // ContactsServicesStore: new DataStore(new Dispatcher()),
-    // ContactGradesStore: new DataStore(new Dispatcher()),
   };
 
   stores.ContactsStore = stores.CompaniesStore;
@@ -148,10 +79,6 @@ const customStyles = createMuiTheme({
   }),
 });
 
-// const defaultProps = {
-//   connector_url: '/assets/components/modxsite/connectors/connector.php',
-// };
-
 
 
 
@@ -182,8 +109,6 @@ export class MainApp extends Component{
 
 }
 
-
-
 /*
   Инициируется один раз
 */
@@ -212,7 +137,7 @@ let {
 } = ReactCmsApp.childContextTypes || {};
 
 Object.assign(childContextTypes, {
-
+  order: PropTypes.object,
 });
 
 export class AppMain extends ReactCmsApp{
@@ -231,12 +156,13 @@ export class AppMain extends ReactCmsApp{
     } = this.props;
 
     let {
+      order,
     } = this.state;
 
     let context = super.getChildContext() || {};
 
     Object.assign(context, {
-
+      order,
     });
 
     return context;
@@ -247,16 +173,13 @@ export class AppMain extends ReactCmsApp{
     super(props);
 
     let notifications_store = new DataStore(new Dispatcher());
-
-
-    // const orm = new ORM();
-    // const schema = this.getSchema();
   
 
     Object.assign(this.state, {
       notifications_store: notifications_store,
       inited: false,
       developMode: true,
+      order: {},
     }, createStores());
 
     let {

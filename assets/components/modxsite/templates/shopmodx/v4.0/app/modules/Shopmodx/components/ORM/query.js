@@ -114,6 +114,53 @@ mutation clearCache{
 }
 
 
+
+
+query CurrentUser(
+  $getImageFormats:Boolean = true
+)
+{
+  
+  user(
+    ownProfile: true
+  ) @storage(store:remote)
+  {
+    ...User
+  }
+}
+
+
+fragment User on UserType {
+  ...UserFields
+}
+
+fragment UserFields on UserType{
+  id
+  username
+  fullname
+  email
+  active
+  sudo
+  blocked
+  createdon
+  createdby
+  delegate
+  offer
+  offer_date
+  contract_date
+  image
+  imageFormats @include(if:$getImageFormats)
+  {
+    thumb
+    small
+    middle
+    big
+  }
+}
+
+
+
+
 query MODXResources(
   $modxResourcesLimit:Int = 10
   $modxResourcesPage:Int

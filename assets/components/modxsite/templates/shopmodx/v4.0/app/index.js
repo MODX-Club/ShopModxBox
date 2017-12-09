@@ -13,12 +13,15 @@ import { useScroll } from "react-router-scroll";
 // Import routes
 import rootRoute from "modules/Shopmodx/config/routes";
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import configureStore from "modules/Shopmodx/config/store";
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
 let initialState = {};
+
 
 import {MainApp} from 'modules/Shopmodx/components/App';
 
@@ -51,6 +54,11 @@ const store = configureStore(initialState);
 // import 'bootstrap/dist/js/bootstrap';
 
 if(typeof window !== "undefined"){
+
+  
+
+
+  injectTapEventPlugin();
 
   browserHistory.listen(function (location) {
     window.ga && window.ga('send', 'pageview', location.pathname);

@@ -1,3 +1,8 @@
+
+import React, {Component} from 'react';
+
+import PropTypes from 'prop-types';
+
 import PageLayout from 'react-cms/src/app/components/Page';
 
 export default class ShopmodxPage extends PageLayout{
@@ -13,6 +18,21 @@ export default class ShopmodxPage extends PageLayout{
 	  		title: "ShopModxBox",
 	  	},
 	  };
+
+	}
+
+
+	render(childContent){
+
+		return super.render(<div
+			style={{
+		    display: "flex",
+		    flexDirection: "row",
+		    flexGrow: 1,
+			}}
+		>
+			{childContent}
+		</div>);
 
 	}
 

@@ -56,11 +56,6 @@ class modWebPublicActionProcessor extends modProcessor{
                     require_once dirname(dirname(__FILE__)) . '/currencies/update_courses.class.php';
                     self::$actualClassName = "modWebCurrenciesUpdatecoursesProcessor";
                     break;
-                
-                case 'login':
-                    require_once dirname(dirname(__FILE__)) . '/users/login.class.php';
-                    self::$actualClassName = "modWebUsersLoginProcessor";
-                    break;
 
 
                 case 'getpage':
@@ -104,14 +99,62 @@ class modWebPublicActionProcessor extends modProcessor{
                     self::$actualClassName =  'modWebOrdersObjectProcessor';
                     break;
 
+                // case 'users/getdata':
+                //     require __DIR__ . '/../users/getdata.class.php';
+                //     self::$actualClassName = 'modWebUsersGetdataProcessor';
+                //     break;
+
+                // case 'users/own_profile/getdata':
+                //     require __DIR__ . '/../users/own_profile/getdata.class.php';
+                //     self::$actualClassName = 'modWebUsersOwnprofileGetdataProcessor';
+                //     break;
+                
+                case 'login':
+                    require_once dirname(dirname(__FILE__)) . '/society/users/login.class.php';
+                    self::$actualClassName = "modWebSocietyUsersLoginProcessor";
+                    break;
+
+                case 'logout':
+                    require_once dirname(dirname(__FILE__)) . '/users/logout.class.php';
+                    self::$actualClassName = "modWebUsersLogoutProcessor";
+                    break;
+
                 case 'users/getdata':
                     require __DIR__ . '/../users/getdata.class.php';
                     self::$actualClassName = 'modWebUsersGetdataProcessor';
                     break;
 
-                case 'users/own_profile/getdata':
-                    require __DIR__ . '/../users/own_profile/getdata.class.php';
+
+                case 'users/find_user':
+                    require dirname(dirname(__FILE__)) . '/users/find_user.class.php';
+                    self::$actualClassName = 'modWebUsersFinduserProcessor';
+                    break;
+
+                case 'users/get_own_data':
+                    require dirname(dirname(__FILE__)) . '/users/own_profile/getdata.class.php';
                     self::$actualClassName = 'modWebUsersOwnprofileGetdataProcessor';
+                    break;
+
+                case 'user/own_profile/update':
+                    require dirname(dirname(__FILE__)) . '/users/own_profile/update.class.php';
+                    self::$actualClassName = 'modWebUsersOwnprofileUpdateProcessor';
+                    break;
+
+                case 'users/activate':
+                    require dirname(dirname(__FILE__)) . '/society/users/activate.class.php';
+                    self::$actualClassName = 'modWebSocietyUsersActivateProcessor';
+                    break;
+
+                case 'password/forgot':
+
+                    require dirname(dirname(__FILE__)) . '/society/users/password/forgot.class.php';
+                    self::$actualClassName = 'modWebSocietyUsersPasswordForgotProcessor';
+                    break;
+
+                case 'images/upload':
+
+                    require dirname(dirname(__FILE__)) . '/images/upload.class.php';
+                    self::$actualClassName = 'modWebImagesUploadProcessor';
                     break;
 
 
