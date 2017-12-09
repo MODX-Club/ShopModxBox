@@ -2104,8 +2104,6 @@ export default class Response{
         contextValue: Object.assign({}, this, {
           SendMODXRequest: async (action, params) => {
 
-
-
             return this.SendMODXRequest(action, params, req);
 
           },

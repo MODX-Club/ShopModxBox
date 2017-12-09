@@ -18,7 +18,7 @@ import {bindActionCreators} from 'redux';
 
 // import config from '../../../../../config/config.js';
 
-// console.log(config);
+
 
 const defaultProps = {
   host: typeof window !== "undefined" && 'ws://' + window.location.host + '/api/' || '',
@@ -26,16 +26,10 @@ const defaultProps = {
 
 class WsProxy extends Component {
 
-
-  static defaultProps = defaultProps;
-
-  static propTypes = {
-  };
-
   static contextTypes = {
-    connector_url: PropTypes.string.isRequired,
+    request: PropTypes.func.isRequired,
+    remoteQuery: PropTypes.func.isRequired,
   };
-
 
   state = {
     LogoutInProgress: false,
@@ -53,15 +47,32 @@ class WsProxy extends Component {
 
 
   OnConnected() {
+    // informer.success('Соединение установлено');
+    // this.state.connected = true;
+    // this.UserMenu.forceUpdate();
   }
 
   OnConnectionOpen(socket) {
   }
 
+  // OnConnectionClose(socket) {
+  //   informer.failure("Соединение разорвано");
+  //
+  //   // $('[data-chat-form="chat-connect-form"]')
+  //   //         .show();
+  //   //
+  //   //     $('[data-chat-form="chat-message-form"]')
+  //   //         .hide();
+  //
+  // }
+
   SocketOnMessage(event) { 
 
+    // alert('SocketOnMessage');
+    // return;
+
     var incomingMessage = event.data;
-    console.log('Message: %s', incomingMessage);
+
 
     var response;
 
@@ -72,6 +83,13 @@ class WsProxy extends Component {
 
       switch (type) {
         case 'hello':
+          // socket.send(JSON.stringify({
+          //   type: 'introdution',
+          //   channel_id: this.props.channel_id,
+          //   id: 1,
+          //   name: 'test'
+          // }));
+          // this.OnConnected();
           break;
 
 
@@ -83,6 +101,13 @@ class WsProxy extends Component {
         case 'find_user':
         case 'signup':
         case 'chat_message':
+          // socket.send(JSON.stringify({
+          //   type: 'introdution',
+          //   channel_id: this.props.channel_id,
+          //   id: 1,
+          //   name: 'test'
+          // }));
+          // this.OnConnected();
           break;
 
         case 'signout':
@@ -101,10 +126,18 @@ class WsProxy extends Component {
 
 
         case 'signin':
+          // response.readed = true;
 
           break;
 
         case 'user/get_own_data':
+          // socket.send(JSON.stringify({
+          //   type: 'introdution',
+          //   channel_id: this.props.channel_id,
+          //   id: 1,
+          //   name: 'test'
+          // }));
+          // this.OnConnected();
 
           if(!response.success || !response.object.id){
             this.props.userActions.GetOwnDataFailed(response);
@@ -119,20 +152,86 @@ class WsProxy extends Component {
 
           response.readed = true;
 
+
           this.props.documentActions.DocumentLoaded(response.resource);
           break;
 
         case 'active_users_list':
 
           response.readed = true;
+          //
+
 
           this.props.userActions.UpdateUsersList(response.users);
           break;
 
         case 'message':
+
+
+        //   var cls = '';
+        //
+        //   var d = new Date();
+        //   var date = d.toLocaleTimeString('en-US', {hour12: false});
+        //
+        //   // var date = new Date().toLocaleFormat( "%H:%M:%S" );
+        //
+        //   var my_message = response.sender.id == id;
+        //
+        //
+
+
+        //
+        //   // var div = $('<div class="message '+ cls +'">'+ response.text +'</div>');
+        //
+        //   var code = '<div class="chat-room__message-box ' + (my_message ? "chat-room__message-box--my-message" : "") + '">';
+        //
+        //   if (response.sender.photo) {
+        //     code += '<a href="javascript:;" class="chat-room__user-image-box">\
+        //         <img src="' + response.sender.photo + '" alt="" style="border-radius: 50%;">\
+        //     </a>';
+        //   }
+        //
+        //   code += '<div class="chat-room__message">\
+        //         <a href="javascript:;" class="chat-room__user-link">' + response.sender.name + (response.sender.guest ? ' <span class="text-danger">(Гость)</span>' : '') + '</a>\
+        //         <div class="chat-room__text-message">\
+        //             ' + response.text + '\
+        //             <span class="chat-room__message-time">' + date + '</span>\
+        //         </div>\
+        //     </div>\
+        // </div>';
+        //
+        //   var div = $(code);
+        //
+        //
+        //   var body_item = $('[data-chat-item="body"]');
+        //
+        //   body_item.append(div)
+        //   // $('.chat-room__window-inside')
+        //     .animate({scrollTop: body_item.height() + body_item.scrollTop()}, "slow");
           break;
 
         case 'introdution_confirm':
+
+          // // 
+          // var id = response.id;
+          //
+          // // $('[data-chat-form="chat-connect-form"]')
+          // //     .hide();
+          // //
+          // // $('[data-chat-form="chat-message-form"]')
+          // //     .show();
+          // //
+          // // $('[data-chat-element="intro"]').hide();
+          //
+          // socket.send(JSON.stringify({
+          //   type: 'joined',
+          //   client_id: id,
+          //   channel_id: this.props.channel_id,
+          //   text: "Ура! Я подключился))"
+          // }));
+          //
+          // //
+          // this.OnLogin();
 
           break;
 
@@ -141,6 +240,37 @@ class WsProxy extends Component {
           break;
 
         case 'joined':
+          // var body_item = $('[data-chat-item="body"]');
+          //
+          // var div = $('<div class="chat-room__message-box chat-room__message-box--notification">\
+          //       <div class="chat-room__notification-box">\
+          //           <a href="javascript:;" class="chat-room__notification-link">' + response.text + '</a> подключился к чату\
+          //       </div>');
+          //
+          //
+          // body_item.append(div)
+          //   .animate({scrollTop: body_item.height() + body_item.scrollTop()}, "slow");
+          //
+          //
+          // var users_html = '';
+          //
+          //
+          // // Обновляем список пользователей
+          // for (var i in response.users) {
+          //   var user = response.users[i];
+          //
+          //
+          //   var photo = user.photo;
+          //
+          //   users_html += '<a href="javascript:;" class="settings-chat__user-link"\
+          //   data-toggle="tooltip" data-placement="bottom" title="' + user.name.replace('"', '\"') + '">\
+          //       <img src="' + photo + '" alt=""' + (user.guest ? ' style="filter: grayscale(100%);"' : '') + '>\
+          //   </a>';
+          //
+          //
+          // }
+          //
+          // $('[data-chat-item="users"]').html(users_html);
 
 
           break;
@@ -214,10 +344,6 @@ class WsProxy extends Component {
 
       this.ConnectionsInProgress = true;
 
-      // alert('ConnectionsInProgress');
-
-      console.log('%s  ConnectionsInProgress', 'font-weight: bold;');
-
       this.ConnectionsAttempts++;
 
       if(this.ConnectionsBlocked){
@@ -226,7 +352,7 @@ class WsProxy extends Component {
 
       if(this.ConnectionsAttempts > 5){
 
-        console.log("Слишком много попыток соединения");
+
 
         this.ConnectionsBlocked = true;
         return;
@@ -307,7 +433,7 @@ class WsProxy extends Component {
 
     // this.props.proxy.
 
-    // console.log("load_document", url);
+
     // // alert(url);
     //
     // this.props.proxyActions.SendMessage({
@@ -349,7 +475,7 @@ class WsProxy extends Component {
         }
       }.bind(this))
       .catch(function (error) {
-          console.log('Request failed', error);
+
           alert("Ошибка выполнения запроса");
         }
       );
@@ -357,15 +483,12 @@ class WsProxy extends Component {
 
 
   componentWillReceiveProps(nextProps){
-    // console.log('WsProxy componentWillReceiveProps(nextProps)', nextProps);
-    // console.log(nextProps);
-    // console.log(this.props);
-    // console.log("WsProxy Render");
-    // 
 
-    const {
-      connector_url,
-    } = this.context;
+
+
+
+
+    // 
 
     if (
       !nextProps.connection_allowed
@@ -384,53 +507,130 @@ class WsProxy extends Component {
       this.connect();
     }
 
-    if(nextProps.user.LogoutRequested){
-      if(!this.state.LogoutInProgress){
-        this.setState({
-          LogoutInProgress: true
+    if(nextProps.user.logoutRequested && nextProps.user.logoutRequested !== this.props.user.logoutRequested){
+      // if(!this.state.LogoutInProgress){
+
+        const {
+          request,
+        } = this.context;
+        
+        // this.setState({
+        //   LogoutInProgress: true
+        // });
+
+        // this.props.proxyActions.SendMessage({
+        //   type: "signout",
+        // });
+
+        request(null, null, "logout", {}, {
+          callback: (data, errors) => {
+
+
+            
+            this.props.userActions.logoutComplete();
+            this.props.userActions.GetOwnData();
+
+            // if(data.success){
+            //   // this.props.userActions.GetOwnData();
+            //   // this.props.userActions.loginComplete();
+            //   // this.state.wait_for_response = false;
+            //   this.props.userActions.GetOwnDataSuccess(data.object);
+            // }
+            // else{
+            //   // this.setState({
+            //   //   // is_forgot: true
+            //   // });
+            //   // alert(data.message || "Ошибка выполнения запроса");
+            //   this.props.userActions.GetOwnDataFailed(data);
+            // }
+
+          },
         });
 
-        this.props.proxyActions.SendMessage({
-          type: "signout",
-        });
-      }
+      // }
     }
 
-    if(
+    else if(
       nextProps.user.own_data_requested != this.props.user.own_data_requested
       && nextProps.user.own_data_requested == true
     ){
 
-      fetch(connector_url +'?pub_action=users/get_own_data',{
-        credentials: 'same-origin',
-        method: "POST",
-        // body: body,
-      })
-        .then(function (response) {
-          return response.json()
-        })
-        .then(function (data) {
-          // self.setState({orders: data.object});
+      const {
+        // request,
+        remoteQuery,
+      } = this.context;
 
-          if(data.success){
-            // this.props.userActions.GetOwnData();
-            // this.props.userActions.loginComplete();
-            // this.state.wait_for_response = false;
-            this.props.userActions.GetOwnDataSuccess(data.object);
-          }
-          else{
-            // this.setState({
-            //   // is_forgot: true
-            // });
-            // alert(data.message || "Ошибка выполнения запроса");
-            this.props.userActions.GetOwnDataFailed(data);
-          }
-        }.bind(this))
-        // .catch(function (error) {
-        //     console.log('Request failed', error);
-        //     alert("Ошибка выполнения запроса");
-        //   }
-        // );
+      // fetch(this.props.connector_url +'?pub_action=users/get_own_data',{
+      //   credentials: 'same-origin',
+      //   method: "POST",
+      //   // body: body,
+      // })
+      //   .then(function (response) {
+      //     return response.json()
+      //   })
+      //   .then(function (data) {
+      //     // self.setState({orders: data.object});
+
+      //     if(data.success){
+      //       // this.props.userActions.GetOwnData();
+      //       // this.props.userActions.loginComplete();
+      //       // this.state.wait_for_response = false;
+      //       this.props.userActions.GetOwnDataSuccess(data.object);
+      //     }
+      //     else{
+      //       // this.setState({
+      //       //   // is_forgot: true
+      //       // });
+      //       // alert(data.message || "Ошибка выполнения запроса");
+      //       this.props.userActions.GetOwnDataFailed(data);
+      //     }
+      //   }.bind(this))
+      //   // .catch(function (error) {
+
+      //   //     alert("Ошибка выполнения запроса");
+      //   //   }
+      //   // );
+
+      // request(null, null, "users/get_own_data", {}, {
+      //   callback: (data, errors) => {
+
+      //     if(data.success){
+      //       // this.props.userActions.GetOwnData();
+      //       // this.props.userActions.loginComplete();
+      //       // this.state.wait_for_response = false;
+      //       this.props.userActions.GetOwnDataSuccess(data.object);
+      //     }
+      //     else{
+      //       // this.setState({
+      //       //   // is_forgot: true
+      //       // });
+      //       // alert(data.message || "Ошибка выполнения запроса");
+      //       this.props.userActions.GetOwnDataFailed(data);
+      //     }
+
+      //   },
+      // });
+
+      remoteQuery({
+        operationName: "CurrentUser",
+      })
+      .then(r => {
+
+        // console.log("WsProxy result", r);
+
+        const {
+          user,
+        } = r.data || {};
+
+
+        if(user){
+          this.props.userActions.GetOwnDataSuccess(user);
+        }
+        else{
+          this.props.userActions.GetOwnDataFailed(r);
+        }
+
+      });
 
       return false;
     }
@@ -441,9 +641,9 @@ class WsProxy extends Component {
       && nextProps.user.id > 0
     ){
 
-        // console.log('nextProps.user.get_own_data_success');
-        // console.log(this.props);
-        // console.log(nextProps);
+
+
+
 
       this.props.proxyActions.SendMessage({
         type: "joined",
@@ -495,11 +695,11 @@ class WsProxy extends Component {
 
   // shouldComponentUpdate(nextProps, nextState){
   //
-  //   console.log('shouldComponentUpdate(nextProps)');
-  //   // console.log(this.props);
-  //   // console.log(nextProps);
-  //   // console.log(this.state);
-  //   // console.log(nextState);
+
+
+
+
+
   //
   //   // super(nextProps, nextState);
   //
@@ -519,7 +719,7 @@ class WsProxy extends Component {
  
 
 
-    return <i>erge</i>;
+    return <i></i>;
 
 
 
@@ -584,8 +784,17 @@ class WsProxy extends Component {
   }
 }
 
+
+WsProxy.defaultProps = defaultProps;
+
+
+
+WsProxy.propTypes = {
+  // connector_url: PropTypes.string.isRequired,
+};
+
 function mapStateToProps(state) { 
-  // console.log(state);
+
 
   var st = {};
 
@@ -600,8 +809,8 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  // console.log('mapDispatchToProps');
-  // console.log(dispatch);
+
+
 
   return {
     proxyActions: bindActionCreators(proxyActions, dispatch),

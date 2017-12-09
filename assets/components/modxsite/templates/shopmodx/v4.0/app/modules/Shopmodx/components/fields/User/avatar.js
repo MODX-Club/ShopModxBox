@@ -11,6 +11,10 @@ export default class UserAvatar extends Component{
 		user: PropTypes.object.isRequired,
 	};
 
+	static defaultProps = {
+		background: "#2fa4e7",
+	};
+
 	static contextTypes = {
 
 	};
@@ -29,7 +33,7 @@ export default class UserAvatar extends Component{
 		let {
 			user,
 			style,
-			background = '#2fa4e7',
+			background,
 			...other
 		} = this.props;
 

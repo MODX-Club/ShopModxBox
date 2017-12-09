@@ -36,19 +36,24 @@ export default class DefaultPage extends Page{
 	async loadServerData(provider, options = {}){
 
 		let {
+			req: nullReq,
 			...debugOptions
 		} = options;
 
 		const {
       params,
       location,
+			
+			/*
+      	Серверный объект запроса, содержащий заголовки.
+      	Важно передавать этот объект в запрос, чтобы на сервере передавались и кукисы пользователя
+      */
+      req,		
 		} = options;
 
 		const {
 			pathname,
 		} = location || {};
-
-		console.log("DefaultPage options", options);
 
 		let result = await provider({
 			operationName: "MODXResourceByUri",
@@ -57,6 +62,7 @@ export default class DefaultPage extends Page{
 				modxResourcesStorage: "local",
 				getImageFormats: true,
 			},
+			req,
 		})
 		.then(r => r)
 		.catch(e => {
@@ -67,6 +73,35 @@ export default class DefaultPage extends Page{
 		if(!result){
 			return null;
 		}
+
+
+		// Получаем текущего пользователя
+		
+		await provider({
+			operationName: "CurrentUser",
+			variables: {
+			},
+			req,
+		})
+		.then(r => {
+
+			const {
+				user,
+			} = r.data;
+
+			Object.assign(result.data, {
+				user,
+			});
+
+			// console.log("DefaultPage CurrentUser", r);
+
+		})
+		.catch(e => {
+			throw(e);
+		});
+
+
+		// console.log("DefaultPage result", result);
 
 		const {
 			modxResource,
@@ -98,6 +133,7 @@ export default class DefaultPage extends Page{
 
 		}
 
+		// console.log("DefaultPage result.data", result.data);
  
 	  return result;
 
@@ -145,7 +181,7 @@ export default class DefaultPage extends Page{
 
 	render(){
 
-		console.log("DefaultPage render");
+		// console.log("DefaultPage render");
 
 		let content = this.renderComponent();
 

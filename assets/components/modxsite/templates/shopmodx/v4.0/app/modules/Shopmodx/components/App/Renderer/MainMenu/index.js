@@ -27,6 +27,11 @@ export default class MainMenu extends Component{
     document: PropTypes.object.isRequired,
   };
 
+
+  static defaultProps = {
+    title: "ShopModxBox",
+  };
+
 	constructor(props){
 
 		super(props);
@@ -89,6 +94,10 @@ export default class MainMenu extends Component{
 	render(){
 
     const {
+      title,
+    } = this.props;
+
+    const {
       user: {
         user,
       },
@@ -119,103 +128,87 @@ export default class MainMenu extends Component{
             // href={"/"}
             // to={"/"}
             className="navbar-brand"
-            title="Городские бани, главная страница"
+            title
           >
             <div className="logo">
               <i className="str leaf leaf-l"></i>
-              <span className="str">Городские бани</span>
             </div>
           </Link>
-          <button className="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
-          </button>
         </div> 
         
-        <div id="navbar-main" className="collapse navbar-collapse navbar-right">
-          <ul 
-            className="nav navbar-nav flex align-center"
-            style={{
-              display: "flex",
-            }}
-          >
+        <div id="navbar-main" className="collapse navbar-collapse navbar-right"> 
 
-                {user
-                ?
-                <li className="dropdown">
-                  <a 
-                    id="office" 
-                    href="javascript:;" 
-                    data-toggle="dropdown" 
-                    className="dropdown-toggle flex align-center"
-                    style={{
-                      display: "flex",
-                    }}
-                  >
-                    <Avatar 
-                      user={user}
-                      style={{
-                        width: 20,
-                        height: 20,
-                        fontSize: "18px",
-                      }}
-                    />
-                    <span className="caret"></span>
-                  </a>
-                  <ul aria-labelledby="office" className="dropdown-menu">
-                    <li>
-                      <Link 
-                        to={`/profile/${username}`}
-                        href={`/profile/${username}`}
-                      >Профиль
-                      </Link>
-                    </li>
-                    
-                    {/*<li><a href="add-topic.html">Написать</a></li>*/}
-                    
-                    <li className="divider"></li>
-                    <li>
-                      <a 
-                        href="javascript:;"
-                        onClick={e => {
-                          userActions.logout();
-                        }}
-                      >
-                        <i className="glyphicon glyphicon-log-out"></i> Выйти
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                :
-                <li>
-                  <a 
-                    href="javascript:;" 
-                    rel="nofollow"
-                    onClick={event => {
-                      userActions.loginClicked();
-                    }}
-                  >
-                    <Grid 
-                      container
-                      gutter={0}
-                      align="center"
-                    >
-                      <LoginIcon 
-                        style={{
-                          height: 16,
-                          width: 16,
-                        }}
-                      />  Войти
-                    </Grid>
-                  </a>
+          {user
+            ?
 
+            <span
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItem: "center",
+              }}
+            >
+              
+              <a 
+                id="office" 
+                href="javascript:;" 
+                data-toggle="dropdown" 
+                className="dropdown-toggle flex align-center"
+                style={{
+                  display: "flex",
+                  marginRight: 5,
+                }}
+              >
+                <Avatar 
+                  user={user}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    fontSize: "18px",
+                  }}
+                />
 
-                </li>
-                
-              }
+              </a>
 
-          </ul>
+              <a 
+                href="javascript:;"
+                onClick={e => {
+                  userActions.logout();
+                }}
+              >
+                <i className="glyphicon glyphicon-log-out"></i> Выйти
+              </a>
+              
+            </span>
+
+            :
+            <a 
+              href="javascript:;" 
+              rel="nofollow"
+              onClick={event => {
+                userActions.loginClicked();
+              }}
+            >
+              <Grid 
+                container
+                gutter={0}
+                align="center"
+              >
+                <LoginIcon 
+                  style={{
+                    height: 16,
+                    width: 16,
+                  }}
+                />  Войти
+              </Grid>
+            </a>
+            
+          }
+
+ 
+          {/*
+            Этот элемент удалять нельзя, выполняет часть функций с авторизацией пользователя
+          */}
 
           <WsProxy
           />

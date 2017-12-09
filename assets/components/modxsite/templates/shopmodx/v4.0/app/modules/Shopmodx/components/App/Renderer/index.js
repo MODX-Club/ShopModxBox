@@ -85,7 +85,6 @@ export default class Renderer extends Component{
     } = this.props;
 
     const {
-      coinHiveInited,
     } = this.state;
 
     return <div

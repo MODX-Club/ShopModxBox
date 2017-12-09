@@ -123,10 +123,14 @@ class modWebSocietyUsersGetdataProcessor extends modWebGetdataProcessor{
         $avatars_url = $this->getSourcePath(15);
          
         foreach($list as & $l){
-            if(empty($l['photo'])){
-                $l['photo'] = "anonymous.jpg";
+
+            if(!empty($l['photo'])){
+                // $l['photo'] = "anonymous.jpg";
+                
+                $l['photo'] = $avatars_url . $l['photo'];
+
             }
-            $l['photo'] = $avatars_url . $l['photo'];
+            
         }
         
         return $list;
