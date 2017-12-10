@@ -265,18 +265,19 @@ export class AppMain extends ReactCmsApp{
 
       const {
         menuItems,
+        order,
       } = state || {};
 
-      const {
-        Order,
-      } = currentUser || {};
+      // const {
+      //   Order,
+      // } = currentUser || {};
 
       menuItems && Object.assign(this.state, {
         menuItems,
       });
 
-      Order && Object.assign(this.state, {
-        order: Order,
+      order && Object.assign(this.state, {
+        order,
       });
 
     }
@@ -422,7 +423,7 @@ export class AppMain extends ReactCmsApp{
 
 
   // Оформление заказа
-  async submitOrder(){
+  async submitOrder(params){
 
     // console.log("addToBasket product", product);
 
@@ -434,6 +435,7 @@ export class AppMain extends ReactCmsApp{
     let result = await this.remoteQuery({
       operationName: "OrderSubmit",
       variables: Object.assign({}, {
+        orderParams: params,
         orderGetProducts: true,
         orderProductGetProduct: true,
         getImageFormats: true,

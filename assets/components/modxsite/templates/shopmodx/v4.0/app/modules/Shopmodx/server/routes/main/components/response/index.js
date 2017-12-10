@@ -1985,6 +1985,8 @@ export default class Response{
           ...other
         } = errors[0];
 
+        // console.log("this.localQuery response", response);
+
         result = this.failure(message, {...other}, res);
       }
       // else
@@ -2147,7 +2149,10 @@ export default class Response{
 
             }
 
-            return reject(responseMessage, {...responseObject});
+            return reject({
+              message: responseMessage, 
+              ...responseObject,
+            });
 
             // return reject({
             //   success: false,
@@ -2168,8 +2173,8 @@ export default class Response{
           return resolve(result);
         })
         .catch(e => {
-          console.error("remoteQuery error", e);
-          console.error("remoteQuery JSON error", JSON.stringify(e));
+          // console.error("remoteQuery error", e);
+          // console.error("remoteQuery JSON error", JSON.stringify(e));
           reject(e);
         });
     });
@@ -2267,8 +2272,8 @@ export default class Response{
           return resolve(result);
         })
         .catch(e => {
-          console.error("remoteQuery error", e);
-          console.error("remoteQuery JSON error", JSON.stringify(e));
+          // console.error("remoteQuery error", e);
+          // console.error("remoteQuery JSON error", JSON.stringify(e));
           reject(e);
         });
     });
@@ -2283,8 +2288,8 @@ export default class Response{
 
   failure(message, object, res){
           
-    console.error("Response failure", message, object);
-    console.error("Response failure JSON", JSON.stringify(message));
+    // console.error("Response failure", message, object);
+    // console.error("Response failure JSON", JSON.stringify(message));
 
     return this.outputResponse(res, false, message, object)
   }

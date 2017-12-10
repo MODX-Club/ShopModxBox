@@ -11,6 +11,8 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
+import GraphQLJSON from 'graphql-type-json';
+
 import { List } from 'immutable';
 
 // import {
@@ -36,6 +38,10 @@ export const OrderArgs = {
   id: {
     type: GraphQLInt,
     description: "ID",
+  },
+  ownOrder: {
+    type: GraphQLBoolean,
+    description: "Текущий заказ пользователя",
   },
 };
 
@@ -206,6 +212,10 @@ export const OrderMutations = {
     type: OrderType,
     description: "Оформление заказа",
     args: {
+      params: {
+        type: GraphQLJSON,
+        description: "Параметры заказа",
+      }
     },
   },
 

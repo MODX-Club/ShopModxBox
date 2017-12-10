@@ -103,13 +103,19 @@ export default class OrderView extends Component{
 
 	async submit(){
 
-		console.log("submit");
+		// console.log("submit");
 
 		const {
 			submitOrder,
 		} = this.context;
 
-		const result = await submitOrder()
+		let errors = {};
+
+		const {
+			...params
+		} = this.state;
+
+		const result = await submitOrder(params)
 		.then(r => {
 
 			const {
@@ -123,12 +129,59 @@ export default class OrderView extends Component{
 
 		})
 		.catch(e => {
+
+			const {
+				errors: responseErrors,
+			} = e;
+
+			responseErrors && responseErrors.map(error => {
+
+				const {
+					id,
+					msg,
+				} = error || {};
+
+				if(!id || !msg){
+					return;
+				}
+
+				errors[id] = msg;
+
+			});
+
 			console.error(e);
 		});
 
-		// console.log("result", result);
+		console.log("Order submit result", result);
 
-		this.forceUpdate();
+		this.setState({
+			errors,
+		});
+
+	}
+
+
+	onFocus = (event) => {
+
+		console.log("onFocus event", event);
+
+		const {
+			name,
+		} = event.target;
+
+		let {
+			errors,
+		} = this.state;
+
+		if(errors && errors[name]){
+
+			errors[name] = null;
+
+			this.setState({
+				errors,
+			});
+
+		}
 
 	}
 
@@ -160,6 +213,7 @@ export default class OrderView extends Component{
 			phone,
 			address,
 			comments,
+			errors,
 		} = this.state;
 
 
@@ -205,24 +259,48 @@ export default class OrderView extends Component{
 							label="Имя"
 							name="fullname"
 							value={fullname || ""}
-							placeholder={"Как вас зовут?"}
+							helperText={errors && errors.fullname || "Как вас зовут?"}
+							error={errors && errors.fullname ? true : false}
 							onChange={::this.onChange}
+							onFocus={() => {
+								this.onFocus({
+									target: {
+										name: "fullname",
+									},
+								});
+							}}
 						/>
 
 						<TextField 
 							label="Емейл"
 							name="email"
 							value={email || ""}
-							placeholder={"Адрес электронной почты"}
+							helperText={errors && errors.email || "Адрес электронной почты"}
+							error={errors && errors.email ? true : false}
 							onChange={::this.onChange}
+							onFocus={() => {
+								this.onFocus({
+									target: {
+										name: "email",
+									},
+								});
+							}}
 						/>
 
 						<TextField 
 							label="Телефон"
 							name="phone"
-							value={phone || ""}
 							placeholder={"Номер телефона для связи"}
+							helperText={errors && errors.phone || "Номер телефона для связи"}
+							error={errors && errors.phone ? true : false}
 							onChange={::this.onChange}
+							onFocus={() => {
+								this.onFocus({
+									target: {
+										name: "phone",
+									},
+								});
+							}}
 						/>
 
 						<TextField 
@@ -230,8 +308,16 @@ export default class OrderView extends Component{
 							label="Адрес"
 							name="address"
 							value={address || ""}
-							placeholder={"Адрес доставки"}
+							helperText={errors && errors.address || "Адрес доставки"}
+							error={errors && errors.address ? true : false}
 							onChange={::this.onChange}
+							onFocus={() => {
+								this.onFocus({
+									target: {
+										name: "address",
+									},
+								});
+							}}
 						/>
 
 						<TextField 
@@ -239,8 +325,16 @@ export default class OrderView extends Component{
 							label="Комментарии"
 							name="comments"
 							value={comments || ""}
-							placeholder={"Любая дополнительная информация"}
+							helperText={errors && errors.comments || "Любая дополнительная информация"}
+							error={errors && errors.comments ? true : false}
 							onChange={::this.onChange}
+							onFocus={() => {
+								this.onFocus({
+									target: {
+										name: "comments",
+									},
+								});
+							}}
 						/>
 						
 					</Grid>

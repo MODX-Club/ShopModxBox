@@ -191,11 +191,17 @@ export const orderSubmit = (object, args, context, info) => {
     request
     .then((data) => {
 
-      // console.log("orderRecalculate result", data);
+      // console.log("orderSubmit result", data);
 
       if(!data.success){
 
-        return reject(data.message || "Ошибка выполнения запроса");
+        // return reject(data.message || "Ошибка выполнения запроса");
+        return reject({
+          message: data.message || "Ошибка выполнения запроса",
+          // locations: data.data,
+          errors: data.data,
+          path: "OrderSubmit",
+        });
       }
 
       return resolve(data.object);

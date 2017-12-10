@@ -1,5 +1,6 @@
 const defaultQuery = `
 
+
 ## Default
 query EditorState {
   editorState{
@@ -572,6 +573,24 @@ query Orders(
   
 }
 
+
+# Заказ текущего пользователя
+query OwnOrder(
+  $orderGetProducts:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $getImageFormats:Boolean = false
+){
+  
+  order(
+    ownOrder: true
+  )
+  @storage(store:remote)
+  {
+    ...Order
+  }
+  
+}
+
 fragment RootOrders on RootType{
   
   ordersList(
@@ -751,15 +770,19 @@ mutation OrderSubmit(
   $orderGetProducts:Boolean = false
   $orderProductGetProduct:Boolean = false
   $getImageFormats:Boolean = false
+  $orderParams:JSON
 ){
   
-  orderSubmit
+  orderSubmit(
+    params: $orderParams
+  )
   @storage(store:remote)
   {
     ...Order
   }
   
 }
+
 
 
 `;

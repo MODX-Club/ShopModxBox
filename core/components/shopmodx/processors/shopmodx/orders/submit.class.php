@@ -28,6 +28,10 @@ class modShopmodxOrdersSubmitProcessor extends modShopmodxOrdersObjectProcessor{
     
     public function initialize() {
         
+        if($params = (array)$this->getProperty("params")){
+            $this->setProperties($params);
+        }
+
         $this->setDefaultProperties(array(
             "new_object"   => false,        // Флаг, что это новый объект
             "save_object"   => true,       // Флаг, что объект надо сохранять

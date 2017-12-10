@@ -32,7 +32,9 @@ export default class ShopmodxPage extends PageLayout{
 		    height: "100%",
 			}}
 		>
+ 
 			{childContent}
+
 		</div>);
 
 	}

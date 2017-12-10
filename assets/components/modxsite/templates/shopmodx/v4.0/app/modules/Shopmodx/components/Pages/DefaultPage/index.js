@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import Page from '../';
 
 import DefaultView from './View';
+import MainPageView from 'modules/Shopmodx/components/Pages/MainPage/View';
 import ProductView from 'modules/Shopmodx/components/Pages/Catalog/Products/Product/View';
 import CatalogView from 'modules/Shopmodx/components/Pages/Catalog/View';
 import NewsView from 'modules/Shopmodx/components/Pages/News/View';
@@ -23,6 +24,7 @@ let {
 
 Object.assign(defaultProps, {
 	DefaultView,
+	MainPageView,
 	ProductView,
 	CatalogView,
 	NewsView,
@@ -111,9 +113,9 @@ export default class DefaultPage extends Page{
 			await provider({
 				operationName: "CurrentUser",
 				variables: {
-					userGetOrder: true,
-					orderGetProducts: true,
-					orderProductGetProduct: true,
+					// userGetOrder: true,
+					// orderGetProducts: true,
+					// orderProductGetProduct: true,
 					getImageFormats: true,
 				},
 				req,
@@ -133,6 +135,34 @@ export default class DefaultPage extends Page{
 			})
 			.catch(e => {
 				throw(e);
+			});
+
+
+			// Получаем текущий заказ
+			await provider({
+				operationName: "OwnOrder",
+				variables: {
+					orderGetProducts: true,
+					orderProductGetProduct: true,
+					getImageFormats: true,
+				},
+				req,
+			})
+			.then(r => {
+
+				const {
+					order,
+				} = r.data;
+
+				Object.assign(result.data, {
+					order,
+				});
+
+				// console.log("DefaultPage CurrentUser", r);
+
+			})
+			.catch(e => {
+				console.error(e);
 			});
 
 			/*
@@ -205,6 +235,36 @@ export default class DefaultPage extends Page{
 		} = modxResource;
 
 		switch(template){
+
+			// Главная страница
+			case 11:
+
+				// Полчаем товары без постраничности
+				await provider({
+					operationName: "CatalogProducts",
+					variables: {
+						modxResourcesLimit: 6,
+						withPagination: false,
+						getImageFormats: true,
+					},
+					req,
+				})
+				.then(r => {
+
+					const {
+						modxResources: products,
+					} = r.data;
+
+					Object.assign(result.data, {
+						products,
+					});
+
+				})
+				.catch(e => {
+					throw(e);
+				});
+
+				break;
 
 			// Товар
 			case 3:
@@ -314,6 +374,28 @@ export default class DefaultPage extends Page{
 	}
 
 
+
+
+  async onLocationChanged(){
+
+    // console.log("Page onLocationChanged");
+
+
+    await super.onLocationChanged();
+
+    console.log("onLocationChanged", this.state);
+
+    const {
+    	title,
+    } = this.state;
+
+    console.log("onLocationChanged title", title);
+
+    title && this.setPageTitle(title);
+
+  }
+
+
 	renderComponent(){
 
 		// const {
@@ -360,9 +442,17 @@ export default class DefaultPage extends Page{
 			template,
 		} = modxResource;
 
+
+		// Этот компонент отвечает за отображение
 		let View;
 
 		switch(template){
+
+			case 11:
+
+				View = MainPageView;
+
+				break;
 
 			case 3:
 
@@ -428,7 +518,30 @@ export default class DefaultPage extends Page{
 
 		let content = this.renderComponent();
 
-		return super.render(content);
+		return super.render(<div
+			style={{
+				flexBasis: "100%",
+			}}
+		>
+			
+			{content}
+
+      <div
+      	className="footer"
+      >
+        
+      	<a 
+      		href="https://modxclub.ru/" 
+      		target="_blank"
+      	>
+      		<div 
+	      		className="copy"
+	      	/>
+      	</a>
+
+      </div>
+
+		</div>);
 
 	}
 
