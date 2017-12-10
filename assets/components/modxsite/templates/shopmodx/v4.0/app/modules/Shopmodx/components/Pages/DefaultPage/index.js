@@ -91,7 +91,10 @@ export default class DefaultPage extends Page{
 
 
 
-
+		/*
+			На стороне сервера получаем данные текущего пользователя 
+			и прочие данные, которые получить надо только один раз
+		*/
 		if(typeof window === "undefined"){
 			
 			// Получаем текущего пользователя
@@ -139,8 +142,6 @@ export default class DefaultPage extends Page{
 					menuItems,
 				});
 
-				console.log("DefaultPage MainMenuData", r);
-
 			})
 			.catch(e => {
 				throw(e);
@@ -181,6 +182,81 @@ export default class DefaultPage extends Page{
 
 		}
 
+
+		// Получаем дополнительные данные в зависимости от шаблона документа
+
+		const {
+			id,
+			template,
+		} = modxResource;
+
+		switch(template){
+
+			// Товар
+			case 3:
+
+				break;
+
+			// Корневой раздел каталога
+			case 17:
+
+				// Все товары с постраничностью
+				await provider({
+					operationName: "CatalogProducts",
+					variables: {
+						modxResourcesLimit: 6,
+						withPagination: true,
+						getImageFormats: true,
+					},
+					req,
+				})
+				.then(r => {
+
+					const {
+						modxResourcesList: productsList,
+					} = r.data;
+
+					Object.assign(result.data, {
+						productsList,
+					});
+
+				})
+				.catch(e => {
+					throw(e);
+				});
+
+
+				// Три случайных категории
+				await provider({
+					operationName: "CatalogCategories",
+					variables: {
+						modxResourcesLimit: 3,
+						withPagination: false,
+						getImageFormats: true,
+					},
+					req,
+				})
+				.then(r => {
+
+					const {
+						modxResources: categories,
+					} = r.data;
+
+					Object.assign(result.data, {
+						categories,
+					});
+
+				})
+				.catch(e => {
+					throw(e);
+				});
+
+
+				break;
+
+		}
+
+
 		// console.log("DefaultPage result.data", result.data);
  
 	  return result;
@@ -190,10 +266,10 @@ export default class DefaultPage extends Page{
 
 	renderComponent(){
 
-		const {
-			ProductView,
-			CatalogView,
-		} = this.props;
+		// const {
+		// 	ProductView,
+		// 	CatalogView,
+		// } = this.props;
 
 		const {
 			...componentState
@@ -207,34 +283,76 @@ export default class DefaultPage extends Page{
 			return null;
 		}
 
+
+		/*
+			Определяем какой компонент будем рендерить
+		*/
+		const {
+			ProductView,
+			CatalogView,
+		} = this.props;
+
+		// const {
+		// 	...componentState
+		// } = this.state;
+
+		// const {
+		// 	modxResource,
+		// } = componentState;
+
+		// if(!modxResource){
+		// 	return null;
+		// }
+
 		const {
 			id,
 			template,
 		} = modxResource;
 
-		let content;
+		let View;
 
 		switch(template){
 
 			case 3:
 
-				content = <ProductView
-					key={id}
-					{...componentState}
-				/>
+				View = ProductView;
+
+				break;
 
 			case 17:
 
-				content = <CatalogView
-					key={id}
-					{...componentState}
-				/>
+				View = CatalogView;
 
 				break;
 
 		}
 
-		return content;
+		// let content;
+
+		// switch(template){
+
+		// 	case 3:
+
+		// 		content = <ProductView
+		// 			key={id}
+		// 			{...componentState}
+		// 		/>
+
+		// 	case 17:
+
+		// 		content = <CatalogView
+		// 			key={id}
+		// 			{...componentState}
+		// 		/>
+
+		// 		break;
+
+		// }
+
+		return View && <View
+			key={id}
+			{...componentState}
+		/> || null;
 
 	}
 

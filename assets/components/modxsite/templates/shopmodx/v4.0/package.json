@@ -174,7 +174,7 @@
     "prop-types": "15.5.8",
     "react": "^15.6.2",
     "react-big-calendar": "^0.17.0",
-    "react-cms": "^1.3.4",
+    "react-cms": "^1.3.6",
     "react-cms-data-view": "^1.4.6",
     "react-cms-draft-wysiwyg": "^1.12.0",
     "react-color": "^2.13.0",

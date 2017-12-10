@@ -179,8 +179,6 @@ const rootResolver = (source, args, context, info) => {
 
 const getObjectsList = (ofType, source, args, context, info) => {
 
-  console.log("getObjectsList ofType", ofType);
-
   return new Promise( async (resolve, reject) => {
 
     let result;
@@ -200,8 +198,6 @@ const getObjectsList = (ofType, source, args, context, info) => {
     }
 
     else if(ofType === UserType){
-
-      console.log("rootResolver getUsersList", args);
 
       resolver = getUsersList;
         

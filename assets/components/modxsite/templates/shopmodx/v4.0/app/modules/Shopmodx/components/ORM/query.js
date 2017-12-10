@@ -315,7 +315,7 @@ query CatalogCategory(
 
 fragment CategorySubCategories on RootType{
   # дочерние категории
-  subcategoriesList: modxResourcesList(
+  subCategoriesList: modxResourcesList(
     limit: $modxResourcesLimit
     page: $modxResourcesPage
     context_key: $modxResourcesContextKey
@@ -339,7 +339,7 @@ fragment CategorySubCategories on RootType{
     }
   }
   
-  subcategories: modxResources(
+  subCategories: modxResources(
     limit: $modxResourcesLimit
     page: $modxResourcesPage
     context_key: $modxResourcesContextKey

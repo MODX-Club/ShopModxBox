@@ -12,6 +12,13 @@ class modWebPublicActionProcessor extends modProcessor{
     public static function getInstance(modX &$modx,$className,$properties = array()) {
 
         
+
+        $request_body = file_get_contents('php://input');
+
+        if($request_body AND $data = json_decode($request_body, 1)){
+            $properties = array_merge($properties, $data);
+        }
+        
         foreach($properties as $field => & $value){
 
             if(!is_scalar($value)){
@@ -35,13 +42,6 @@ class modWebPublicActionProcessor extends modProcessor{
             else if($v === "undefined"){
                 unset($properties[$field]);
             }
-        }
-        
-
-        $request_body = file_get_contents('php://input');
-
-        if($request_body AND $data = json_decode($request_body, 1)){
-            $properties = array_merge($properties, $data);
         }
 
 
