@@ -49,6 +49,19 @@ import UserType, {
 } from './User';
 
 
+import OrderType, {
+  OrderArgs,
+  OrdersArgs,
+} from './Order';
+
+
+
+import OrderProductType, {
+  OrderProductArgs,
+  OrdersProductsArgs,
+} from './OrderProduct';
+
+
 
 export const rootDirectives = [
   storageDirective,
@@ -140,6 +153,40 @@ export default new GraphQLObjectType({
       type: MODXResourceType,
       description: MODXResourceType.description,
       args: MODXResourceArgs,
+    },
+
+    ordersList: new listField({
+      type: OrderType,
+      name: "ordersList",
+      description: "Список заказов с постраничностью",
+      args: OrdersArgs,
+    }),
+    orders: {
+      type: new GraphQLList(OrderType),
+      description: "Список заказов",
+      args: OrdersArgs,
+    },
+    order: {
+      type: OrderType,
+      description: OrderType.description,
+      args: OrderArgs,
+    },
+
+    ordersProductsList: new listField({
+      type: OrderProductType,
+      name: "orderProductsList",
+      description: "Список позиций заказа с постраничностью",
+      args: OrdersProductsArgs,
+    }),
+    ordersProducts: {
+      type: new GraphQLList(OrderProductType),
+      description: "Список позиций заказа",
+      args: OrdersProductsArgs,
+    },
+    orderProduct: {
+      type: OrderProductType,
+      description: OrderProductType.description,
+      args: OrderProductArgs,
     },
 
   }),

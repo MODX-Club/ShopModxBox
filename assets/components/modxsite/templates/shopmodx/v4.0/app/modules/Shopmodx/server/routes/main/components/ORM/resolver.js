@@ -37,6 +37,22 @@ import {
 
 
 
+import OrderType from 'modules/Site/components/ORM/Order';
+
+import {
+  getList as getOrdersList,
+} from './Order';
+
+
+
+import OrderProductType from 'modules/Site/components/ORM/OrderProduct';
+
+import {
+  getList as getOrdersProductsList,
+} from './OrderProduct';
+
+
+
 const rootResolver = (source, args, context, info) => {
 
 
@@ -200,6 +216,18 @@ const getObjectsList = (ofType, source, args, context, info) => {
     else if(ofType === UserType){
 
       resolver = getUsersList;
+        
+    }
+
+    else if(ofType === OrderType){
+
+      resolver = getOrdersList;
+        
+    }
+
+    else if(ofType === OrderProductType){
+
+      resolver = getOrdersProductsList;
         
     }
 

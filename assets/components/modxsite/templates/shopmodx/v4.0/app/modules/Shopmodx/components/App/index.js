@@ -138,7 +138,8 @@ let {
 
 Object.assign(childContextTypes, {
   order: PropTypes.object,              // Текущий объект заказа пользователя
-  menuItems: PropTypes.array.isRequired,  // Пункты меню
+  menuItems: PropTypes.array,  // Пункты меню
+  addToBasket: PropTypes.func,
 });
 
 export class AppMain extends ReactCmsApp{
@@ -166,6 +167,7 @@ export class AppMain extends ReactCmsApp{
     Object.assign(context, {
       order,
       menuItems,
+      addToBasket: ::this.addToBasket,
     });
 
     return context;
@@ -305,6 +307,38 @@ export class AppMain extends ReactCmsApp{
     }
 
     return user.sudo === true || (user.policies && user.policies[perm]) || false;
+  }
+
+
+  async addToBasket(product){
+
+    console.log("addToBasket product", product);
+
+    const {
+      documentActions,
+    } = this.props;
+
+    if(!product){
+      return documentActions.addInformerMessage("Не был получен товар");
+    }
+
+    const {
+      id,
+    } = product;
+
+    let result = await this.remoteQuery({
+      operationName: "addToBasket",
+      variables: {
+        productId: id,
+      },
+    })
+    .then(r => r)
+    .catch(e => {
+      throw(e)
+    });
+
+    return result;
+
   }
 
 

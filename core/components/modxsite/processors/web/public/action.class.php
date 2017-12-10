@@ -45,7 +45,7 @@ class modWebPublicActionProcessor extends modProcessor{
         }
 
 
-        $modx->log(1, print_r($properties, 1), "FILE");
+        // $modx->log(1, print_r($properties, 1), "FILE");
 
         // Здесь мы имеем возможность переопределить реальный класс процессора
         if(!empty($properties['pub_action']) && !self::$actualClassName){

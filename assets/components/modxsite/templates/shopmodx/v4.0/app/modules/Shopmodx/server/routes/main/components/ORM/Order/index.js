@@ -29,7 +29,9 @@ export const getList = (object, args, context, info) => {
 
     limit = limit || 0;
 
-    let action = 'users/getdata';
+    let action = 'orders/getdata';
+
+    const url = `/assets/components/shopmodx/connectors/connector.php?pub_action=${action}`;
 
     let params = {
       id,
@@ -38,8 +40,7 @@ export const getList = (object, args, context, info) => {
       start,
       count: count === undefined ? 1 : count,
       search,
-      ownProfile,
-      delegatesOnly,
+      url,
     };
 
     let request = SendMODXRequest(action, params);
@@ -47,7 +48,7 @@ export const getList = (object, args, context, info) => {
     request
     .then((data) => {
 
-
+      // console.log("Orders result", data);
 
       if(!data.success){
 
@@ -60,33 +61,9 @@ export const getList = (object, args, context, info) => {
           data.object = [data.object];
         }
 
-        data.object.map(user => {
+        data.object.map(n => {
 
-          const {
-            active,
-            blocked,
-            sudo,
-            delegate,
-            // createdon,
-            notices,
-          } = user;
-
-          Object.assign(user, {
-            active: active === '1' ? true : false,
-            blocked: blocked === '1' ? true : false,
-            sudo: sudo === '1' ? true : false,
-            delegate: delegate === '1' ? true : false,
-            // createdon: parseInt(createdon) || null,
-            notices: notices && notices.map(n => {
-
-              Object.assign(n, {
-                id: parseInt(n.id),
-                active: parseInt(n.active) === 1 ? true : false,
-              });
-
-              return n;
-            }) || null,
-          });
+          return n;
 
         });
 

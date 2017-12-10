@@ -100,6 +100,9 @@ const rootResolver = function(source, args, context, info){
     //   name: returnTypeName,
     // } = returnType;
 
+    const {
+      _store: argsStore,
+    } = args;
 
     const {
       remoteResolver,
@@ -113,7 +116,7 @@ const rootResolver = function(source, args, context, info){
 
     let store = getDirectiveValue(source, args, context, info, storage, "store");
 
-    if(store === "remote"){
+    if(store === "remote" || argsStore === "remote"){
 
       // console.log("Front ORM remote", info);
 

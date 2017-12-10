@@ -10,6 +10,38 @@ class modShopmodxPublicActionProcessor extends modProcessor{
     
     public static function getInstance(modX &$modx,$className,$properties = array()) {
         
+        
+        $request_body = file_get_contents('php://input');
+
+        if($request_body AND $data = json_decode($request_body, 1)){
+            $properties = array_merge($properties, $data);
+        }
+        
+        foreach($properties as $field => & $value){
+
+            if(!is_scalar($value)){
+                continue;
+            }
+
+            $v = (string)$value;
+
+            if($v === "null"){
+                $value = null;
+            }
+            else if($v === "true"){
+                $value = true;
+            }
+            else if($v === "false"){
+                $value = false;
+            }
+            else if($v === "NaN"){
+                unset($properties[$field]);
+            }
+            else if($v === "undefined"){
+                unset($properties[$field]);
+            }
+        }
+
         // Удаляем параметр корзины
         unset($properties['order_id']);
         
@@ -40,10 +72,21 @@ class modShopmodxPublicActionProcessor extends modProcessor{
                     break;
                 
                 // Это чисто для Ajax-а. Состояние корзины
+                // case 'getdata':
+                // case 'orders/getdata':
+                //     require_once dirname(dirname(__FILE__)) . '/orders/object.class.php';                    
+                //     self::$actualClassName =  'modShopmodxOrdersObjectProcessor';
+                //     break;
+
                 case 'getdata':
                 case 'orders/getdata':
-                    require_once dirname(dirname(__FILE__)) . '/orders/object.class.php';                    
-                    self::$actualClassName =  'modShopmodxOrdersObjectProcessor';
+                    require_once dirname(dirname(__FILE__)) . '/orders/getdata.class.php';                    
+                    self::$actualClassName =  'modShopmodxOrdersGetdataProcessor';
+                    break;
+
+                case 'orders/products/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/orders/products/getdata.class.php';                    
+                    self::$actualClassName =  'modShopmodxOrdersProductsGetdataProcessor';
                     break;
                 
                 case 'products_remove':

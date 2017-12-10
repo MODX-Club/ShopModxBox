@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
+import Button from 'material-ui/Button';
 
 import NumberFormat from 'react-number-format';
 
@@ -15,7 +16,7 @@ export default class ProductView extends Component{
 	};
 	
 	static contextTypes = {
-
+		addToBasket: PropTypes.func.isRequired,
 	};
 
 
@@ -35,6 +36,24 @@ export default class ProductView extends Component{
 
 
 	componentDidMount(){
+
+	}
+
+
+	// Добавление товара в корзину
+	async addToBasket(event){
+
+		const {
+			addToBasket,
+		} = this.context;
+
+		const {
+			modxResource: item
+		} = this.props;
+
+		await addToBasket(item);
+
+		this.forceUpdate();
 
 	}
 
@@ -125,6 +144,13 @@ export default class ProductView extends Component{
 
 					</tbody>
 				</table>
+
+				<Button
+					raised
+					onClick={::this.addToBasket}
+				>
+					Добавить в корзину
+				</Button>
 
 				{content && <div dangerouslySetInnerHTML={{__html: content}} /> || null}
 

@@ -547,6 +547,154 @@ fragment MODXResourceFields on MODXResourceType{
   
 }
 
+
+
+
+query Orders(
+  $ordersLimit:Int = 10
+  $withPagination:Boolean = false
+  $orderGetProducts:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $getImageFormats:Boolean = false
+){
+  
+  ...RootOrders
+  
+}
+
+fragment RootOrders on RootType{
+  
+  ordersList(
+    limit:$ordersLimit
+  ) 
+  @include(if:$withPagination)
+  @storage(store:remote)
+  {
+    count
+    total
+    limit
+    page
+    object{
+      ...Order
+    }
+  }
+  
+  orders(
+    limit:$ordersLimit
+  ) 
+  @skip(if:$withPagination)
+  @storage(store:remote)
+  {
+    ...Order
+  }
+  
+}
+
+fragment Order on OrderType{
+  
+  ...OrderFields
+  
+  Products
+  @include(if:$orderGetProducts)
+  @storage(store:remote)
+  {
+    ...OrderProduct
+  }
+  
+}
+
+fragment OrderFields on OrderType{
+  id
+  number_history
+  status_id
+  status_str
+  contractor
+  createdby
+  createdon
+  editedby
+  editedon
+  manager
+  address
+  comments
+  discount
+  positions
+  total
+  sum
+  original_sum
+  pay_id
+  paysys_invoice_id
+  pay_date
+  pay_sum
+  paysystem_name
+}
+
+
+query OrdersProducts(
+  $withPagination:Boolean = false
+  $ordersProductsLimit:Int = 10
+  $getImageFormats:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $orderProductsOrder:Int
+){
+  
+  ...RootOrdersProducts
+  
+}
+
+fragment RootOrdersProducts on RootType{
+  
+  ordersProductsList(
+    limit:$ordersProductsLimit
+    order:$orderProductsOrder
+  )
+  @include(if:$withPagination)
+  @storage(store:remote)
+  {
+    count
+    total
+    limit
+    page
+    object{
+      ...OrderProduct
+    }
+  }
+  
+  ordersProducts(
+    limit:$ordersProductsLimit
+    order:$orderProductsOrder
+  )
+  @skip(if:$withPagination)
+  @storage(store:remote)
+  {
+    ...OrderProduct
+  }
+  
+}
+
+fragment OrderProduct on OrderProductType{
+  
+  ...OrderProductFields
+  
+  Product 
+  @include(if:$orderProductGetProduct)
+  @storage(store:remote)
+  {
+    ...ProductFields
+  }
+  
+}
+
+fragment ProductFields on MODXResourceType{
+  ...MODXResourceFields
+}
+
+fragment OrderProductFields on OrderProductType{
+  id
+  order_id
+  product_id
+  quantity
+  price
+}
 `;
 
 export default defaultQuery;
