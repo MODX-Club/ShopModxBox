@@ -43,6 +43,7 @@ export default class ProductView extends Component{
 
 		const {
 			modxResource: item,
+			...other
 		} = this.props;
 
 		if(!item){
@@ -57,6 +58,7 @@ export default class ProductView extends Component{
 			imageFormats,
 			price,
 			price_old,
+			content,
 		} = item;
 
 		const {
@@ -87,7 +89,9 @@ export default class ProductView extends Component{
 				item
 				xs
 			>
-				<Typography>
+				<Typography
+					type="title"
+				>
 					{pagetitle}
 				</Typography>
 				
@@ -121,6 +125,8 @@ export default class ProductView extends Component{
 
 					</tbody>
 				</table>
+
+				{content && <div dangerouslySetInnerHTML={{__html: content}} /> || null}
 
 			</Grid>
 

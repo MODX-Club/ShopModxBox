@@ -29,6 +29,7 @@ export default class ShopmodxPage extends PageLayout{
 		    display: "flex",
 		    flexDirection: "row",
 		    flexGrow: 1,
+		    height: "100%",
 			}}
 		>
 			{childContent}

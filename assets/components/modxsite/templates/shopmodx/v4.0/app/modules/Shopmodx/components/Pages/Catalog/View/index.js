@@ -12,6 +12,8 @@ import {Link} from 'react-router';
 import ProductCart from 'modules/Shopmodx/components/Pages/Catalog/View/List/Product';
 import CategoryCart from 'modules/Shopmodx/components/Pages/Catalog/View/List/Category';
 
+import Pagination from 'modules/Site/components/pagination';
+
 export default class CatalogView extends Component{
 
 	static propTypes = {
@@ -108,6 +110,21 @@ export default class CatalogView extends Component{
 						{productsContent}
 
 					</Grid>
+					
+
+					<div
+			    	style={{
+			    		textAlign: "center",
+			    	}}
+			    >
+			    	
+			    	<Pagination
+			      	page={parseInt(page) || 1}
+				      limit={limit}
+				      total={total}
+				    />
+
+			    </div>
 
 				</div>);
 

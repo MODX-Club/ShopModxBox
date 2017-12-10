@@ -11,17 +11,20 @@ import PropTypes from 'prop-types';
 
 import Page from '../';
 
+import DefaultView from './View';
 import ProductView from 'modules/Shopmodx/components/Pages/Catalog/Products/Product/View';
 import CatalogView from 'modules/Shopmodx/components/Pages/Catalog/View';
-
+import NewsView from 'modules/Shopmodx/components/Pages/News/View';
 
 let {
 	...defaultProps = {}
 } = Page.defaultProps || {};
 
 Object.assign(defaultProps, {
+	DefaultView,
 	ProductView,
 	CatalogView,
+	NewsView,
 });
 
 export default class DefaultPage extends Page{
@@ -67,7 +70,12 @@ export default class DefaultPage extends Page{
 
 		const {
 			pathname,
+			query,
 		} = location || {};
+
+		const {
+			page,
+		} = query || {};
 
 		let result = await provider({
 			operationName: "MODXResourceByUri",
@@ -205,6 +213,7 @@ export default class DefaultPage extends Page{
 					operationName: "CatalogProducts",
 					variables: {
 						modxResourcesLimit: 6,
+						modxResourcesPage: page,
 						withPagination: true,
 						getImageFormats: true,
 					},
@@ -254,6 +263,41 @@ export default class DefaultPage extends Page{
 
 				break;
 
+			// Корневой раздел новостей
+			case 18:
+
+				// Все товары с постраничностью
+				await provider({
+					operationName: "MODXResources",
+					variables: {
+						modxResourcesParent: id,
+						modxResourcesLimit: 5,
+						modxResourcesPage: page,
+						withPagination: true,
+						getImageFormats: true,
+					},
+					req,
+				})
+				.then(r => {
+
+					const {
+						modxResourcesList: newsList,
+					} = r.data;
+
+					Object.assign(result.data, {
+						newsList,
+					});
+
+				})
+				.catch(e => {
+					throw(e);
+				});
+
+				break;
+
+
+			default:;
+
 		}
 
 
@@ -288,6 +332,7 @@ export default class DefaultPage extends Page{
 			Определяем какой компонент будем рендерить
 		*/
 		const {
+			DefaultView,
 			ProductView,
 			CatalogView,
 		} = this.props;
@@ -324,6 +369,14 @@ export default class DefaultPage extends Page{
 				View = CatalogView;
 
 				break;
+
+			case 18:
+
+				View = NewsView;
+
+				break;
+
+			default: View = DefaultView;
 
 		}
 

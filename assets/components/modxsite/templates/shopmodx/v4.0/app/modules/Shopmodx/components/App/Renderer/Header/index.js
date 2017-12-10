@@ -38,23 +38,29 @@ export default class Header extends Component{
       container
       gutter={0}
       className="MainApp--header"
+      style={{
+        marginBottom: 20,
+      }}
     >
 
       <Grid
         item
       >
     
-        <div 
-          className="MainApp--header-logo"
+        <Link
+          to="/"
+          href="/"
+          title="shopModx eCommerce engine"
         >
 
-          <Link
-            to="/"
-            href="/"
-            title="shopModx eCommerce engine">
-          </Link>
+          <div 
+            className="MainApp--header-logo"
+          >
 
-        </div>
+
+          </div>
+          
+        </Link>
       
       </Grid>
 
