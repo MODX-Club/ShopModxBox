@@ -695,6 +695,27 @@ fragment OrderProductFields on OrderProductType{
   quantity
   price
 }
+
+
+mutation OrderAddProduct(
+  $orderProductId:Int!
+  $orderProductsQuantity:Int!
+  $orderGetProducts:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $getImageFormats:Boolean = false
+){
+  
+  orderAddProduct(
+    product_id:$orderProductId
+    quantity:$orderProductsQuantity
+  )
+  @storage(store:remote)
+  {
+    ...Order
+  }
+  
+}
+
 `;
 
 export default defaultQuery;

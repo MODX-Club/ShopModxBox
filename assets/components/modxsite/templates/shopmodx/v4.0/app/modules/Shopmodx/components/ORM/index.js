@@ -52,6 +52,7 @@ import UserType, {
 import OrderType, {
   OrderArgs,
   OrdersArgs,
+  OrderMutations,
 } from './Order';
 
 
@@ -200,7 +201,7 @@ const mutationFields = Object.assign({
       description: "Сброс кеша",
     },
   }, {
-
+    ...OrderMutations,
   }
 );
 

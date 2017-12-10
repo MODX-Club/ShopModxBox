@@ -8,6 +8,7 @@ import {
   GraphQLEnumType,
   GraphQLFloat,
   GraphQLBoolean,
+  GraphQLNonNull,
 } from 'graphql';
 
 import { List } from 'immutable';
@@ -167,6 +168,26 @@ const OrderType = new GraphQLObjectType({
 
   },
 });
+
+
+export const OrderMutations = {
+
+  orderAddProduct: {
+    type: OrderType,
+    description: "Добавление товара в корзину",
+    args: {
+      product_id: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: "ID товара",
+      },
+      quantity: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: "Количество",
+      },
+    },
+  },
+
+};
 
 
 export const getList = (source, args, context, info) => {
