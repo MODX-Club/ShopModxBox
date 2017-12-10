@@ -42,6 +42,8 @@ import OrderType from 'modules/Site/components/ORM/Order';
 import {
   getList as getOrdersList,
   orderAddProduct,
+  orderRecalculate,
+  orderSubmit,
 } from './Order';
 
 
@@ -83,8 +85,7 @@ const rootResolver = (source, args, context, info) => {
 
   if(operation && operation.name){
 
-
-    console.log("operation.name.value", operation.name.value, returnType);
+    // console.log("operation.name.value", operation.name.value, returnType);
 
     switch(operation.name.value){
 
@@ -125,7 +126,31 @@ const rootResolver = (source, args, context, info) => {
 
           result = orderAddProduct(null, args, context, info);
 
-          console.log("orderAddProduct result", result);
+          return result;
+
+        }
+
+        break;
+
+
+      case "OrderUpdateProduct":
+
+        if(returnType === OrderType){
+
+          result = orderRecalculate(null, args, context, info);
+
+          return result;
+
+        }
+
+        break;
+
+
+      case "OrderSubmit":
+
+        if(returnType === OrderType){
+
+          result = orderSubmit(null, args, context, info);
 
           return result;
 

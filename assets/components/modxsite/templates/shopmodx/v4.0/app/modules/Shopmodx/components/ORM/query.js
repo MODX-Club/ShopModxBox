@@ -118,6 +118,9 @@ mutation clearCache{
 
 query CurrentUser(
   $getImageFormats:Boolean = true
+  $orderGetProducts:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $userGetOrder:Boolean = false
 )
 {
   
@@ -126,6 +129,13 @@ query CurrentUser(
   ) @storage(store:remote)
   {
     ...User
+    
+    Order
+    @include(if:$userGetOrder)
+    @storage(store:remote)
+    {
+      ...Order
+    }
   }
 }
 
@@ -696,7 +706,7 @@ fragment OrderProductFields on OrderProductType{
   price
 }
 
-
+# Добавление товара в корзину
 mutation OrderAddProduct(
   $orderProductId:Int!
   $orderProductsQuantity:Int!
@@ -715,6 +725,42 @@ mutation OrderAddProduct(
   }
   
 }
+
+# Обновление товара в корзине
+mutation OrderUpdateProduct(
+  $orderPositionId:Int!
+  $orderProductsQuantity:Int!
+  $orderGetProducts:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $getImageFormats:Boolean = false
+){
+  
+  orderUpdateProduct(
+    position_id:$orderPositionId
+    quantity:$orderProductsQuantity
+  )
+  @storage(store:remote)
+  {
+    ...Order
+  }
+  
+}
+
+# Оформление заказа
+mutation OrderSubmit(
+  $orderGetProducts:Boolean = false
+  $orderProductGetProduct:Boolean = false
+  $getImageFormats:Boolean = false
+){
+  
+  orderSubmit
+  @storage(store:remote)
+  {
+    ...Order
+  }
+  
+}
+
 
 `;
 

@@ -27,6 +27,10 @@ import {
 
 
 
+
+import OrderType from '../Order';
+
+
 export const UsersArgs = Object.assign({
   delegatesOnly: {
     type: GraphQLBoolean,
@@ -105,6 +109,35 @@ export const UserType = new GraphQLObjectType({
       createdby: {
         type: GraphQLInt,
         description: "Кем создана учетка пользователя",
+      },
+      Order: {
+        type: OrderType,
+        description: "Текущий заказ пользователя",
+        resolve: (source, args, context, info) => {
+
+          // const {
+          //   id,
+          // } = source;
+
+          // // console.log("product_id", product_id);
+
+          // if(!product_id){
+          //   return null;
+          // }
+
+          const {
+            rootResolver,
+          } = context;
+
+          Object.assign(args, {
+            // id: product_id,
+            // _store: "remote",
+            ownOrder: true,     // Поулчить только текущий заказ
+          });
+
+          return rootResolver(null, args, context, info);
+
+        },
       },
       // comments: {
       //   type: new GraphQLList(CommentType),

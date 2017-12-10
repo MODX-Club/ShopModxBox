@@ -61,6 +61,9 @@ export default class DefaultView extends Component{
 		
 				<Typography
 					type="title"
+					style={{
+						marginBottom: 30,
+					}}
 				>
 					{pagetitle}
 				</Typography>

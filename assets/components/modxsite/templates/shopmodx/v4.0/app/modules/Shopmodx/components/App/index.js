@@ -140,6 +140,8 @@ Object.assign(childContextTypes, {
   order: PropTypes.object,              // Текущий объект заказа пользователя
   menuItems: PropTypes.array,  // Пункты меню
   addToBasket: PropTypes.func,
+  recalculateBasket: PropTypes.func,
+  submitOrder: PropTypes.func,
 });
 
 export class AppMain extends ReactCmsApp{
@@ -168,6 +170,8 @@ export class AppMain extends ReactCmsApp{
       order,
       menuItems,
       addToBasket: ::this.addToBasket,
+      recalculateBasket: ::this.recalculateBasket,
+      submitOrder: ::this.submitOrder,
     });
 
     return context;
@@ -243,6 +247,9 @@ export class AppMain extends ReactCmsApp{
 
     const {
       document,
+      user: {
+        user: currentUser,
+      },
     } = this.props;
 
     let {
@@ -260,8 +267,16 @@ export class AppMain extends ReactCmsApp{
         menuItems,
       } = state || {};
 
+      const {
+        Order,
+      } = currentUser || {};
+
       menuItems && Object.assign(this.state, {
         menuItems,
+      });
+
+      Order && Object.assign(this.state, {
+        order: Order,
       });
 
     }
@@ -310,9 +325,9 @@ export class AppMain extends ReactCmsApp{
   }
 
 
-  async addToBasket(product){
+  async addToBasket(product, data = {}){
 
-    console.log("addToBasket product", product);
+    // console.log("addToBasket product", product);
 
     const {
       documentActions,
@@ -326,15 +341,115 @@ export class AppMain extends ReactCmsApp{
       id,
     } = product;
 
+    const {
+      quantity = 1,
+    } = data || {}
+
     let result = await this.remoteQuery({
-      operationName: "addToBasket",
-      variables: {
-        productId: id,
-      },
+      operationName: "OrderAddProduct",
+      variables: Object.assign(data, {
+        orderProductId: id,
+        orderProductsQuantity: quantity,
+        orderGetProducts: true,
+        orderProductGetProduct: true,
+        getImageFormats: true,
+      }),
     })
     .then(r => r)
     .catch(e => {
       throw(e)
+    });
+
+    const {
+      orderAddProduct,
+    } = result.data;
+
+    this.setState({
+      order: orderAddProduct,
+    });
+
+    return result;
+
+  }
+
+
+  async recalculateBasket(item, data = {}){
+
+    // console.log("addToBasket product", product);
+
+    const {
+      documentActions,
+    } = this.props;
+
+    if(!item){
+      return documentActions.addInformerMessage("Не была получена товарная позиция");
+    }
+
+    const {
+      id,
+    } = item;
+
+    const {
+      quantity,
+    } = data || {}
+
+    let result = await this.remoteQuery({
+      operationName: "OrderUpdateProduct",
+      variables: Object.assign(data, {
+        orderPositionId: id,
+        orderProductsQuantity: quantity,
+        orderGetProducts: true,
+        orderProductGetProduct: true,
+        getImageFormats: true,
+      }),
+    })
+    .then(r => r)
+    .catch(e => {
+      throw(e)
+    });
+
+    const {
+      orderUpdateProduct,
+    } = result.data;
+
+    this.setState({
+      order: orderUpdateProduct,
+    });
+
+    return result;
+
+  }
+
+
+  // Оформление заказа
+  async submitOrder(){
+
+    // console.log("addToBasket product", product);
+
+    const {
+      documentActions,
+    } = this.props;
+
+
+    let result = await this.remoteQuery({
+      operationName: "OrderSubmit",
+      variables: Object.assign({}, {
+        orderGetProducts: true,
+        orderProductGetProduct: true,
+        getImageFormats: true,
+      }),
+    })
+    .then(r => r)
+    .catch(e => {
+      throw(e)
+    });
+
+    const {
+      orderSubmit,
+    } = result.data;
+
+    this.setState({
+      order: orderSubmit,
     });
 
     return result;

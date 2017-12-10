@@ -244,6 +244,7 @@ class modShopmodxOrdersSubmitProcessor extends modShopmodxOrdersObjectProcessor{
             $response = $this->modx->runProcessor('shopmodx/orders/products/getdata',
                 array(
                     "order_id"  => $this->object->get('id'),
+                    "format"    => "",
                 ), array(
                     'processors_path' => dirname(dirname(dirname(__FILE__))).'/',
                 )

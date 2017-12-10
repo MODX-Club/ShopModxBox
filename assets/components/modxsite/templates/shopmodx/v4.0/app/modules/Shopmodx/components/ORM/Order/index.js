@@ -187,6 +187,28 @@ export const OrderMutations = {
     },
   },
 
+  orderUpdateProduct: {
+    type: OrderType,
+    description: "Обновление товара в корзине",
+    args: {
+      position_id: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: "ID товарной позиции",
+      },
+      quantity: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: "Количество",
+      },
+    },
+  },
+
+  orderSubmit: {
+    type: OrderType,
+    description: "Оформление заказа",
+    args: {
+    },
+  },
+
 };
 
 

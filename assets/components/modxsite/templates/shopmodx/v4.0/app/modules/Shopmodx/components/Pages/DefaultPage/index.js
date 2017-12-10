@@ -15,6 +15,7 @@ import DefaultView from './View';
 import ProductView from 'modules/Shopmodx/components/Pages/Catalog/Products/Product/View';
 import CatalogView from 'modules/Shopmodx/components/Pages/Catalog/View';
 import NewsView from 'modules/Shopmodx/components/Pages/News/View';
+import BasketView from 'modules/Shopmodx/components/Basket/View/Order';
 
 let {
 	...defaultProps = {}
@@ -25,6 +26,7 @@ Object.assign(defaultProps, {
 	ProductView,
 	CatalogView,
 	NewsView,
+	BasketView,
 });
 
 export default class DefaultPage extends Page{
@@ -109,6 +111,10 @@ export default class DefaultPage extends Page{
 			await provider({
 				operationName: "CurrentUser",
 				variables: {
+					userGetOrder: true,
+					orderGetProducts: true,
+					orderProductGetProduct: true,
+					getImageFormats: true,
 				},
 				req,
 			})
@@ -373,6 +379,12 @@ export default class DefaultPage extends Page{
 			case 18:
 
 				View = NewsView;
+
+				break;
+
+			case 19:
+
+				View = BasketView;
 
 				break;
 

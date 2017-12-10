@@ -86,6 +86,12 @@ class modShopmodxPublicActionProcessor extends modProcessor{
                     self::$actualClassName =  'modShopmodxOrdersGetdataProcessor';
                     break;
 
+                // Текущий заказ пользователя
+                case 'order/own/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/orders/own/object.class.php';                    
+                    self::$actualClassName =  'modShopmodxOrdersOwnObjectProcessor';
+                    break;
+
                 case 'orders/products/getdata':
                     require_once dirname(dirname(__FILE__)) . '/orders/products/getdata.class.php';                    
                     self::$actualClassName =  'modShopmodxOrdersProductsGetdataProcessor';

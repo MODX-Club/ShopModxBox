@@ -25,15 +25,22 @@ export const getList = (object, args, context, info) => {
       search,
       ownProfile,
       delegatesOnly,
+      ownOrder,
     } = args || {};
 
     limit = limit || 0;
 
     let action = 'orders/getdata';
 
+    if(ownOrder){
+      
+      action = 'order/own/getdata';
+
+    }
+
     const url = `/assets/components/shopmodx/connectors/connector.php?pub_action=${action}`;
 
-    let params = {
+    let params = Object.assign({...args}, {
       id,
       limit,
       page,
@@ -41,7 +48,7 @@ export const getList = (object, args, context, info) => {
       count: count === undefined ? 1 : count,
       search,
       url,
-    };
+    });
 
     let request = SendMODXRequest(action, params);
 
@@ -52,7 +59,11 @@ export const getList = (object, args, context, info) => {
 
       if(!data.success){
 
-        return reject(data.message || "Ошибка выполнения запроса");
+        // Если запрашивали личный объект заказа пользователя, то отсутствие объекта пока не рассчитывается как ошибка
+
+
+        return !ownOrder ? reject(data.message || "Ошибка выполнения запроса") : resolve(null);
+
       }
 
       if(data.object){
@@ -88,28 +99,13 @@ export const orderAddProduct = (object, args, context, info) => {
   return new Promise((resolve, reject) => {
     let {
       id,
-      limit,
-      page,
-      offset: start,
-      count,
-      search,
-      ownProfile,
-      delegatesOnly,
     } = args || {};
-
-    limit = limit || 0;
 
     let action = 'orders/add_product';
 
     const url = `/assets/components/shopmodx/connectors/connector.php?pub_action=${action}`;
 
     let params = Object.assign({...args}, {
-      id,
-      limit,
-      page,
-      start,
-      count: count === undefined ? 1 : count,
-      search,
       url,
     });
 
@@ -118,26 +114,89 @@ export const orderAddProduct = (object, args, context, info) => {
     request
     .then((data) => {
 
-      // console.log("Orders orderAddProduct result", data);
+      if(!data.success){
+
+        return reject(data.message || "Ошибка выполнения запроса");
+      }
+
+      return resolve(data.object);
+    })
+    .catch((e) => {
+      return reject(e);
+    })
+    ;
+  });
+}
+
+export const orderRecalculate = (object, args, context, info) => {
+
+  const {
+    SendMODXRequest,
+  } = context;
+
+  return new Promise((resolve, reject) => {
+    let {
+      id,
+    } = args || {};
+
+    let action = 'recalculate';
+
+    const url = `/assets/components/shopmodx/connectors/connector.php?pub_action=${action}`;
+
+    let params = Object.assign({...args}, {
+      url,
+    });
+
+    let request = SendMODXRequest(action, params);
+
+    request
+    .then((data) => {
 
       if(!data.success){
 
         return reject(data.message || "Ошибка выполнения запроса");
       }
 
-      // if(data.object){
+      return resolve(data.object);
+    })
+    .catch((e) => {
+      return reject(e);
+    })
+    ;
+  });
+}
 
-      //   if(!Array.isArray(data.object)){
-      //     data.object = [data.object];
-      //   }
 
-      //   data.object.map(n => {
+export const orderSubmit = (object, args, context, info) => {
 
-      //     return n;
+  const {
+    SendMODXRequest,
+  } = context;
 
-      //   });
+  return new Promise((resolve, reject) => {
+    let {
+      id,
+    } = args || {};
 
-      // }
+    let action = 'order/submit';
+
+    const url = `/assets/components/shopmodx/connectors/connector.php?pub_action=${action}`;
+
+    let params = Object.assign({...args}, {
+      url,
+    });
+
+    let request = SendMODXRequest(action, params);
+
+    request
+    .then((data) => {
+
+      // console.log("orderRecalculate result", data);
+
+      if(!data.success){
+
+        return reject(data.message || "Ошибка выполнения запроса");
+      }
 
       return resolve(data.object);
     })
