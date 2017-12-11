@@ -13,10 +13,10 @@ import fetch from 'node-fetch';
 
 var FormData = require('form-data');
 
-import {
-  db as db_config,
-  site_url,
-} from '../../../../config/config'; 
+// import {
+//   db as db_config,
+//   site_url,
+// } from '../../../../config/config'; 
 
 // debug('config host', host);
 
@@ -43,11 +43,11 @@ global.HTMLImageElement = HTMLImageElement;
 const doc = document.implementation.createHTMLDocument('div');
 
     
-let {
-  connection: {
-    prefix,
-  },
-} = db_config;
+// let {
+//   connection: {
+//     prefix,
+//   },
+// } = db_config;
 
 import {
   buildSchema,

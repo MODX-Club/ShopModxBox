@@ -11,11 +11,11 @@ import { Provider } from "react-redux";
 import { applyRouterMiddleware, Router, browserHistory } from "react-router";
 import { useScroll } from "react-router-scroll";
 // Import routes
-import rootRoute from "modules/Shopmodx/config/routes";
+import rootRoute from "modules/Site/config/routes";
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import configureStore from "modules/Shopmodx/config/store";
+import configureStore from "modules/Site/config/store";
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
@@ -23,7 +23,7 @@ import configureStore from "modules/Shopmodx/config/store";
 let initialState = {};
 
 
-import {MainApp} from 'modules/Shopmodx/components/App';
+import {MainApp} from 'modules/Site/components/App';
 
 if(
   typeof window !== 'undefined'
@@ -86,7 +86,7 @@ if(typeof window !== "undefined"){
   if (module.hot) {
     // modules.hot.accept does not accept dynamic dependencies,
     // have to be constants at compile-time
-    module.hot.accept(["modules/Shopmodx/config/routes"], () => {
+    module.hot.accept(["modules/Site/config/routes"], () => {
       render();
     });
   }
