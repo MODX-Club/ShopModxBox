@@ -9,6 +9,8 @@ export const db = {
   }
 }
 
+export const site_url = 'http://localhost';
+
 export default {
 	db,
 }
