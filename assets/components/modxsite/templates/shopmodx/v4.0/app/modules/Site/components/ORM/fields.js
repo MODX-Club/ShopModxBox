@@ -1,4 +1,4 @@
 
-import * as fields from 'modules/Shopmodx/components/ORM/fields';
+import * as fields from 'shopmodx-react/components/ORM/fields';
 
 export {fields};

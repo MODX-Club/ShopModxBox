@@ -1,5 +1,5 @@
 
-import * as ORM from 'modules/Shopmodx/components/ORM/';
+import * as ORM from 'shopmodx-react/components/ORM/';
 
 module.exports = ORM;
 

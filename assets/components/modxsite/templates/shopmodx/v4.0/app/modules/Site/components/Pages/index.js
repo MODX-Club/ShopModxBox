@@ -1,4 +1,4 @@
 
-import * as Pages from 'modules/Shopmodx/components/Pages';
+import * as Pages from 'shopmodx-react/components/Pages';
 
 module.exports = Pages;

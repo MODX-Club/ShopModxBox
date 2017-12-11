@@ -1,4 +1,4 @@
 
-import * as Site from 'modules/Shopmodx';
+import * as Site from 'shopmodx-react';
 
 module.exports = Site;

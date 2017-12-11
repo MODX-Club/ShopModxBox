@@ -1,4 +1,4 @@
 
-import * as MODXResource from 'modules/Shopmodx/components/ORM/MODXResource';
+import * as MODXResource from 'shopmodx-react/components/ORM/MODXResource';
 
 module.exports = MODXResource;

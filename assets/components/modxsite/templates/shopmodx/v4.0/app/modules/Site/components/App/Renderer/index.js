@@ -1,4 +1,4 @@
 
-import * as Renderer from 'modules/Shopmodx/components/App/Renderer';
+import * as Renderer from 'shopmodx-react/components/App/Renderer';
 
 module.exports = Renderer;

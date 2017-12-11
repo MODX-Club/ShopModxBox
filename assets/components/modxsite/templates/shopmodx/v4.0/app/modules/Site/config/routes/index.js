@@ -5,7 +5,7 @@ import {
   DefaultPage,
   MainPage,
   DbPage,
-} from "modules/Shopmodx";
+} from "shopmodx-react";
 
 // console.log("CompanyCreatePage", CompanyCreatePage);
 

@@ -1,4 +1,4 @@
 
-import UserAvatar from 'modules/Shopmodx/components/fields/User/avatar';
+import UserAvatar from 'shopmodx-react/components/fields/User/avatar';
 
 export default UserAvatar;

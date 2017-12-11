@@ -1,4 +1,4 @@
 
-import User from 'modules/Shopmodx/components/ORM/User';
+import User from 'shopmodx-react/components/ORM/User';
 
 module.exports = User;

@@ -37,6 +37,7 @@ module.exports = (options) => ({
 							|| /\/react-cms\//.test(file)
 							|| /\/moment\//.test(file)
 							|| /\/react-draft-wysiwyg\//.test(file)
+							|| /\/shopmodx-react\//.test(file)
 						){
 							return;
 						}

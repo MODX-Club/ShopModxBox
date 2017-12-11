@@ -1,5 +1,5 @@
 
-import Basket from 'modules/Shopmodx/components/Basket';
+import Basket from 'shopmodx-react/components/Basket';
 
 export default Basket;
 

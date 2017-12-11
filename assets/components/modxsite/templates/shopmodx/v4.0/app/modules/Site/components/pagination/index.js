@@ -1,4 +1,4 @@
 
-import Pagination from 'modules/Shopmodx/components/pagination';
+import Pagination from 'shopmodx-react/components/pagination';
 
 export default Pagination;

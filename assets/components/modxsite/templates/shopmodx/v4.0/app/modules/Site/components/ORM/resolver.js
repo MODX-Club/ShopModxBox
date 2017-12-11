@@ -1,4 +1,4 @@
 
-import * as resolver from 'modules/Shopmodx/components/ORM/resolver';
+import * as resolver from 'shopmodx-react/components/ORM/resolver';
 
 module.exports = resolver;

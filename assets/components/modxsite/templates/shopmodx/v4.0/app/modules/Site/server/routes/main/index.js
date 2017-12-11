@@ -1,9 +1,9 @@
 
-import ShopmodxRouter from 'modules/Shopmodx/server/routes/main';
+import ShopmodxRouter from 'shopmodx-react/server/routes/main';
 
 import {
   MainApp,
-} from "modules/Shopmodx/components/App/";
+} from "shopmodx-react/components/App/";
 
 
 import configureStore from 'modules/Site/config/store';

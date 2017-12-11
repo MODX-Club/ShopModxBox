@@ -1,4 +1,4 @@
 
-import * as OrderProduct from 'modules/Shopmodx/components/ORM/OrderProduct';
+import * as OrderProduct from 'shopmodx-react/components/ORM/OrderProduct';
 
 module.exports = OrderProduct;
