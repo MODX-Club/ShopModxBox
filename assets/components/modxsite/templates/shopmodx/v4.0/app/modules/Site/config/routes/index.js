@@ -1,17 +1,17 @@
 
 
 import {
-  MainApp,
+  AppMain,
   DefaultPage,
   MainPage,
   DbPage,
-} from "shopmodx-react";
+} from "modules/Site";
 
 // console.log("CompanyCreatePage", CompanyCreatePage);
 
 let routes = {
   path: "/",
-  component: MainApp,
+  component: AppMain,
   indexRoute: { 
     component: MainPage
   },
