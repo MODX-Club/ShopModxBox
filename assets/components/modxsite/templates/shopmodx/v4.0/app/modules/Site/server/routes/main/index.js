@@ -8,6 +8,13 @@ import {
 
 import configureStore from 'modules/Site/config/store';
 import routes from "modules/Site/config/routes";
+import defaultQuery from 'modules/Site/components/ORM/query';
+import rootResolver from 'modules/Site/components/ORM/resolver';
+
+import RootType, {
+  Mutation,
+  rootDirectives,
+} from 'modules/Site/components/ORM';
 
 
 import config, {
@@ -30,14 +37,19 @@ export default class SiteRouter extends ShopmodxRouter{
 
   constructor(options = {}){
 
-    Object.assign(options, {
+    options = Object.assign({
       config,
       db_config,
       site_url,
       configureStore,
       routes,
       MainApp,
-    });
+      defaultQuery,
+      rootResolver,
+      RootType,
+      Mutation,
+      rootDirectives,
+    }, options);
 
     super(options);
 

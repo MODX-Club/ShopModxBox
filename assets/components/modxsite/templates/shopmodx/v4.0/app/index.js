@@ -50,6 +50,14 @@ const store = configureStore(initialState);
 // }
 
 
+import defaultQuery from 'modules/Site/components/ORM/query';
+import rootResolver from 'modules/Site/components/ORM/resolver';
+
+import RootType, {
+  Mutation,
+  rootDirectives,
+} from 'modules/Site/components/ORM';
+
 // const bootstrap = require('bootstrap')(jQuery);
 // import 'bootstrap/dist/js/bootstrap';
 
@@ -68,6 +76,11 @@ if(typeof window !== "undefined"){
     ReactDOM.render(
       <MainApp
         appExports={{}}
+        defaultQuery={defaultQuery}
+        rootResolver={rootResolver}
+        RootType={RootType}
+        Mutation={Mutation}
+        rootDirectives={rootDirectives}
       >
         <Provider store={store}>
           <Router
