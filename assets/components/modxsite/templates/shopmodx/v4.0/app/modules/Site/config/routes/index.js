@@ -9,7 +9,7 @@ import {
 
 // console.log("CompanyCreatePage", CompanyCreatePage);
 
-let routes = {
+let routes = [{
   path: "/",
   component: AppMain,
   indexRoute: { 
@@ -42,7 +42,7 @@ let routes = {
       // redirect: '/'
     },
   ]
-};
+}];
 
 // if(typeof window !== 'undefined'){
 //   routes.childRoutes.push({

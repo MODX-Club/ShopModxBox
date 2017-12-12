@@ -50,16 +50,18 @@ const store = configureStore(initialState);
 // }
 
 
-import defaultQuery from 'modules/Site/components/ORM/query';
-import rootResolver from 'modules/Site/components/ORM/resolver';
+// import defaultQuery from 'modules/Site/components/ORM/query';
+// import rootResolver from 'modules/Site/components/ORM/resolver';
 
-import RootType, {
-  Mutation,
-  rootDirectives,
-} from 'modules/Site/components/ORM';
+// import RootType, {
+//   Mutation,
+//   rootDirectives,
+// } from 'modules/Site/components/ORM';
 
 // const bootstrap = require('bootstrap')(jQuery);
 // import 'bootstrap/dist/js/bootstrap';
+
+import {AppMain as ShopModxApp} from 'shopmodx-react';
 
 if(typeof window !== "undefined"){
 
@@ -72,26 +74,86 @@ if(typeof window !== "undefined"){
     window.ga && window.ga('send', 'pageview', location.pathname);
   });
 
+
   const render = () => {
+
+    // ReactDOM.render(
+    //   <MainApp
+    //     appExports={{}}
+    //     defaultQuery={defaultQuery}
+    //     rootResolver={rootResolver}
+    //     RootType={RootType}
+    //     Mutation={Mutation}
+    //     rootDirectives={rootDirectives}
+    //   >
+    //     <Provider store={store}>
+    //       <Router
+    //         history={browserHistory}
+    //         routes={rootRoute}
+    //         render={applyRouterMiddleware(useScroll())}
+    //       />
+    //     </Provider>
+    //   </MainApp>,
+    //   document.getElementById("root")
+    // );
+
+    // ReactDOM.render(
+    //   <MainApp
+    //     appExports={{}}
+    //     defaultQuery={defaultQuery}
+    //     rootResolver={rootResolver}
+    //     RootType={RootType}
+    //     Mutation={Mutation}
+    //     rootDirectives={rootDirectives}
+    //   >
+    //     <Provider store={store}>
+    //       <Router
+    //         history={browserHistory}
+    //         routes={rootRoute}
+    //         render={applyRouterMiddleware(useScroll())}
+    //       >
+    //         <ShopModxApp />
+    //       </Router>
+    //     </Provider>
+    //   </MainApp>,
+    //   document.getElementById("root")
+    // );
+
     ReactDOM.render(
       <MainApp
         appExports={{}}
-        defaultQuery={defaultQuery}
-        rootResolver={rootResolver}
-        RootType={RootType}
-        Mutation={Mutation}
-        rootDirectives={rootDirectives}
       >
         <Provider store={store}>
           <Router
             history={browserHistory}
             routes={rootRoute}
             render={applyRouterMiddleware(useScroll())}
-          />
+          >
+
+          </Router>
         </Provider>
       </MainApp>,
       document.getElementById("root")
     );
+
+    // ReactDOM.render(
+    //   <Provider store={store}>
+    //     <Router
+    //       history={browserHistory}
+    //       routes={rootRoute}
+    //       render={applyRouterMiddleware(useScroll())}
+    //     >
+
+    //     </Router>
+    //   </Provider>,
+    //   document.getElementById("root")
+    // );
+
+    // ReactDOM.render(
+    //   <ShopModxApp />,
+    //   document.getElementById("root")
+    // );
+
   };
 
   render();
