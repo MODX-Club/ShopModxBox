@@ -22,6 +22,7 @@ require('babel-core/register')({
         || /\/moment\//.test(file)
         || /\/react-draft-wysiwyg\//.test(file)
         || /\/shopmodx-react\//.test(file)
+        || /\/modx-react\//.test(file)
       ){
         return;
       }
