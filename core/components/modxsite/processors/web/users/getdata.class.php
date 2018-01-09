@@ -165,44 +165,44 @@ class modWebUsersGetdataProcessor extends modSiteWebUsersGetdataProcessor{
 
 
 
-            if($ownProfile){
+    //         if($ownProfile){
 
-                /*
-                 * Получаем информацию по настройкам уведомлений
-                 * */
-                $l['notices'] = array();
-                $q = $this->modx->newQuery("SocietyNoticeType");
+    //             /*
+    //              * Получаем информацию по настройкам уведомлений
+    //              * */
+    //             $l['notices'] = array();
+    //             $q = $this->modx->newQuery("SocietyNoticeType");
 
-                $alias = $q->getAlias();
+    //             $alias = $q->getAlias();
 
-                $q->leftJoin("SocietyNoticeUser", "NoticeUsers", "SocietyNoticeType.id = NoticeUsers.notice_id AND NoticeUsers.user_id = {$l['id']}");
+    //             $q->leftJoin("SocietyNoticeUser", "NoticeUsers", "SocietyNoticeType.id = NoticeUsers.notice_id AND NoticeUsers.user_id = {$l['id']}");
 
-    //            $q->where(array(
-    //                "NoticeUsers.user_id" => $l['id'],
-    //            ));
+    // //            $q->where(array(
+    // //                "NoticeUsers.user_id" => $l['id'],
+    // //            ));
 
-                $q->select(array(
-                    "{$alias}.id",
-                    "type",
-                    "comment",
-                    "if(NoticeUsers.active is not null, NoticeUsers.active, 0) as active",
-                ));
+    //             $q->select(array(
+    //                 "{$alias}.id",
+    //                 "type",
+    //                 "comment",
+    //                 "if(NoticeUsers.active is not null, NoticeUsers.active, 0) as active",
+    //             ));
 
-                $q->sortby("rank", "ASC");
+    //             $q->sortby("rank", "ASC");
 
-                $s = $q->prepare();
+    //             $s = $q->prepare();
 
-                // print $q->toSQL();
+    //             // print $q->toSQL();
 
-                $s->execute();
+    //             $s->execute();
 
-                while($row = $s->fetch(PDO::FETCH_ASSOC)){
-    //                print_r($row);
+    //             while($row = $s->fetch(PDO::FETCH_ASSOC)){
+    // //                print_r($row);
 
-                    $l['notices'][] = $row;
-                }
+    //                 $l['notices'][] = $row;
+    //             }
 
-            }
+    //         }
 
         }
         

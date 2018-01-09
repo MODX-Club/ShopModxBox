@@ -16,7 +16,7 @@ class modSiteWebImagesThumbProcessor extends modSystemPhpThumbProcessor{
             
             # Сниппет обработки самбов
             # Если не заполнен, используется родной phpThumb MODX-а.
-            "thumb_snippet" => $this->modx->getOption('modxsite.thumb_snippet', null, "pthumb"),
+            "thumb_snippet" => $this->modx->getOption('modxsite.thumb_snippet', null, "phpthumbof"),
         ));
         
         if(
@@ -41,8 +41,7 @@ class modSiteWebImagesThumbProcessor extends modSystemPhpThumbProcessor{
             parse_str($options, $ptOptions);
             $this->setProperties($ptOptions);
         }
-        
-        
+         
         if(!$src = $this->getProperty('src')){
             
             return $this->failure("Не был указан путь к изображению");

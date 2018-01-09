@@ -94,10 +94,10 @@ class modSiteWebObjectProcessor extends modObjectProcessor{
                 
                 /* Run the beforeSet method before setting the fields, and allow stoppage */
                 $beforeSet = $this->beforeSet();
+                
                 if ($beforeSet !== true) {
                     $o = $this->failure($beforeSet);
                 }
-                
                 else{
                     $this->object->fromArray($this->getProperties());
                     
@@ -311,7 +311,15 @@ class modSiteWebObjectProcessor extends modObjectProcessor{
     }
     
     public function cleanup() {
-        return $this->success('', $this->object);
+
+        $object = & $this->object;
+
+        unset($object->_fields['pub_action']);
+        unset($object->_fields['save_object']);
+        unset($object->_fields['new_object']);
+
+
+        return $this->success('', $object);
     }
     
     
