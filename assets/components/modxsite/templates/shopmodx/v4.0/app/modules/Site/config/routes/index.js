@@ -2,10 +2,11 @@
 
 import {
   AppMain,
-  DefaultPage,
   MainPage,
   DbPage,
 } from "modules/Site";
+
+import DefaultPage from '../../components/Pages/DefaultPage';
 
 // console.log("CompanyCreatePage", CompanyCreatePage);
 

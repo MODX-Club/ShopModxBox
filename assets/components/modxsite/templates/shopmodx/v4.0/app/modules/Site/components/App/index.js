@@ -28,7 +28,7 @@ let {
 Object.assign(defaultProps, {
 	Renderer,
 	Basket,
-	isDemo: false,
+	isDemo: true,
 });
 
 
