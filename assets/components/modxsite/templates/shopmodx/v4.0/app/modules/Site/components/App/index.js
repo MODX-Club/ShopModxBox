@@ -10,6 +10,7 @@ import * as Shopmodx from 'shopmodx-react/components/App';
 
 import Renderer from './Renderer';
 
+import Basket from '../Basket';
 
 const {
 	mapDispatchToProps,
