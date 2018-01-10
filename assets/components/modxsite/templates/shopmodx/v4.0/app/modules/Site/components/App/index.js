@@ -3,6 +3,8 @@ import './styles/styles.less';
 
 import { connect } from 'react-redux';
 
+import PropTypes from 'prop-types';
+
 // import * as Shopmodx from 'shopmodx-react/components/App';
 import * as Shopmodx from 'shopmodx-react/components/App';
 
