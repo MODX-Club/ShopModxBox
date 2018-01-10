@@ -1,4 +1,9 @@
+import shopModxDefaultQuery from 'shopmodx-react/components/ORM/query.js';
 
-import query from 'shopmodx-react/components/ORM/query';
+const defaultQuery = `
 
-export default query;
+  ${shopModxDefaultQuery}
+
+`;
+
+export default defaultQuery;

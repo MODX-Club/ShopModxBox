@@ -3,13 +3,15 @@ import ShopmodxRouter from 'shopmodx-react/server/routes/main';
 
 import {
   MainApp,
-} from "shopmodx-react/components/App/";
+} from "modules/Site/components/App/";
 
 
 import configureStore from 'modules/Site/config/store';
 import routes from "modules/Site/config/routes";
 import defaultQuery from 'modules/Site/components/ORM/query';
 import rootResolver from 'modules/Site/components/ORM/resolver';
+ 
+import Response from './components/response';
 
 import RootType, {
   Mutation,
@@ -49,6 +51,7 @@ export default class SiteRouter extends ShopmodxRouter{
       RootType,
       Mutation,
       rootDirectives,
+      Response,
     }, options);
 
     super(options);

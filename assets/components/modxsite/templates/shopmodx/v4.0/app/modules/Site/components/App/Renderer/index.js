@@ -1,4 +1,32 @@
+import React, { Component } from 'react';
 
-import * as Renderer from 'shopmodx-react/components/App/Renderer';
+import PropTypes from 'prop-types';
 
-module.exports = Renderer;
+import RendererPrototype from 'shopmodx-react/components/App/Renderer';
+
+
+let {
+	...defaultProps
+} = RendererPrototype.defaultProps || {};
+
+
+Object.assign(defaultProps, {
+});
+
+
+let {
+	...contextTypes
+} = RendererPrototype.contextTypes || {};
+
+
+Object.assign(contextTypes, {
+});
+
+
+export default class Renderer extends RendererPrototype{
+
+	static defaultProps = defaultProps;
+
+	static contextTypes = contextTypes;
+
+}

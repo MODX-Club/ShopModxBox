@@ -1,38 +1,65 @@
 
+import './styles/styles.less';
+
+import { connect } from 'react-redux';
+
 // import * as Shopmodx from 'shopmodx-react/components/App';
 import * as Shopmodx from 'shopmodx-react/components/App';
 
-module.exports = Shopmodx;
+import Renderer from './Renderer';
 
-// console.log('module.exports Shopmodx', Shopmodx);
 
-// const {
-// 	AppMain: ShopModxApp,
-// 	...other
-// } = Shopmodx;
+const {
+	mapDispatchToProps,
+	mapStateToProps,
+	AppMain: ShopModxApp,
+	...other
+} = Shopmodx;
 
-// class App extends ShopModxApp{
 
-// 	constructor(props){
 
-// 		super(props);
+let {
+	...defaultProps,
+} = ShopModxApp.defaultProps || {};
 
-// 		alert("sdfdsf");
+Object.assign(defaultProps, {
+	Renderer,
+});
 
-// 		console.log("App", this.state);
 
-// 	}
+class AppMain extends ShopModxApp{
 
-// }
+	static defaultProps = defaultProps;
 
-// module.exports = Object.assign({...other}, {
-// 	AppMain: App,
-// });
+	constructor(props){
 
-// // console.log('module.exports', module.exports);
+		super(props);
 
-// // module.exports.default = App;
+		Object.assign(this.state, {
+      developMode: false,
+		});
 
-// module.exports = Shopmodx;
+	}
+  
 
-// export default App;
+  componentWillMount(){
+
+    super.componentWillMount && super.componentWillMount();
+
+    return;
+  }
+
+
+  async componentDidMount(){
+
+  	super.componentDidMount && super.componentDidMount();
+
+  }
+
+
+}
+
+module.exports = Object.assign(Shopmodx, {
+	AppMain,
+	default: connect(mapStateToProps, mapDispatchToProps)(AppMain),
+});
