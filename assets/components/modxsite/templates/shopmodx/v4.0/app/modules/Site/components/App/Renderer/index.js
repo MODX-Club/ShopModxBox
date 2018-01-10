@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import RendererPrototype from 'shopmodx-react/components/App/Renderer';
 
+import Header from './Header';
 
 let {
 	...defaultProps
@@ -11,6 +12,7 @@ let {
 
 
 Object.assign(defaultProps, {
+	Header,
 });
 
 

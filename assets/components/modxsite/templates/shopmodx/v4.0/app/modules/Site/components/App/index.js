@@ -8,8 +8,6 @@ import * as Shopmodx from 'shopmodx-react/components/App';
 
 import Renderer from './Renderer';
 
-import Basket from '../Basket';
-
 
 const {
 	mapDispatchToProps,
@@ -27,19 +25,66 @@ let {
 Object.assign(defaultProps, {
 	Renderer,
 	Basket,
+	isDemo: false,
+});
+
+
+let {
+	...childContextTypes,
+} = ShopModxApp.childContextTypes || {};
+
+Object.assign(childContextTypes, {
+	isDemo: PropTypes.bool,
+	toggleIsDemo: PropTypes.func,
 });
 
 
 class AppMain extends ShopModxApp{
 
 	static defaultProps = defaultProps;
+	static childContextTypes = childContextTypes;
 
 	constructor(props){
 
 		super(props);
 
+		const {
+			isDemo,
+		} = props;
+
 		Object.assign(this.state, {
-      developMode: false,
+			developMode: false,
+			isDemo,
+		});
+
+	}
+
+
+  getChildContext() {
+
+		let context = super.getChildContext();
+
+    let {
+      isDemo,
+    } = this.state;
+
+		Object.assign(context, {
+			isDemo,
+			toggleIsDemo: ::this.toggleIsDemo,
+    });
+
+    return context;
+	}
+	
+
+	toggleIsDemo(){
+
+		const {
+			isDemo,
+		} = this.state;
+
+		this.setState({
+			isDemo: !isDemo,
 		});
 
 	}
