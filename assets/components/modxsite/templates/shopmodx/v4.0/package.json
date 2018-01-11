@@ -179,6 +179,7 @@
     "react-cms": "^1.5.5",
     "react-cms-data-view": "^1.5.0",
     "react-cms-draft-wysiwyg": "^1.12.0",
+    "react-cms-graphql-utils": "^1.0.0",
     "react-color": "^2.13.0",
     "react-decliner": "^1.0.0",
     "react-dnd": "^2.4.0",

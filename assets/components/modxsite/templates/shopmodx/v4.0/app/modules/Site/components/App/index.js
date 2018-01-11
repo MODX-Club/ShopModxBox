@@ -13,6 +13,9 @@ import Renderer from './Renderer';
 import Basket from '../Basket';
 
 
+import defaultQuery from '../ORM/query';
+import rootResolver from '../ORM/resolver';
+
 const {
 	mapDispatchToProps,
 	mapStateToProps,
@@ -29,6 +32,8 @@ let {
 Object.assign(defaultProps, {
 	Renderer,
 	Basket,
+	defaultQuery,
+	rootResolver,
 });
 
 

@@ -1,4 +1,9 @@
 
+
+4.2.1
+============================================
+- Added defaultQuery extension via react-cms-graphql-utils
+
 4.2.0
 ============================================
 - Upgrade packages:
