@@ -9,6 +9,9 @@ import {
 import DefaultPage from '../../components/Pages/DefaultPage';
 
 // console.log("CompanyCreatePage", CompanyCreatePage);
+import UserPage from 'shopmodx-react/components/Pages/Users/User';
+import OfficeOrdersPage from '../../components/Pages/Office/Orders';
+import OfficeOrderPage from 'shopmodx-react/components/Pages/Office/Orders/Order';
 
 let routes = [{
   path: "/",
@@ -35,6 +38,23 @@ let routes = [{
     {
       path: "/db",
       component: DbPage,
+    },
+    {
+      path: "/office/orders",
+      component: OfficeOrdersPage,
+      childRoutes: [
+      ],
+    },
+    {
+      path: "/office/orders/:orderId",
+      component: OfficeOrderPage,
+    },
+    {
+      path: "/profile/:username",
+      component: UserPage,
+      childRoutes: [{
+        path: "/profile/:username/:action",
+      }],
     },
     {
     path: "*",

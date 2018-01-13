@@ -1,9 +1,11 @@
 import shopModxDefaultQuery from 'shopmodx-react/components/ORM/query.js';
 
-const defaultQuery = `
+import mergeQuery from 'react-cms-graphql-utils/src/mergeQuery';
 
-  ${shopModxDefaultQuery}
 
-`;
+const extendedQuery = ``;
+
+
+const defaultQuery = mergeQuery(shopModxDefaultQuery, extendedQuery);
 
 export default defaultQuery;

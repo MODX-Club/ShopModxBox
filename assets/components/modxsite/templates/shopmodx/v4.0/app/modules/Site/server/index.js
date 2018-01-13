@@ -23,6 +23,7 @@ require('babel-core/register')({
         || /\/react-draft-wysiwyg\//.test(file)
         || /\/shopmodx-react\//.test(file)
         || /\/modx-react\//.test(file)
+        || /\/react-cms-graphql-utils\//.test(file)
       ){
         return;
       }

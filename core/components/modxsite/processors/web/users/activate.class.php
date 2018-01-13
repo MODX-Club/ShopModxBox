@@ -1,7 +1,7 @@
 <?php
 
 
-class modWebSocietyUsersActivateProcessor extends modObjectUpdateProcessor{
+class modWebUsersActivateProcessor extends modObjectUpdateProcessor{
     
     public $classKey = 'modUser';
     
@@ -55,7 +55,7 @@ class modWebSocietyUsersActivateProcessor extends modObjectUpdateProcessor{
         $profile = & $user->Profile;
         
         // Проверяем ключ
-        if($this->getProperty('key') != md5($user->id . $profile->email)){
+        if($this->getProperty('key') != md5($this->modx->site_id . $user->id . $profile->email)){
             return "Неверная подпись";
         }
         
@@ -90,5 +90,5 @@ class modWebSocietyUsersActivateProcessor extends modObjectUpdateProcessor{
 }
 
 
-return 'modWebSocietyUsersActivateProcessor';
+return 'modWebUsersActivateProcessor';
 

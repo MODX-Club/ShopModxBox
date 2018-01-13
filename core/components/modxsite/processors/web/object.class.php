@@ -4,43 +4,16 @@ require_once __DIR__ . '/../site/web/object.class.php';
 
 abstract class modWebObjectProcessor extends modSiteWebObjectProcessor{
     
+
+    protected $cleanupOutput = true;
+
+
     public function checkPermissions() {
         return $this->modx->user->id && parent::checkPermissions();
     }
 
 
     public function initialize() {
-
-        $request_body = file_get_contents('php://input');
-
-        if($request_body AND $data = json_decode($request_body, 1)){
-            $this->setProperties($data);
-        }
-        
-        foreach($this->properties as $field => & $value){
-
-            if(!is_scalar($value)){
-                continue;
-            }
-
-            $v = (string)$value;
-
-            if($v === "null"){
-                $value = null;
-            }
-            else if($v === "true"){
-                $value = true;
-            }
-            else if($v === "false"){
-                $value = false;
-            }
-            else if($v === "NaN"){
-                unset($this->properties[$field]);
-            }
-            else if($v === "undefined"){
-                unset($this->properties[$field]);
-            }
-        }
 
         if(isset($this->properties['id'])){
             $this->properties['id'] = (int)$this->properties['id'];
@@ -147,18 +120,22 @@ abstract class modWebObjectProcessor extends modSiteWebObjectProcessor{
         /*
             Вычищаем все данные, которые не были переданы в запросе
         */
-        foreach($this->object->_fields as $name => $value){
+        if($this->cleanupOutput){
 
-            // Пропускаем разрешенные поля
-            if(in_array($name, array(
-                "id",
-            ))){
-                continue;
+            foreach($this->object->_fields as $name => $value){
+    
+                // Пропускаем разрешенные поля
+                if(in_array($name, array(
+                    "id",
+                ))){
+                    continue;
+                }
+    
+                if(!array_key_exists($name, $this->properties)){
+                    unset($this->object->_fields[$name]);
+                }
             }
-
-            if(!array_key_exists($name, $this->properties)){
-                unset($this->object->_fields[$name]);
-            }
+            
         }
 
         unset($this->object->_fields['new_object']);
@@ -169,67 +146,4 @@ abstract class modWebObjectProcessor extends modSiteWebObjectProcessor{
 }
 
 return 'modWebObjectProcessor';
-
-
-
-// require_once __DIR__ . '/../site/web/object.class.php';
-
-// abstract class modWebObjectProcessor extends modSiteWebObjectProcessor{
-
-//     function checkPermissions(){
-
-//         return $this->modx->user->id && parent::checkPermissions();
-//     }
-
-//     public function initialize() {
-
-
-//         $request_body = file_get_contents('php://input');
-
-//         if($request_body AND $data = json_decode($request_body, 1)){
-//             $this->setProperties($data);
-//         }
-
-//         return parent::initialize();
-//     }
-
-
-//     public function afterSave(){
-
-
-//         $this->modx->cacheManager->refresh();
-//         $this->modx->cacheManager->clearCache();
-
-//         return parent::afterSave();
-//     }
-
-
-    
-//     public function cleanup() {
-
-//         $object = & $this->object;
-
-//         foreach($object->_fields as $name => $value){
-
-//             // if(in_array($name, array(
-//             //     "new_object",
-//             //     "save_object",
-//             // ))){
-//             //     continue;
-//             // }
-
-//             if(!array_key_exists($name, $this->properties)){
-            
-        
-//                 unset($object->_fields[$name]);
-
-//             }
-
-//         }
-
-//         return parent::cleanup();
-//     }
-// }
-
-// return 'modWebObjectProcessor';
 

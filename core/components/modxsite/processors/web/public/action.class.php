@@ -11,8 +11,6 @@ class modWebPublicActionProcessor extends modProcessor{
     
     public static function getInstance(modX &$modx,$className,$properties = array()) {
 
-        
-
         $request_body = file_get_contents('php://input');
 
         if($request_body AND $data = json_decode($request_body, 1)){
@@ -45,7 +43,7 @@ class modWebPublicActionProcessor extends modProcessor{
         }
 
 
-        // $modx->log(1, print_r($properties, 1), "FILE");
+        $modx->log(1, print_r($properties, 1), "FILE");
 
         // Здесь мы имеем возможность переопределить реальный класс процессора
         if(!empty($properties['pub_action']) && !self::$actualClassName){
@@ -99,6 +97,17 @@ class modWebPublicActionProcessor extends modProcessor{
                     self::$actualClassName =  'modWebOrdersObjectProcessor';
                     break;
 
+                // Текущий заказ пользователя
+                case 'order/own/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/orders/own/object.class.php';                    
+                    self::$actualClassName =  'modWebOrdersOwnObjectProcessor';
+                    break;
+                    
+                case 'orders/statuses/getdata':
+                    require_once dirname(dirname(__FILE__)) . '/orders/statuses/getdata.class.php';                    
+                    self::$actualClassName =  'modWebOrdersStatusesGetdataProcessor';
+                    break;
+
                 // case 'users/getdata':
                 //     require __DIR__ . '/../users/getdata.class.php';
                 //     self::$actualClassName = 'modWebUsersGetdataProcessor';
@@ -108,6 +117,12 @@ class modWebPublicActionProcessor extends modProcessor{
                 //     require __DIR__ . '/../users/own_profile/getdata.class.php';
                 //     self::$actualClassName = 'modWebUsersOwnprofileGetdataProcessor';
                 //     break;
+                
+                    
+                case 'registration':
+                    require dirname(dirname(__FILE__)) . '/users/create.class.php';
+                    self::$actualClassName = 'modWebUsersCreateProcessor';
+                    break; 
                 
                 case 'login':
                     require_once dirname(dirname(__FILE__)) . '/society/users/login.class.php';
