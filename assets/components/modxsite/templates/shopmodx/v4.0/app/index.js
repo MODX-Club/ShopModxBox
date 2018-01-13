@@ -71,7 +71,15 @@ if(typeof window !== "undefined"){
   injectTapEventPlugin();
 
   browserHistory.listen(function (location) {
+    
     window.ga && window.ga('send', 'pageview', location.pathname);
+  
+    if(typeof yaCounter47291208 === "object"){
+  
+      yaCounter47291208.clickmap && yaCounter47291208.clickmap().hit(location.pathname);
+
+    }
+
   });
 
 
