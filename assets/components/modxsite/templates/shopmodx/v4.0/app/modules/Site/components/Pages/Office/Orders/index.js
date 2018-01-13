@@ -23,8 +23,18 @@ Object.assign(contextTypes, {
 });
 
 
+let {
+  ...defaultProps
+} = ShopmodxOfficeOrdersPage.defaultProps;
+
+
+Object.assign(defaultProps, {
+});
+
+
 export default class OfficeOrdersPage extends ShopmodxOfficeOrdersPage{
 
+  static defaultProps = defaultProps;
 
   static contextTypes = contextTypes;
 
