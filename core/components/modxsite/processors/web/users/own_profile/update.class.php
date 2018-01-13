@@ -5,59 +5,27 @@
     Надо быть очень внимательным, чтобы никто не мог перегрузить права пользователя (группы) или типа того
 */
 
-// require_once dirname(__FILE__) . '/_validator.class.php';
+require_once __DIR__ . '/../object.class.php';
 
-class modWebUsersOwnprofileUpdateProcessor extends modObjectUpdateProcessor{
+class modWebUsersOwnprofileUpdateProcessor extends modWebUsersObjectProcessor{
     
-    public $classKey = 'modUser';
-    public $profile = null;
+    
+    protected $cleanupOutput = false;
 
-    protected $images_path = 'assets/society/uploads/images/';
-    
     public function checkPermissions(){
         
-        if(!$this->modx->user->id){
-            return false;
-        }
-        
-        return parent::checkPermissions();
+        return $this->modx->user->id;
     }
     
     
     public function initialize(){
 
-        $request_body = file_get_contents('php://input');
 
-        if($request_body AND $data = json_decode($request_body, 1)){
-            $this->setProperties($data);
-        }
+        $this->setProperties(array(
+            "new_object"   => false,        // Флаг, что это новый объект
+            "save_object"   => true,       // Флаг, что объект надо сохранять
+        ));
         
-        foreach($this->properties as $field => & $value){
-
-            if(!is_scalar($value)){
-                continue;
-            }
-
-            $v = (string)$value;
-
-            if($v === "null"){
-                $value = null;
-            }
-            else if($v === "true"){
-                $value = true;
-            }
-            else if($v === "false"){
-                $value = false;
-            }
-            else if($v === "NaN"){
-                unset($this->properties[$field]);
-            }
-            else if($v === "undefined"){
-                unset($this->properties[$field]);
-            }
-        }
-
-        unset($value);
         
         if(!$user_id = (int)$this->modx->user->id){
             return "Не был получен ID пользователя";
@@ -65,44 +33,6 @@ class modWebUsersOwnprofileUpdateProcessor extends modObjectUpdateProcessor{
         
         // else
         $this->setProperty('id', $user_id);
-
-        // $properties = array(
-        //     "fullname"   => $this->getProperty('fullname'),
-        //     "new_password"   => $this->getProperty('new_password'),
-        //     "notices"   => $this->getProperty('notices', array()),
-        //     // "api_key"   => $this->getProperty('api_key'),
-        //     "photo"   => $this->getProperty('photo'),
-        //     "phone"   => preg_replace("/[^0-9]/", "", trim($this->getProperty('phone'))),
-        // );
-
-        
-        foreach($this->properties as $name => $value){
-
-            // print "\n$name";
-
-            if(!in_array($name, array(
-                "id",
-                "fullname",
-                "new_password",
-                "notices",
-                "image",
-                "phone",
-            ))){
-                // $this->unsetProperty($name);
-            }
-        }
-        
-        // var_dump($this->properties);
-
-        // print "dsf";
-        // print_r($this->properties);
-        // print "dsf";
-
-        // $this->properties = array();
-
-        // print_r($this->properties);
-
-        # print_r($this->getProperties());
 
         if(
             $phone = $this->getProperty("phone")
@@ -124,6 +54,28 @@ class modWebUsersOwnprofileUpdateProcessor extends modObjectUpdateProcessor{
         if(!$Profile =& $this->object->Profile){
             return "Не был получен профиль пользователя";
         }
+
+
+        foreach($this->properties as $name => $value){
+
+            if(in_array($name, array(
+                "username",
+                "cachepwd",
+                "class_key",
+                "active",
+                "hash_class",
+                "salt",
+                "primary_group",
+                "session_stale",
+                "sudo",
+                "createdon",
+            ))){
+                $this->unsetProperty($name);
+            }
+        }
+
+        // $this->modx->log(1, print_r($this->properties, 1), "FILE");
+        
 
         /*
          * Фото
@@ -180,16 +132,6 @@ class modWebUsersOwnprofileUpdateProcessor extends modObjectUpdateProcessor{
             }
         }
         
-        // $validator = new modWebSocietyUsersValidator($this);
-        
-        // $ok = $validator->validate();
-        
-        // if($ok !== true){
-        //     return $ok;
-        // }
-
-        // $profile = & $this->processor->profile;
-          
         
         // Проверяем емейл
         if(
@@ -210,190 +152,11 @@ class modWebUsersOwnprofileUpdateProcessor extends modObjectUpdateProcessor{
 
         }
 
-        
-        # 
-        # // Уведомления
-        # 
-        
-        # if($notices = (array)$this->getProperty('notices')){
-        #     foreach($notices as $notice_id){
-        #         if($notice = $this->modx->getObject('SocietyNoticeType', $notices)){
-        #             
-        #         }
-        #     }
-        # }
-        
-        if($notices = (array)$this->getProperty('notices')){
-
-            // print_r($notices);
-
-            // return;
-
-            // Это текущие настройки пользователя, могут не содержать все переданные настройки
-            $userNotices = (array)$user->Notices;
-
-            
-            $newUserNotices = array();
-
-            foreach($notices as $n){
-
-                if($notice = $this->modx->getObject('SocietyNoticeType', $n['id'])){
-
-                    
-                    // print "\nnotice";
-
-                    // print_r($notice->toArray());
-                    # 
-                    # return;
-
-                    // global $notice;
-
-                    // print_r($n);
-
-                    $userNotice = $userNotices ? array_filter($userNotices, function($un) use ($notice){
-
-                        // return $un->id == $notice->id;
-
-                        // print_r($un);
-
-                        return $un->notice_id == $notice->id ? $un : false;
-
-                    }) : null;
-
-                    $userNotice = $userNotice ? current($userNotice) : null;
-
-                    // print "\nuserNotice";
-
-
-                    if($userNotice){
-
-                        // var_dump($userNotice);
-                        // print_r($userNotice->toArray());
-
-                        $userNotice->active = $n['active'];
-
-                    }
-                    else if($n['active']){
-
-                        $userNotice = $this->modx->newObject('SocietyNoticeUser', array(
-                            "active"    => 1,
-                        ));
-                        $userNotice->User = $user;
-                        $userNotice->NoticeType = $notice;
-
-                        // $userNotices[] = $userNotice;
-
-                    }
-
-                    if($userNotice){
-
-                        $newUserNotices[] = $userNotice;
-
-                    }
-
-                }
-
-                # else{
-                #     print "Error";
-                #     exit;
-                # }
-            }
-            
-            // $user->Notices = $userNotices;
-            $user->Notices = $newUserNotices;
-            
-            # exit;
-
-            // print "\n new notices";
-
-            // foreach($newUserNotices as $userNotice2){
-            //     print_r($userNotice2->toArray());
-            // }
-            
-            // return;
-        }
-
-
-        
-        
-        ####################################
-
-        // print_r($user->toArray());
-
-        // return 'Debug';
 
         return parent::beforeSave();
     }
     
-    public function afterSave(){
-        
-        $this->modx->removeCollection('SocietyNoticeUser', array(
-            "active"    => 0,
-        ));
-        
-        return parent::afterSave();
-    }
-
-    public function cleanup(){
-
-        $object = & $this->object;
-
-        // $result = parent::cleanup();
-
-        // $result = $result['object'];
-
-//         $photo = $object->Profile->photo;
-
-// //        $data = $result;
-
-//         $notices = array();
-
-//         $q = $this->modx->newQuery("SocietyNoticeType");
-
-//         $alias = $q->getAlias();
-
-//         $q->leftJoin("SocietyNoticeUser", "NoticeUsers", "SocietyNoticeType.id = NoticeUsers.notice_id AND NoticeUsers.user_id = {$object->id}");
-
-//         $q->select(array(
-//             "{$alias}.id",
-//             "type",
-//             "comment",
-//             "if(NoticeUsers.id is not null, 1, 0) as active",
-//         ));
-
-//         $q->sortby("rank", "ASC");
-
-//         $s = $q->prepare();
-
-//         $s->execute();
-
-//         while($row = $s->fetch(PDO::FETCH_ASSOC)){
-//             $notices[] = $row;
-//         }
-
-//         $data = array(
-//             "id"  => $object->id,
-//             "fullname"  => $object->Profile->fullname,
-//             "photo" => $photo ? $this->images_path . $photo : "",
-//             "username" => $object->username,
-//             "api_key" => $object->api_key,
-//             "notices" => $notices,
-//         );
-        
-        $this->modx->cacheManager->refresh();
-        $this->modx->cacheManager->clearCache();
-
-        $data = $object->toArray();
-
-        foreach($data as $name => $value){
-            if(!array_key_exists($name, $this->properties)){
-                unset($data[$name]);
-            }
-        }
-
-        return $this->success("Профиль успешно обновлен", $data);
-    }
 }
 
-return 'modWebUsersOwnprofileUpdateProcessor';
+return 'modWebUsersObjectProcessor';
 

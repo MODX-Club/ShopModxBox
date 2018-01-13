@@ -12,38 +12,6 @@ class modWebUsersGetdataProcessor extends modSiteWebUsersGetdataProcessor{
     
     
     public function initialize(){
-
-        $request_body = file_get_contents('php://input');
-
-        if($request_body AND $data = json_decode($request_body, 1)){
-            $this->setProperties($data);
-        }
-        
-        foreach($this->properties as $field => & $value){
-
-            if(!is_scalar($value)){
-                continue;
-            }
-
-            $v = (string)$value;
-
-            if($v === "null"){
-                $value = null;
-            }
-            else if($v === "true"){
-                $value = true;
-            }
-            else if($v === "false"){
-                $value = false;
-            }
-            else if($v === "NaN"){
-                unset($this->properties[$field]);
-            }
-            else if($v === "undefined"){
-                unset($this->properties[$field]);
-            }
-        }
-
         
         $this->setDefaultProperties(array(
             "format" => "json",
@@ -59,6 +27,10 @@ class modWebUsersGetdataProcessor extends modSiteWebUsersGetdataProcessor{
         if($this->getProperty("ownProfile")){
             $this->setProperty("cache", false);
         }
+
+        $this->setDefaultProperties(array(
+            "query" => $this->getProperty("search"),
+        ));
         
         return parent::initialize();
     }
@@ -97,6 +69,11 @@ class modWebUsersGetdataProcessor extends modSiteWebUsersGetdataProcessor{
         // Только представители компаний
         if($this->getProperty("createdByMe")){
             $where['createdby'] = $this->modx->user->id;
+        }
+
+        // Поиск по юзернейму
+        if($username = trim($this->getProperty("username"))){
+            $where['username'] = $username;
         }
 
 
@@ -154,12 +131,7 @@ class modWebUsersGetdataProcessor extends modSiteWebUsersGetdataProcessor{
 
             if(!$canViewAllData){
 
-                unset($l['offer']);
-                unset($l['delegate']);
                 unset($l['createdby']);
-                unset($l['offer_date']);
-                unset($l['offer_date']);
-                unset($l['contract_date']);
 
             }
 
