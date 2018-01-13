@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import ShopModxHeader from 'shopmodx-react/components/App/Renderer/Header';
-import MainMenu from 'shopmodx-react/components/App/Renderer/MainMenu';
+import MainMenu from './MainMenu';
 
 import Grid from 'material-ui/Grid';
 import {Link} from 'react-router';
@@ -109,8 +109,6 @@ export default class Header extends ShopModxHeader{
 
         <Grid
           item
-          xs={12}
-          md
         >
 
           {demoSwitcher}
@@ -121,13 +119,21 @@ export default class Header extends ShopModxHeader{
 
         <Grid
           item
+          xs
         >
       
           <MainMenu 
 
           />
 
-          <Basket />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Basket />
+          </div>
 
         </Grid>
 

@@ -3,7 +3,6 @@
 import {
   AppMain,
   MainPage,
-  DbPage,
 } from "modules/Site";
 
 import DefaultPage from '../../components/Pages/DefaultPage';
@@ -12,6 +11,7 @@ import DefaultPage from '../../components/Pages/DefaultPage';
 import UserPage from 'shopmodx-react/components/Pages/Users/User';
 import OfficeOrdersPage from '../../components/Pages/Office/Orders';
 import OfficeOrderPage from 'shopmodx-react/components/Pages/Office/Orders/Order';
+import DbPage from '../../components/Pages/DbPage';
 
 let routes = [{
   path: "/",

@@ -11,6 +11,8 @@ import ShopmodxOfficeOrdersPage from 'shopmodx-react/components/Pages/Office/Ord
 
 import Page from '../../';
 
+import View from './View';
+
 
 let {
   ...contextTypes
@@ -29,6 +31,7 @@ let {
 
 
 Object.assign(defaultProps, {
+  View,
 });
 
 
